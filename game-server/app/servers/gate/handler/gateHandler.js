@@ -22,7 +22,8 @@ handler.queryEntry = function(msg, session, next) {
 	var uid = msg.uid;
 	if(!uid) {
 		next(null, {
-			code: 500
+			code: 500,
+			reason: 'no uid provided'
 		});
 		return;
 	}
@@ -30,7 +31,8 @@ handler.queryEntry = function(msg, session, next) {
 	var connectors = this.app.getServersByType('connector');
 	if(!connectors || connectors.length === 0) {
 		next(null, {
-			code: 500
+			code: 500,
+			reason: 'no connectors found'
 		});
 		return;
 	}

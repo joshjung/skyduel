@@ -1,32 +1,17 @@
 (function() {
-  var isArray = Array.isArray;
+  var isArray = Array.isArray,
+    root = this;
 
-  var root = this;
+  function EventEmitter() {}
 
-  function EventEmitter() {
-  }
+  root = window;
+  root.EventEmitter = EventEmitter;
 
-
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports.EventEmitter = EventEmitter;
-  }
-  else {
-    root = window;
-    root.EventEmitter = EventEmitter;
-  }
-
-  // By default EventEmitters will print a warning if more than
-  // 10 listeners are added to it. This is a useful default which
-  // helps finding memory leaks.
-  //
-  // Obviously not all Emitters should be limited to 10. This function allows
-  // that to be increased. Set to zero for unlimited.
   var defaultMaxListeners = 10;
   EventEmitter.prototype.setMaxListeners = function(n) {
     if (!this._events) this._events = {};
     this._maxListeners = n;
   };
-
 
   EventEmitter.prototype.emit = function() {
     var type = arguments[0];
@@ -246,13 +231,11 @@
   };
 
 /**
- *
  *pomele client encode
  * id message id;
  * route message route
  * msg message body
  * socketio current support string
- *
  */
 Protocol.encode = function(id,route,msg){
     var msgStr = JSON.stringify(msg);
@@ -272,9 +255,6 @@ Protocol.encode = function(id,route,msg){
     }
     return bt2Str(byteArray,0,byteArray.length);
 };
-
-
-
 
 /**
  *
@@ -451,6 +431,4 @@ var bt2Str = function(byteArray,start,end) {
     msg.timestamp = Date.now();
     return msg;
   }
-
-  
 })();

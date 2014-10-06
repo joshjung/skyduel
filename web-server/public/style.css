@@ -179,3 +179,7 @@ body, table {
     color: #f00;
     cursor: pointer;
 }
+
+canvas {
+    border:1px solid #000000;
+}
