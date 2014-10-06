@@ -1,7 +1,7 @@
 var pomelo = require('pomelo');
 
 var app = pomelo.createApp();
-app.set('name', 'skydual');
+app.set('name', 'skyduel');
 
 app.configure('production|development', 'connector', function(){
   app.set('connectorConfig',
@@ -27,5 +27,5 @@ app.configure('production|development', 'gate', function(){
 app.start();
 
 process.on('uncaughtException', function (err) {
-  console.error(' SkyDual Caught exception: ' + err.stack);
+  console.error(' SkyDuel Caught exception: ' + err.stack);
 });

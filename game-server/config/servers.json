@@ -7,8 +7,8 @@
       "clientPort": 3050,
       "frontend": true
     }],
-    "skydual": [{
-      "id": "skydual-server-1",
+    "skyduel": [{
+      "id": "skyduel-server-1",
       "host": "192.168.1.82",
       "port": 6050
     }],
@@ -27,8 +27,8 @@
       "clientPort": 3050,
       "frontend": true
     }],
-    "skydual": [{
-      "id": "skydual-server-1",
+    "skyduel": [{
+      "id": "skyduel-server-1",
       "host": "192.168.1.82",
       "port": 6050
     }],

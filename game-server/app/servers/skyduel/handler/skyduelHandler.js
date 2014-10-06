@@ -1,14 +1,12 @@
-var skydualRemote = require('../remote/skydualRemote');
+var skyduelRemote = require('../remote/skyduelRemote');
 
 module.exports = function(app) {
-  return new SkyDualHandler(app);
+  return new SkyDuelHandler(app);
 };
 
-var SkyDualHandler = function(app) {
+var SkyDuelHandler = function(app) {
   this.app = app;
 };
-
-var SkyDualHandler = SkyDualHandler.prototype;
 
 /**
  * Send messages to users
@@ -17,7 +15,7 @@ var SkyDualHandler = SkyDualHandler.prototype;
  * @param {Object} session
  * @param  {Function} next next stemp callback
  */
-SkyDualHandler.send = function(msg, session, next) {
+SkyDuelHandler.prototype.send = function(msg, session, next) {
   var rid = session.get('rid'),
     username = session.uid.split('*')[0],
     channelService = this.app.get('channelService'),
