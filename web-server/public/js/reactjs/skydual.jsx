@@ -5,8 +5,6 @@ var FPS = 60,
 var rjSkydual = React.createClass({
   checkKeyboard: function () {
     if (this.player) {
-      console.log('turning');
-
       this.player.angleDelta = this.cursors.left.isDown ? PLANE_GLOBALS.LEFT : 0;
       this.player.angleDelta = this.cursors.right.isDown ? PLANE_GLOBALS.RIGHT : this.player.angleDelta;
 
@@ -26,10 +24,7 @@ var rjSkydual = React.createClass({
     this.checkKeyboard();
     this.sendInputToServer();
 
-    // Update all players
-    // this.controller.players.all.forEach(function (player) {
-    //   player.update(1.0);
-    // });
+    this.controller.update();
   },
   componentDidMount: function () {
     this.gameInfo = undefined;
@@ -105,8 +100,6 @@ var rjSkydual = React.createClass({
 
         // If the server says we are controlling one of the players, assign it!
         self.player = (player.uid == self.uid ? _player : self.player);
-        console.log('processing', player);
-        console.log('self.uid', self.uid);
       }
     });
   },

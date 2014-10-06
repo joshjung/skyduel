@@ -18,12 +18,12 @@ var Player = function(controller, uid, id) {
 \*===================================================*/
 Player.prototype = {
   GLOBALS: {
-    VELOCITY_MAX: 20,
-    VELOCITY_MIN: 3,
-    LEFT: -5,
-    RIGHT: 5,
-    ACCEL: 1,
-    DECEL: -1
+    VELOCITY_MAX: 75,
+    VELOCITY_MIN: 30,
+    LEFT: -30,
+    RIGHT: 30,
+    ACCEL: 15,
+    DECEL: -10
   },
   input: undefined,
   x: 400,
