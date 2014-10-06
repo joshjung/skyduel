@@ -1,12 +1,42 @@
 {
-  "development":{
-    "connector": [
-    {"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "clientPort": 3010, "frontend": true}
-    ]
+  "development": {
+    "connector": [{
+      "id": "connector-server-1",
+      "host": "192.168.1.82",
+      "port": 4050,
+      "clientPort": 3050,
+      "frontend": true
+    }],
+    "skydual": [{
+      "id": "skydual-server-1",
+      "host": "192.168.1.82",
+      "port": 6050
+    }],
+    "gate": [{
+      "id": "gate-server-1",
+      "host": "192.168.1.82",
+      "clientPort": 3014,
+      "frontend": true
+    }]
   },
-  "production":{
-    "connector": [
-    {"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "clientPort": 3010, "frontend": true}
-    ]
+  "production": {
+    "connector": [{
+      "id": "connector-server-1",
+      "host": "192.168.1.82",
+      "port": 4050,
+      "clientPort": 3050,
+      "frontend": true
+    }],
+    "skydual": [{
+      "id": "skydual-server-1",
+      "host": "192.168.1.82",
+      "port": 6050
+    }],
+    "gate": [{
+      "id": "gate-server-1",
+      "host": "192.168.1.82",
+      "clientPort": 3014,
+      "frontend": true
+    }]
   }
 }
