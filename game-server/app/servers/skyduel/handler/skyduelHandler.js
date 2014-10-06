@@ -17,16 +17,21 @@ handler.start = function (msg, session, next) {
   if (!this.controller){
     console.log('new controller');
     this.controller = new SkyDuelController();
-    this.controller.startServer(this);
+    this.controller.startServer(this, session);
   }
 
-  next();
+  this.controller.addPlayer(session);
+
+  next(null, {code: 200, uid: session.uid});
 };
 
 handler.update = function (msg, session, next) {
   if (msg.type == 'plane' && this.controller)
   {
-    this.controller.player.input = msg.data;
+    if (this.controller.players.has(session.uid))
+    {
+      this.controller.players.get(session.uid).input = msg.data;
+    }
   }
 
   next(null, {code: 200});

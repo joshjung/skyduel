@@ -1,7 +1,8 @@
 /*===================================================*\
  * Requires (server only)
 \*===================================================*/
-var Player = (typeof module == 'undefined' ? Player : require('./Player'));
+var Player = (typeof module == 'undefined' ? Player : require('./Player')),
+  HashArray = (typeof module == 'undefined' ? HashArray : require('./lib/HashArray'));
 
 /*===================================================*\
  * Globals
@@ -20,20 +21,20 @@ var SkyDuelController = function(rid) {
  * Methods
 \*===================================================*/
 SkyDuelController.prototype = {
-  startServer: function(handler) {
+  startServer: function(handler, session) {
     this.isServer = true;
     this.handler = handler;
     this.rid = handler.rid;
 
-    this.start();
+    this.start(session);
   },
   startClient: function() {
     this.isServer = false;
 
     this.start();
   },
-  start: function() {
-    this.player = new Player(this);
+  start: function(session) {
+    this.players = new HashArray(['uid', 'id']);
 
     this.bounds = {
       width: 800,
@@ -46,14 +47,27 @@ SkyDuelController.prototype = {
 
     setInterval(this.fpsIntervalHandler, 1000 / FPS);
   },
+  addPlayer: function(session) {
+    this.players.add(new Player(this, session ? session.uid : -1));
+  },
   updateClients: function() {
     if (this.rid)
     {
-      this.handler.app.get('channelService').getChannel(this.rid, false).pushMessage('onUpdate', this.player.serialize());
+      var all =this.players.all.map(function (player) {
+        return player.serialize();
+      });
+
+      this.handler.app.get('channelService').getChannel(this.rid, false).pushMessage('onUpdate', 
+          {
+            players: all
+          }
+        );
     }
   },
   _update: function() {
-    this.player.update(1.0);
+    this.players.all.forEach(function (player) {
+      player.update(1.0);
+    })
 
     if (this.isServer)
       this.updateClients();

@@ -6,11 +6,11 @@ var DEG_RAD_RATIO = Math.PI / 180;
 /*===================================================*\
  * Player()
 \*===================================================*/
-var Player = function(controller) {
-  this.id = Math.random();
+var Player = function(controller, uid, id) {
+  this.uid = uid;
+  this.id = id || Math.round(Math.random() * 1000).toString(16);
 
   this.controller = controller;
-  console.log('NEW PLAYER()');
 };
 
 /*===================================================*\
@@ -18,8 +18,8 @@ var Player = function(controller) {
 \*===================================================*/
 Player.prototype = {
   GLOBALS: {
-    VELOCITY_MAX: 50,
-    VELOCITY_MIN: 10,
+    VELOCITY_MAX: 20,
+    VELOCITY_MIN: 3,
     LEFT: -5,
     RIGHT: 5,
     ACCEL: 1,
@@ -48,9 +48,7 @@ Player.prototype = {
     this.x += Math.cos(this.angle * DEG_RAD_RATIO) * this.velocity * elapsed;
     this.y += Math.sin((this.angle) * DEG_RAD_RATIO) * this.velocity * elapsed;
 
-    console.log('turn', this.turn);
-
-    this.angle += this.turn;
+    this.angle += this.turn * elapsed;
 
     this.wrap();
   },
@@ -62,6 +60,7 @@ Player.prototype = {
   },
   serialize: function () {
     return {
+      uid: this.uid,
       id: this.id,
       x: this.x,
       y: this.y,
@@ -72,6 +71,11 @@ Player.prototype = {
     };
   },
   deserialize: function (data) {
+    if (data.id != this.id)
+    {
+      throw Error('The plane ids do not match in deserialize()!');
+    }
+
     this.x = data.x;
     this.y = data.y;
     this.angle = data.angle;

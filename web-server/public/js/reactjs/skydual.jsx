@@ -4,11 +4,15 @@ var FPS = 60,
 
 var rjSkydual = React.createClass({
   checkKeyboard: function () {
-    this.player.angleDelta = this.cursors.left.isDown ? PLANE_GLOBALS.LEFT : 0;
-    this.player.angleDelta = this.cursors.right.isDown ? PLANE_GLOBALS.RIGHT : this.player.angleDelta;
+    if (this.player) {
+      console.log('turning');
 
-    this.player.acceleration = this.cursors.up.isDown ? PLANE_GLOBALS.ACCEL : 0;
-    this.player.acceleration = this.cursors.down.isDown ? PLANE_GLOBALS.DECEL : this.player.acceleration;
+      this.player.angleDelta = this.cursors.left.isDown ? PLANE_GLOBALS.LEFT : 0;
+      this.player.angleDelta = this.cursors.right.isDown ? PLANE_GLOBALS.RIGHT : this.player.angleDelta;
+
+      this.player.acceleration = this.cursors.up.isDown ? PLANE_GLOBALS.ACCEL : 0;
+      this.player.acceleration = this.cursors.down.isDown ? PLANE_GLOBALS.DECEL : this.player.acceleration;
+    }
   },
   sendInputToServer: function () {
     this.pomeloInput('plane', {
@@ -21,27 +25,17 @@ var rjSkydual = React.createClass({
   update: function() {
     this.checkKeyboard();
     this.sendInputToServer();
-    this.player.update(1.0);
-  },
-  handleScreenWrap: function(){
-    if(this.player.x < 0) {
-      this.player.x = this.gameInfo.width;
-    }
-    if(this.player.x > this.gameInfo.width) {
-      this.player.x = this.player.x % this.gameInfo.width;
-    }
-    if(this.player.y < 0) {
-      this.player.y = this.gameInfo.height;
-    }
-    if(this.player.y > this.gameInfo.height) {
-      this.player.y = this.player.y % this.gameInfo.height;
-    }
+
+    // Update all players
+    // this.controller.players.all.forEach(function (player) {
+    //   player.update(1.0);
+    // });
   },
   componentDidMount: function () {
     this.gameInfo = undefined;
 
     this.controller = new window.SkyDuelController();
-    this.player = new window.Player(this.controller);
+    this.player = undefined;
 
     this.controller.startClient();
 
@@ -65,13 +59,16 @@ var rjSkydual = React.createClass({
     setInterval(this.intervalHandler.bind(this), 1000/FPS);
   },
   start : function (gameInfo) {
+    var self = this;
+
     this.gameInfo = gameInfo;
 
     pomelo.request('skyduel.skyduelHandler.start', {
         rid: rid
       },
       function(data) {
-        console.log('Pomelo skyduelHandler started up');
+        self.uid = data.uid;
+        console.log('Pomelo skyduelHandler started up', data);
       });
   },
   pomeloInput: function (type, data) {
@@ -91,8 +88,27 @@ var rjSkydual = React.createClass({
     );
   },
   pomelo_onUpdateHandler: function (data) {
-    console.log('update from server!', data);
-    this.player.deserialize(data);
+    var self = this;
+
+    data.players.forEach(function (player) {
+      if (self.controller.players.has(player.id))
+      {
+        self.controller.players.get(player.id).deserialize(player);
+        self.player = (player.uid == self.uid ? _player : self.player);
+      }
+      else
+      {
+        var _player = new Player(self.controller, undefined, player.id);
+        _player.deserialize(player);
+        _player.sprite = self.phaser.add.sprite(_player.x, _player.y, 'aircraft');
+        self.controller.players.add(_player);
+
+        // If the server says we are controlling one of the players, assign it!
+        self.player = (player.uid == self.uid ? _player : self.player);
+        console.log('processing', player);
+        console.log('self.uid', self.uid);
+      }
+    });
   },
   intervalHandler: function () {
     if (this.phaserCreated && this.gameInfo)
@@ -104,12 +120,14 @@ var rjSkydual = React.createClass({
   phaser_createHandler: function (e) {
     this.cursors = this.phaser.input.keyboard.createCursorKeys();
     this.graphics = this.phaser.add.graphics(0, 0);
-    this.player.sprite = this.phaser.add.sprite(100, 100, 'aircraft');
+    
     this.phaserCreated = true;
   },
   phaser_updateHandler: function (e) {
-    this.player.sprite.x = this.player.x;
-    this.player.sprite.y = this.player.y;
-    this.player.sprite.angle = this.player.angle + 90;
+    this.controller.players.all.forEach(function (player) {
+      player.sprite.x = player.x;
+      player.sprite.y = player.y;
+      player.sprite.angle = player.angle + 90;
+    });
   }
 });
