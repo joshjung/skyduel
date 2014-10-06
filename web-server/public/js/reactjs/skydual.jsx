@@ -4,16 +4,18 @@ var FPS = 60,
 
 var rjSkydual = React.createClass({
   checkKeyboard: function () {
-    this.turnDelta = this.cursors.left.isDown * PLANE_GLOBALS.LEFT;
-    this.turnDelta = this.cursors.right.isDown * PLANE_GLOBALS.RIGHT;
+    this.player.angleDelta = this.cursors.left.isDown ? PLANE_GLOBALS.LEFT : 0;
+    this.player.angleDelta = this.cursors.right.isDown ? PLANE_GLOBALS.RIGHT : this.player.angleDelta;
 
-    this.acceleration = this.cursors.up.isDown * PLANE_GLOBALS.ACCEL;
-    this.acceleration = this.cursors.down.isDown * PLANE_GLOBALS.DECEL;
+    this.player.acceleration = this.cursors.up.isDown ? PLANE_GLOBALS.ACCEL : 0;
+    this.player.acceleration = this.cursors.down.isDown ? PLANE_GLOBALS.DECEL : this.player.acceleration;
   },
   sendInputToServer: function () {
     this.pomeloInput('plane', {
-      turnDelta: this.turnDelta,
-      acceleration: this.acceleration
+      leftDown: this.cursors.left.isDown,
+      rightDown: this.cursors.right.isDown,
+      upDown: this.cursors.up.isDown,
+      downDown: this.cursors.down.isDown
     });
   },
   update: function() {
@@ -55,15 +57,9 @@ var rjSkydual = React.createClass({
 
     var self = this;
 
-    pomelo.on('onUpdate', function(data) {
-      console.log('update from server!', data);
-      self.player.x = data.x;
-      self.player.y = data.y;
-      self.player.angle = data.angle;
-      self.player.velocity = data.velocity;
-    });
+    pomelo.on('onUpdate', this.pomelo_onUpdateHandler.bind(this));
 
-    this.turnDelta = 0;
+    this.angleDelta = 0;
     this.acceleration = 0;
 
     setInterval(this.intervalHandler.bind(this), 1000/FPS);
@@ -93,6 +89,10 @@ var rjSkydual = React.createClass({
         <div id="dPhaserOutput"/>
       </div>
     );
+  },
+  pomelo_onUpdateHandler: function (data) {
+    console.log('update from server!', data);
+    this.player.deserialize(data);
   },
   intervalHandler: function () {
     if (this.phaserCreated && this.gameInfo)

@@ -97,8 +97,11 @@
   ],
 
   "levels": {
-    "rpc-log" : "INFO",
-    "forward-log": "INFO"
+    "rpc-log" : "ERROR",
+    "forward-log": "ERROR",
+    "con-log": "INFO",
+    "forward-log": "ERROR",
+    "pomelo": "ERROR"
   },
 
   "replaceConsole": true,

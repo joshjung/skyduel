@@ -12,7 +12,9 @@ var CLIENT_UPDATE_INTERVAL = 5,
 /*===================================================*\
  * SkyDuelController()
 \*===================================================*/
-var SkyDuelController = function() {};
+var SkyDuelController = function(rid) {
+  this.rid = rid;
+};
 
 /*===================================================*\
  * Methods
@@ -21,6 +23,7 @@ SkyDuelController.prototype = {
   startServer: function(handler) {
     this.isServer = true;
     this.handler = handler;
+    this.rid = handler.rid;
 
     this.start();
   },
@@ -34,29 +37,26 @@ SkyDuelController.prototype = {
 
     this.bounds = {
       width: 800,
-      height: 800
+      height: 600
     };
 
-    if (!this.isServer) {
-      this.fpsIntervalHandler = (function() {
+    this.fpsIntervalHandler = (function() {
         this._update();
       }).bind(this);
-      setInterval(this.fpsIntervalHandler, 1000 / FPS);
-    } else {
-      this.clientUpdateIntervalHandler = (function() {
-        this.updateClients();
-      }).bind(this);
 
-      setInterval(this.fpsIntervalHandler, 1000 / FPS);
-      setInterval(this.clientUpdateIntervalHandler, 1000 / CLIENT_UPDATE_INTERVAL);
-    }
+    setInterval(this.fpsIntervalHandler, 1000 / FPS);
   },
   updateClients: function() {
     if (this.rid)
-      this.app.get('channelService').getChannel(this.rid, false).pushMessage('onUpdate', this.player);
+    {
+      this.handler.app.get('channelService').getChannel(this.rid, false).pushMessage('onUpdate', this.player.serialize());
+    }
   },
   _update: function() {
     this.player.update(1.0);
+
+    if (this.isServer)
+      this.updateClients();
   }
 };
 
@@ -64,7 +64,7 @@ SkyDuelController.prototype = {
  * Export
 \*===================================================*/
 if (typeof module != 'undefined') {
-  module.exports = new SkyDuelController();
+  module.exports = SkyDuelController;
 } else {
   window.skyDuelController = new SkyDuelController();
 }

@@ -1,9 +1,7 @@
 var chatRemote = require('../remote/skyduelRemote'),
-  skyDuelController = require('../../../../../shared/js/skyDuelController');
+  SkyDuelController = require('../../../../../shared/js/skyDuelController');
 
 module.exports = function(app) {
-  skyDuelController.start(this);
-
   return new Handler(app);
 };
 
@@ -14,19 +12,21 @@ var Handler = function(app) {
 var handler = Handler.prototype;
 
 handler.start = function (msg, session, next) {
-  this.session = session;
   this.rid = msg.rid;
+
+  if (!this.controller){
+    console.log('new controller');
+    this.controller = new SkyDuelController();
+    this.controller.startServer(this);
+  }
 
   next();
 };
 
 handler.update = function (msg, session, next) {
-  console.log('MSG', msg);
-
-  if (msg.type == 'plane')
+  if (msg.type == 'plane' && this.controller)
   {
-    skyDuelController.player.turnDelta = msg.turnDelta;
-    skyDuelController.player.acceleration = msg.acceleration;
+    this.controller.player.input = msg.data;
   }
 
   next(null, {code: 200});
