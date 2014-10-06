@@ -13,6 +13,7 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.static(__dirname + '/public'));
+  app.use(express.static(__dirname + '/../shared'));
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
@@ -22,6 +23,6 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-console.log("SkyDual server has started.\nPlease log on http://192.168.1.82:3001/index.html");
+console.log("SkyDual server has started.\nPlease log on http://local.skyduel.com/index.html");
 
 app.listen(3001);

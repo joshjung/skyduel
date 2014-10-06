@@ -1,8 +1,8 @@
 {
   "development": {
-    "id": "master-server-1", "host": "192.168.1.82", "port": 3005
+    "id": "master-server-1", "host": "local.skyduel.com", "port": 3005
   },
   "production": {
-    "id": "master-server-1", "host": "192.168.1.82", "port": 3005
+    "id": "master-server-1", "host": "local.skyduel.com", "port": 3005
   }
 }

@@ -7,6 +7,7 @@ var rjMain = React.createClass({
     $(this.refs.skyduel.getDOMNode()).hide();
   },
   showGame: function () {
+    console.log('showing')
     $(this.refs.chat.getDOMNode()).show();
     $(this.refs.skyduel.getDOMNode()).show();
   },

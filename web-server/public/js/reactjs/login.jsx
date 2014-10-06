@@ -5,7 +5,6 @@ var rjLogin = React.createClass({
     $(this.refs.channel.getDOMNode()).val('chan');
 
     $(this.refs.loginError.getDOMNode()).show();
-
     $(this.refs.loginUser.getDOMNode()).show();
   },
   render: function() {
@@ -75,7 +74,7 @@ var rjLogin = React.createClass({
           showChat();
           initUserList(data);
 
-          window.skyduel.start();
+          window.skyduel.start({width: 800, height: 600});
         });
       });
     });
