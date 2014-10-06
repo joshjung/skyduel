@@ -97,11 +97,11 @@
   ],
 
   "levels": {
-    "rpc-log" : "ERROR",
-    "forward-log": "ERROR"
+    "rpc-log" : "INFO",
+    "forward-log": "INFO"
   },
 
   "replaceConsole": true,
 
-  "lineDebug": false
+  "lineDebug": true
 }

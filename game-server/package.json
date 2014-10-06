@@ -1,9 +1,9 @@
 {
-    "name":"pomelo_skydeal",
-    "version":"0.0.1",
-    "private":false,
-    "dependencies":{
-        "pomelo":"1.1.0"
-    }
+  "name": "skyduel",
+  "version": "0.0.1",
+  "private": false,
+  "dependencies": {
+    "pomelo": "~1.0.0",
+    "crc": "0.2.0"
+  }
 }
-

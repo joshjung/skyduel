@@ -1,21 +1,20 @@
 module.exports = function(app) {
-  return new SkyDualRemote(app);
+  return new ChatRemote(app);
 };
 
-var SkyDualRemote = function(app) {
+var ChatRemote = function(app) {
   this.app = app;
-
   this.channelService = app.get('channelService');
 };
 
-SkyDualRemote.prototype.add = function(uid, sid, name, flag, cb) {
-  var channel = this.channelService.getChannel(name, flag),
-    username = uid.split('*')[0],
-    param = {
-      route: 'onAdd',
-      user: username
-    };
-
+ChatRemote.prototype.add = function(uid, sid, name, flag, cb) {
+  var channel = this.channelService.getChannel(name, flag);
+  var username = uid.split('*')[0];
+  var param = {
+    route: 'onAdd',
+    user: username
+  };
+  
   channel.pushMessage(param);
 
   if (!!channel) {
@@ -25,10 +24,10 @@ SkyDualRemote.prototype.add = function(uid, sid, name, flag, cb) {
   cb(this.get(name, flag));
 };
 
-SkyDualRemote.prototype.get = function(name, flag) {
-  var users = [],
-    channel = this.channelService.getChannel(name, flag);
-
+ChatRemote.prototype.get = function(name, flag) {
+  var users = [];
+  var channel = this.channelService.getChannel(name, flag);
+  
   if (!!channel) {
     users = channel.getMembers();
   }
@@ -40,19 +39,17 @@ SkyDualRemote.prototype.get = function(name, flag) {
   return users;
 };
 
-SkyDualRemote.prototype.kick = function(uid, sid, name) {
+ChatRemote.prototype.kick = function(uid, sid, name, cb) {
   var channel = this.channelService.getChannel(name, false);
-
   // leave channel
   if (!!channel) {
     channel.leave(uid, sid);
   }
-
-  var username = uid.split('*')[0],
-    param = {
-      route: 'onLeave',
-      user: username
-    };
-
+  var username = uid.split('*')[0];
+  var param = {
+    route: 'onLeave',
+    user: username
+  };
   channel.pushMessage(param);
+  cb();
 };
