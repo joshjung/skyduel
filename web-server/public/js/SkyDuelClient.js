@@ -21,6 +21,8 @@ SkyDuelClient.prototype = {
    * Variables
   \*===========================*/
   started: false,
+  input: {},
+  player: undefined,
   /*===========================*\
    * Properties
   \*===========================*/
@@ -44,7 +46,12 @@ SkyDuelClient.prototype = {
     });
   },
   get userInput() {
-    return {};
+    return {
+      up: this.input.up.isDown,
+      down: this.input.down.isDown,
+      left: this.input.left.isDown,
+      right: this.input.right.isDown
+    };
   },
   /*===========================*\
    * Methods
@@ -80,9 +87,28 @@ SkyDuelClient.prototype = {
       rid: this.rid
     }, this.serverConnection_startedHandler.bind(this));
   },
+  simulateInput: function (userInput, elapsed) {
+    console.log('input', userInput);
+
+    if (userInput.left)
+      this.player.bank = -90.0;
+    else if (userInput.right)
+      this.player.bank = 90.0;
+    else 
+      this.player.bank = 0;
+
+    if (userInput.up)
+      this.player.accelerater = 1000.0;
+    else if (userInput.down)
+      this.player.accelerater = -1000.0;
+    else 
+      this.player.accelerater = 0.0;
+  },
   //SCStateManager Interface
   simulateUpdate: function (userInput, elapsed) {
     elapsed =  elapsed / 1000.0;
+
+    this.simulateInput(userInput, elapsed);
 
     this.players.all.forEach(function (player) {
       player.update(elapsed);
@@ -102,6 +128,8 @@ SkyDuelClient.prototype = {
       var player = new Player(self.world, self.uid, playerState.id);
       player.state = playerState;
       self.players.add(player);
+      console.log('attempting init', self.uid, playerState.uid)
+      self.player = (playerState.uid == self.uid) ? player : self.player;
     });
 
     this.scStateManager.newServerState = state;

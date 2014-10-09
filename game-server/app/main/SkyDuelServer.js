@@ -36,6 +36,7 @@ SkyDuelServer.prototype = {
   lastTime: undefined,
   elapsed: undefined,
   clientUpdateTimer: 0,
+  userInputsByUID: {},
   /*============================*\
    * Properties
   \*============================*/
@@ -83,9 +84,32 @@ SkyDuelServer.prototype = {
     }
   },
   update: function(elapsed) {
+    var self = this;
+
+    // First manage user input.
+    for (var key in this.userInputsByUID)
+      this.userInput(key, this.userInputsByUID[key], elapsed);
+
     this.players.all.forEach(function (player) {
       player.update(elapsed);
     });
+  },
+  userInput: function (uid, userInput, elapsed) {
+    var player = this.players.get(uid);
+
+    if (userInput.left)
+      player.bank = -90.0;
+    else if (userInput.right)
+      player.bank = 90.0;
+    else 
+      player.bank = 0;
+
+    if (userInput.up)
+      player.accelerater = 1000.0;
+    else if (userInput.down)
+      player.accelerater = -1000.0;
+    else 
+      player.accelerater = 0.0;
   },
   /*============================*\
    * Events
@@ -93,7 +117,7 @@ SkyDuelServer.prototype = {
   socket_userInputHandler: function(msg, session) {
     if (this.players.has(session.uid))
     {
-      this.players.get(session.uid).input = msg.data;
+      this.userInputsByUID[session.uid] = msg;
     }
     else
     {

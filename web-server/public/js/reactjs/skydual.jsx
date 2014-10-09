@@ -31,7 +31,10 @@ var rjSkyduel = React.createClass({
     this.phaser.load.spritesheet('aircraft', 'image/aircraft_sprite.png', 70, 63, 18);
   },
   phaser_createHandler: function (e) {
-    window.client.keyboard = this.phaser.input.keyboard;
+    window.client.input.up = this.phaser.input.keyboard.addKey(Phaser.Keyboard.UP);
+    window.client.input.down = this.phaser.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+    window.client.input.left = this.phaser.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+    window.client.input.right = this.phaser.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 
     this.graphics = this.phaser.add.graphics(0, 0);
   },
