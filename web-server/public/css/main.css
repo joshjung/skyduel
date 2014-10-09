@@ -1,0 +1,11 @@
+html {
+  height: 100%;
+  
+}
+
+body {
+  background: url('http://fc00.deviantart.net/fs70/i/2010/070/2/6/Spitfire_by_Baddog2k7.jpg') no-repeat center center fixed;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}

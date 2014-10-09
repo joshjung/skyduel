@@ -23,6 +23,6 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-console.log("SkyDual server has started.\nPlease log on http://local.skyduel.com/index.html");
+console.log("SkyDual server has started.\nPlease make sure your hosts file has been properly edited according to the Readme.md and then log on http://local.skyduel.com:3001/index.html");
 
 app.listen(3001);

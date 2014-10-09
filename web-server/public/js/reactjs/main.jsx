@@ -7,7 +7,6 @@ var rjMain = React.createClass({
     $(this.refs.skyduel.getDOMNode()).hide();
   },
   showGame: function () {
-    console.log('showing')
     $(this.refs.chat.getDOMNode()).show();
     $(this.refs.skyduel.getDOMNode()).show();
   },
@@ -18,7 +17,7 @@ var rjMain = React.createClass({
     return (
       <div id = "app">
         <rjLogin ref="login" main={this} />
-        <rjSkydual ref="skyduel" main={this} />
+        <rjSkyduel ref="skyduel" main={this} />
         <rjChat ref="chat" main={this} />
       </div>);
   }

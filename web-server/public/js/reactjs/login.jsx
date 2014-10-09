@@ -5,39 +5,31 @@ var rjLogin = React.createClass({
     $(this.refs.channel.getDOMNode()).val('chan');
 
     $(this.refs.loginError.getDOMNode()).show();
-    $(this.refs.loginUser.getDOMNode()).show();
+    $(this.refs.login.getDOMNode()).show();
   },
   render: function() {
     return (
-      <div id="loginView">
-        <div id="loginTitle">
-          SkyDuel
-        </div>
-        <table>
-          <tr>
-            <td>
+      <div className="container-fluid"  ref="login">
+        <div className="row">
+          <section id="loginView" className="col-sm-6 col-md-4 col-md-offset-4">
+            <h1 id="loginTitle" className="text-center login-title">SkyDuel</h1>
+            <div className="account-wall">
+             <div className="form-signin">
               <input id="loginUser" ref="loginUser" type="text" placeholder="Username" />
-            </td>
-          </tr>
-          <tr>
-            <td>
               <input id="channelList" ref="channel" name="channels" type="text" placeholder="Channel" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <input id="login" type='button' value="Start!" onClick={this.login_clickHandler} />
-            </td>
-          </tr>
-        </table>
-        <div id="loginError" ref="loginError"/>
+              <button className="btn btn-lg btn-primary btn-block" onClick={this.login_clickHandler}>Sign in</button>
+             </div>
+            </div>
+            <div id="loginError" ref="loginError"/>
+          </section>
+        </div>
       </div>);
   },
   login_clickHandler: function (evt) {
     var self = this;
 
-    username = $("#loginUser").val();
-    rid = $('#channelList').val();
+    var username = $("#loginUser").val(),
+      rid = $('#channelList').val();
 
     if (username.length > 20 || username.length == 0 || rid.length > 20 || rid.length == 0) {
       showError(LENGTH_ERROR);
@@ -56,8 +48,7 @@ var rjLogin = React.createClass({
         port: port,
         log: true
       }, function() {
-        var route = "connector.entryHandler.enter";
-        pomelo.request(route, {
+        pomelo.request('connector.entryHandler.enter', {
           username: username,
           rid: rid
         }, function(data) {
@@ -65,16 +56,17 @@ var rjLogin = React.createClass({
             showError(DUPLICATE_ERROR);
             return;
           }
-          console.log('Showing chatroom!');
+
+          $(self.refs.login.getDOMNode()).hide();
 
           self.props.main.showGame();
           
           setName();
           setRoom();
-          showChat();
-          initUserList(data);
+          //showChat();
+          //initUserList(data);
 
-          window.skyduel.start({width: 800, height: 600});
+          window.client.start(rid);
         });
       });
     });
