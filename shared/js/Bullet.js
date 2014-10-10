@@ -13,8 +13,8 @@ var Bullet = function(id, parent, x, y, angle, velocity) {
   this.parent = parent;
 
   this.GLOBALS = {
-    VELOCITY_MAX: 600,
-    VELOCITY_MIN: 90
+    VELOCITY_MAX: 100000,
+    VELOCITY_MIN: 0
   };
 
   this.x = x;

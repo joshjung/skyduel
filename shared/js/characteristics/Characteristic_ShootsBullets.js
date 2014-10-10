@@ -28,10 +28,12 @@ Characteristic_ShootsBullets.prototype = {
   \*=========================*/
   fire: function (target, x, y, angle, velocity)
   {
+    if (target.ammo <= 0)
+      return;
+    
     var bullet = new Bullet(undefined, target, x, y, angle, velocity);
-    console.log('Bullet!', velocity, bullet.id);
     target.bullets.push(bullet);
-
+    target.ammo--;
     this.lastBulletTime = this.now;
   },
   applyTo: function (target, elapsed, cache) {

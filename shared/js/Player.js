@@ -31,6 +31,8 @@ var Player = function(world, uid, id) {
   }
 
   this.bullets = [];
+  this.health = 100;
+  this.ammo = 100;
 
   this.charManager = new CharacteristicManager(this);
   this.charManager.add(new Characteristic_Physics(this.GLOBALS));
@@ -66,7 +68,9 @@ Player.prototype = {
       turn: this.turn,
       accel: this.accel,
       angle: this.angle,
+      health: this.health,
       velocity: this.velocity,
+      ammo: this.ammo,
       bullets: this.bullets.map(function (bullet) {
         return bullet.state;
       })
@@ -86,7 +90,9 @@ Player.prototype = {
     this.angle = value.angle;
     this.velocity = value.velocity;
     this.bank = value.bank;
+    this.health = value.health;
     this.accelerater = value.accelerater;
+    this.ammo = value.ammo;
 
     var bById = {};
     this.bullets.forEach(function (bullet) {
