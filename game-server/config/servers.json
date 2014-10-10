@@ -6,31 +6,11 @@
             "port": 4050,
             "clientPort": 3050,
             "frontend": true
-        }, {
-            "id": "connector-server-2",
-            "host": "local.skyduel.com",
-            "port": 4051,
-            "clientPort": 3051,
-            "frontend": true
-        }, {
-            "id": "connector-server-3",
-            "host": "local.skyduel.com",
-            "port": 4052,
-            "clientPort": 3052,
-            "frontend": true
         }],
         "skyduel": [{
             "id": "skyduel-server-1",
             "host": "local.skyduel.com",
             "port": 6050
-        }, {
-            "id": "skyduel-server-2",
-            "host": "local.skyduel.com",
-            "port": 6051
-        }, {
-            "id": "skyduel-server-3",
-            "host": "local.skyduel.com",
-            "port": 6052
         }],
         "gate": [{
             "id": "gate-server-1",
@@ -46,31 +26,11 @@
             "port": 4050,
             "clientPort": 3050,
             "frontend": true
-        }, {
-            "id": "connector-server-2",
-            "host": "local.skyduel.com",
-            "port": 4051,
-            "clientPort": 3051,
-            "frontend": true
-        }, {
-            "id": "connector-server-3",
-            "host": "local.skyduel.com",
-            "port": 4052,
-            "clientPort": 3052,
-            "frontend": true
         }],
         "skyduel": [{
             "id": "skyduel-server-1",
             "host": "local.skyduel.com",
             "port": 6050
-        }, {
-            "id": "skyduel-server-2",
-            "host": "local.skyduel.com",
-            "port": 6051
-        }, {
-            "id": "skyduel-server-3",
-            "host": "local.skyduel.com",
-            "port": 6052
         }],
         "gate": [{
             "id": "gate-server-1",
