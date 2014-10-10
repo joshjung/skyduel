@@ -111,6 +111,8 @@ SkyDuelClient.prototype = {
   setupStartState: function(state) {
     var self = this;
 
+    console.log('Initial world state', state.world);
+
     this.world = state.world;
 
     state.players.forEach(function (playerState) {

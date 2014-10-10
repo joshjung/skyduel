@@ -54,14 +54,30 @@ SkyDuelServer.prototype = {
   reset: function() {
     this.players = new HashArray(['uid', 'id']);
 
-    this.world = {
-      width: 800,
-      height: 600
-    };
+    this.generateWorld();
 
     this.addPlayerFor(this.startSession);
 
     setInterval(this.updateInternal.bind(this), 1000 / FPS);
+  },
+  generateWorld: function() {
+    this.world = {
+      width: 800,
+      height: 600,
+      tileWidth: 50,
+      tileHeight: 50,
+      tiles: []
+    };
+
+    for (var x = 0; x < this.world.width; x+= this.world.tileWidth)
+    {
+      this.world.tiles[x / this.world.tileWidth] = [];
+
+      for (var y = 0; y < this.world.height; y += this.world.tileHeight)
+      {
+        this.world.tiles[x / this.world.tileWidth][y / this.world.tileHeight] = Math.floor(Math.random() * 3.9999);
+      }
+    }
   },
   addPlayerFor: function(session) {
     this.players.add(new Player(this.world, session.uid));

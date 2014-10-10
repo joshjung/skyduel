@@ -29,6 +29,7 @@ var rjSkyduel = React.createClass({
   \*=============================*/
   phaser_preloadHandler: function (e) {
     this.phaser.load.spritesheet('aircraft', 'images/plane1.png', 30, 30, 3);
+    this.phaser.load.spritesheet('ground', 'images/ground.png', 50, 50, 4);
   },
   phaser_createHandler: function (e) {
     window.client.input.up = this.phaser.input.keyboard.addKey(Phaser.Keyboard.UP);
@@ -42,6 +43,25 @@ var rjSkyduel = React.createClass({
 
     if (window.client.started)
     {
+      var w = window.client.world;
+
+      if (w && !window.client.backgroundBitmapData)
+      {
+        var bgs = window.client.backgroundBitmapData = this.phaser.add.bitmapData(w.width, w.height);
+        bgs.addToWorld();
+        var ground = this.phaser.make.sprite(0, 0, 'ground');
+
+        for (var x = 0; x < w.width / w.tileWidth; x ++)
+        {
+          for (var y = 0; y < w.height / w.tileHeight; y++)
+          {
+            ground.frame = w.tiles[x][y];
+            console.log('rendering frame', ground.frame, x, y);
+            bgs.draw(ground, x * w.tileWidth, y * w.tileHeight);
+          }
+        }
+      }
+
       window.client.players.all.forEach(function (player) {
         if (!player.sprite)
         {
