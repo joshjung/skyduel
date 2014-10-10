@@ -20,19 +20,15 @@ var Player = function(world, uid, id) {
   this.GLOBALS = {
     VELOCITY_MAX: 600,
     VELOCITY_MIN: 90,
-    BANK_RATE: 160,
+    BANK_RATE: Math.PI / 2,
     ACCELERATION_RATE: 250,
-    DECELERATION_RATE: 100,
-    LEFT: -30,
-    RIGHT: 30,
-    ACCEL: 15,
-    DECEL: -10
+    DECELERATION_RATE: 100
   };
 
   this.charManager = new CharacteristicManager(this);
   this.charManager.add(new Characteristic_Physics(this.GLOBALS));
   this.charManager.add(new Characteristic_ScreenWrapping(world));
-  this.charManager.add(new Characteristic_ShootsBullets(world));
+  //this.charManager.add(new Characteristic_ShootsBullets(world));
 };
 
 /*===================================================*\
@@ -94,6 +90,20 @@ Player.prototype = {
   \*=========================*/
   update: function (elapsed) {
     this.charManager.applyAll(elapsed);
+  },
+  updateSprite: function () {
+    if (this.sprite)
+    {
+      this.sprite.x = this.x;
+      this.sprite.y = this.y;
+      this.sprite.angle = this.angle * 57.2957795;
+
+      if (this.bank < 0)
+        this.sprite.frame = 2;
+      else if (this.bank > 0)
+        this.sprite.frame = 1;
+      else this.sprite.frame = 0;
+    }
   }
 };
 

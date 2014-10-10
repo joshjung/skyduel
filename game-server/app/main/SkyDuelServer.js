@@ -10,7 +10,10 @@ var Player = (typeof module == 'undefined' ? Player : require('../../../shared/j
  * Globals
 \*===================================================*/
 var FPS = 30,
-  CLIENT_UPDATE_INTERVAL = 0.3;
+  /**
+   * How many seconds to wait to update the clients with data.
+   */
+  CLIENT_UPDATE_INTERVAL = 0.033;
 
 /*===================================================*\
  * SkyDuelServer()

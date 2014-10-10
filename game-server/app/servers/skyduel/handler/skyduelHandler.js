@@ -26,10 +26,16 @@ SkyDuelHandler.prototype = {
     next(null, {code: 200});
   },
   start: function (msg, session, next) {
+    console.log('skyduelHandler: start');
     if (!this.server)
+    {
       this.server = new SkyDuelServer(this, msg, session);
+      console.log('new server', SkyDuelServer);
+    }
     else
+    {
       this.server.addPlayerFor(session);  
+    }
 
     next(null, {
       code: 200,
@@ -37,7 +43,8 @@ SkyDuelHandler.prototype = {
     });
   },
   userInput: function (msg, session, next) {
-    this.server.socket_userInputHandler(msg, session)
+    if (this.server)
+      this.server.socket_userInputHandler(msg, session)
     
     next(null, {code: 200});
   },

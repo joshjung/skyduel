@@ -34,7 +34,11 @@ LatencyAnalyzer.prototype = {
       tot += (ix+1);
     });
 
-    return tot ? latTot / tot : 1;
+    var val = tot ? latTot / tot : 1;
+    if (this.debug)
+          console.log('LATENCY', val);
+
+    return val;
   },
   get now() {
     return (new Date()).getTime();

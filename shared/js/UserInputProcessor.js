@@ -10,9 +10,11 @@ var UserInputProcessor = function() {
 UserInputProcessor.prototype = {
   update: function (userInput, elapsed, world) {
     if (userInput.left)
-      world.player.bank += -world.player.GLOBALS.BANK_RATE * elapsed;
+      world.player.bank = -world.player.GLOBALS.BANK_RATE;
     else if (userInput.right)
-      world.player.bank += world.player.GLOBALS.BANK_RATE * elapsed;
+      world.player.bank = world.player.GLOBALS.BANK_RATE;
+    else
+      world.player.bank = 0;
 
     if (userInput.up)
       world.player.accelerater = world.player.GLOBALS.ACCELERATION_RATE;
@@ -21,7 +23,7 @@ UserInputProcessor.prototype = {
     else 
       world.player.accelerater = 0.0;
 
-    world.player.triggerDown = userInput.trigger;
+    //world.player.triggerDown = userInput.trigger;
   }
 };
 

@@ -18,12 +18,16 @@ SCStateManager.prototype = {
    * Variables
   \*===========================*/
   userInputStates: [],
-  lastestServerTime: undefined,
   lastUpdateTimeEnd: undefined,
   estServerTime: undefined,
   lastServerState: undefined,
   intervalId: undefined,
   latency: 0,
+  lastSendToServerTime: 1000.0 / 30.0,
+  /**
+   * Send an update to the server every this so often.
+   */
+  serverUpdateInterval: 10,
   /*===========================*\
    * Properties
   \*===========================*/
@@ -46,7 +50,7 @@ SCStateManager.prototype = {
       this.lastServerState = this.newServerState;
 
     // As long as the server has never sent us a state, we do nothing.
-    if (!this.lastServerState)
+    if (!this.lastServerState || this.latency == 0)
       return;
 
     var self = this,
@@ -57,6 +61,8 @@ SCStateManager.prototype = {
       // The state of all user input
       userInput = this.gameInterface.userInput;
 
+    this.lastUpdateTimeEnd = this.now;
+
     // Set last server state to either the update
     this.lastServerState = this.newServerState || this.lastServerState;
 
@@ -64,7 +70,7 @@ SCStateManager.prototype = {
     this.gameInterface.state = this.lastServerState;
 
     // Estimate the current server time at this exact point (the server will be behind us by a period of time)
-    this.estServerTime = this.newServerState ? this.newServerState.time + (this.latency / 2.0) : this.estServerTime + elapsed;
+    this.estServerTime = Math.round(this.newServerState ? this.newServerState.time + (this.latency / 2.0) : this.estServerTime + elapsed);
 
     // Establish our simulation starting time.
     var t = this.lastServerState.time,
@@ -87,14 +93,16 @@ SCStateManager.prototype = {
     this.userInputStates.push(newUserInputState);
 
     // Finish simluating the remaining milliseconds based on the current user input.
-    this.gameInterface.simulateUpdate(newUserInputState.input, this.now - t);
+    this.gameInterface.simulateUpdate(newUserInputState.input, this.estServerTime - t);
 
-    // Send our state to the server
-    this.gameInterface.updateServer(newUserInputState);
+    if (this.estServerTime - this.lastSendToServerTime > this.serverUpdateInterval)
+    {
+      console.log('Client send to server');
+      // Send our state to the server
+      this.gameInterface.updateServer(newUserInputState);
 
-    this.lastUpdateTimeEnd = this.now;
-    var updateElapsed = this.lastUpdateTimeEnd - updateStart;
-    this.lastestServerTime = this.estServerTime + updateElapsed;
+      this.lastSendToServerTime = this.estServerTime;
+    }
 
     // We have processed it, so throw it away.
     this.newServerState = undefined;

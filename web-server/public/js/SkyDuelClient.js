@@ -77,15 +77,15 @@ SkyDuelClient.prototype = {
     }
   },
   start: function (rid) {
-    console.log('start()', rid);
     this.rid = rid;
     this.started = true;
 
     this.players = new HashArray(['uid', 'id']);
 
-    this.latencyCheck(20, this.startServerConnection.bind(this));
+    this.latencyCheck(10, this.startServerConnection.bind(this));
   },
   startServerConnection: function () {
+    this.scStateManager.latency = this.latencyAnalyzer.latency;
     pomelo.request('skyduel.skyduelHandler.start', {
       rid: this.rid
     }, this.serverConnection_startedHandler.bind(this));
@@ -93,6 +93,9 @@ SkyDuelClient.prototype = {
   //SCStateManager Interface
   simulateUpdate: function (userInput, elapsed) {
     elapsed =  elapsed / 1000.0;
+
+    if (elapsed > 0.2)
+      throw Error('Elapsed is wayyyy too high man');
 
     this.userInputProcessor.update(userInput, elapsed, this);
 
