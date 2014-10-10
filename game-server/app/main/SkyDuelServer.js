@@ -2,6 +2,7 @@
  * Requires
 \*===================================================*/
 var Player = (typeof module == 'undefined' ? Player : require('../../../shared/js/Player')),
+  UserInputProcessor = (typeof module == 'undefined' ? Player : require('../../../shared/js/UserInputProcessor'))
   HashArray = (typeof module == 'undefined' ? HashArray : require('../../../shared/js/lib/HashArray')),
   USER_ACTIONS = (typeof module == 'undefined' ? USER_ACTIONS : require('../../../shared/js/UserActions'));
 
@@ -9,7 +10,7 @@ var Player = (typeof module == 'undefined' ? Player : require('../../../shared/j
  * Globals
 \*===================================================*/
 var FPS = 30,
-  CLIENT_UPDATE_INTERVAL = 0.1;
+  CLIENT_UPDATE_INTERVAL = 0.3;
 
 /*===================================================*\
  * SkyDuelServer()
@@ -18,6 +19,7 @@ var SkyDuelServer = function(socketHandler, msg, session) {
   console.log('Setting up server');
   console.log('msg:', msg);
   
+  this.userInputProcessor = new UserInputProcessor();
   this.socketHandler = socketHandler;
   this.resetMsg = msg;
   this.rid = msg.rid;
@@ -95,21 +97,9 @@ SkyDuelServer.prototype = {
     });
   },
   userInput: function (uid, userInput, elapsed) {
-    var player = this.players.get(uid);
-
-    if (userInput.left)
-      player.bank = -90.0;
-    else if (userInput.right)
-      player.bank = 90.0;
-    else 
-      player.bank = 0;
-
-    if (userInput.up)
-      player.accelerater = 1000.0;
-    else if (userInput.down)
-      player.accelerater = -1000.0;
-    else 
-      player.accelerater = 0.0;
+    this.userInputProcessor.update(userInput, elapsed, {
+      player: this.players.get(uid)
+    });
   },
   /*============================*\
    * Events

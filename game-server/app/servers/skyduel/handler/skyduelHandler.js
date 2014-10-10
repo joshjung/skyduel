@@ -40,6 +40,9 @@ SkyDuelHandler.prototype = {
     this.server.socket_userInputHandler(msg, session)
     
     next(null, {code: 200});
+  },
+  end: function (app, session) {
+    console.log('USER LEFT!!!!!', session.sid);
   }
   // ,sendChat: function(msg, session, next) {
   //   var rid = session.get('rid'),

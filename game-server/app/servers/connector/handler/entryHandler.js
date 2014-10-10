@@ -42,5 +42,8 @@ var onUserLeave = function(app, session) {
   if (!session || !session.uid) {
     return;
   }
+
   app.rpc.skyduel.skyduelRemote.kick(session, session.uid, app.get('serverId'), session.get('rid'), null);
+  console.log(app.rpc.skyduel);
+  app.rpc.skyduel.skyduelHandler.end(app, session);
 };

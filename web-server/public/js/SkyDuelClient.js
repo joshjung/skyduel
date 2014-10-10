@@ -10,6 +10,8 @@ var FPS = 60,
 var SkyDuelClient = function() {
   this.latencyAnalyzer = new LatencyAnalyzer();
   this.scStateManager = new SCStateManager(60, this);
+  this.userInputProcessor = new UserInputProcessor();
+
   this.players = new HashArray(['uid', 'id']);
 };
 
@@ -50,7 +52,8 @@ SkyDuelClient.prototype = {
       up: this.input.up.isDown,
       down: this.input.down.isDown,
       left: this.input.left.isDown,
-      right: this.input.right.isDown
+      right: this.input.right.isDown,
+      trigger: this.input.trigger.isDown
     };
   },
   /*===========================*\
@@ -87,28 +90,11 @@ SkyDuelClient.prototype = {
       rid: this.rid
     }, this.serverConnection_startedHandler.bind(this));
   },
-  simulateInput: function (userInput, elapsed) {
-    console.log('input', userInput);
-
-    if (userInput.left)
-      this.player.bank = -90.0;
-    else if (userInput.right)
-      this.player.bank = 90.0;
-    else 
-      this.player.bank = 0;
-
-    if (userInput.up)
-      this.player.accelerater = 1000.0;
-    else if (userInput.down)
-      this.player.accelerater = -1000.0;
-    else 
-      this.player.accelerater = 0.0;
-  },
   //SCStateManager Interface
   simulateUpdate: function (userInput, elapsed) {
     elapsed =  elapsed / 1000.0;
 
-    this.simulateInput(userInput, elapsed);
+    this.userInputProcessor.update(userInput, elapsed, this);
 
     this.players.all.forEach(function (player) {
       player.update(elapsed);

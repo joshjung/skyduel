@@ -35,6 +35,7 @@ var rjSkyduel = React.createClass({
     window.client.input.down = this.phaser.input.keyboard.addKey(Phaser.Keyboard.DOWN);
     window.client.input.left = this.phaser.input.keyboard.addKey(Phaser.Keyboard.LEFT);
     window.client.input.right = this.phaser.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+    window.client.input.trigger = this.phaser.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
     this.graphics = this.phaser.add.graphics(0, 0);
   },
@@ -49,7 +50,7 @@ var rjSkyduel = React.createClass({
 
         player.sprite.x = player.x;
         player.sprite.y = player.y;
-        //player.sprite.rotation = player.angle + 90;
+        player.sprite.rotation = (player.angle + 90) * 0.0174532925;
       });
     }
   }
