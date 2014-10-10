@@ -23,7 +23,7 @@ UserInputProcessor.prototype = {
     else 
       world.player.accelerater = 0.0;
 
-    //world.player.triggerDown = userInput.trigger;
+    world.player.triggerDown = userInput.trigger;
   }
 };
 

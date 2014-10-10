@@ -97,7 +97,6 @@ SCStateManager.prototype = {
 
     if (this.estServerTime - this.lastSendToServerTime > this.serverUpdateInterval)
     {
-      console.log('Client send to server');
       // Send our state to the server
       this.gameInterface.updateServer(newUserInputState);
 

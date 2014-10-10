@@ -13,11 +13,16 @@ Characteristic_Physics.prototype = {
    * Methods
   \*=========================*/
   applyTo: function (target, elapsed, cache) {
-    var v = target.velocity + (target.accelerater * elapsed);
+    if (typeof target.velocity == 'undefined')
+      throw Error('Target velocity is undefined for ', target);
+    
+    var v = target.velocity;
+    if (target.hasOwnProperty('accelerater'))
+      v = target.velocity + (target.accelerater * elapsed);
     target.velocity = v > this.options.VELOCITY_MAX ? this.options.VELOCITY_MAX : (v < this.options.VELOCITY_MIN ? this.options.VELOCITY_MIN : v);
 
-    target.angle += target.bank * elapsed;
-    //console.log('bank,angle',target.bank, target.angle);
+    if (target.hasOwnProperty('bank'))
+      target.angle += target.bank * elapsed;
 
     target.x += Math.cos(target.angle) * target.velocity * elapsed;
     target.y += Math.sin(target.angle) * target.velocity * elapsed;

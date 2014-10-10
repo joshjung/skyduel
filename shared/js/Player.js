@@ -25,10 +25,17 @@ var Player = function(world, uid, id) {
     DECELERATION_RATE: 100
   };
 
+  this.bulletProps = {
+    fireRate: 100,
+    fireVelocity: 500
+  }
+
+  this.bullets = [];
+
   this.charManager = new CharacteristicManager(this);
   this.charManager.add(new Characteristic_Physics(this.GLOBALS));
   this.charManager.add(new Characteristic_ScreenWrapping(world));
-  //this.charManager.add(new Characteristic_ShootsBullets(world));
+  this.charManager.add(new Characteristic_ShootsBullets(this.bulletProps));
 };
 
 /*===================================================*\
@@ -44,7 +51,6 @@ Player.prototype = {
   velocity: 6,
   bank: 0,
   accelerater: 0,
-  bullets: [],
   triggerDown: false,
   /*=========================*\
    * Properties
@@ -80,16 +86,32 @@ Player.prototype = {
     this.angle = value.angle;
     this.velocity = value.velocity;
     this.bank = value.bank;
-    this.accelerater = value.accelerater,
-    this.bullets = value.bullets.map(function (bulletState) {
-      return new Bullet(bulletState.id, self.id, bulletState.x, bulletState.y, bulletState.angle);
+    this.accelerater = value.accelerater;
+
+    var bById = {};
+    this.bullets.forEach(function (bullet) {
+      if (bById[bullet.id])
+        throw Error('Bullet with id already exists!', bullet.id);
+      bById[bullet.id] = bullet;
     });
+
+    this.bullets = value.bullets.map(function (bulletState) {
+      var b = bById[bulletState.id] || new Bullet(bulletState.id, self);
+      b.state = bulletState;
+      delete bById[bulletState.id];
+      return b;
+    });
+
+    // All remaining bullets need to be destroyed.
+    for (var id in bById) bById[id].destroy();
   },
   /*=========================*\
    * Methods
   \*=========================*/
   update: function (elapsed) {
     this.charManager.applyAll(elapsed);
+
+    this.bulletProps.fireVelocity = 500.0 + this.velocity;
   },
   updateSprite: function () {
     if (this.sprite)

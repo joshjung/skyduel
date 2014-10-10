@@ -3,43 +3,36 @@
 \*===================================================*/
 var CharacteristicManager = (typeof module == 'undefined' ? CharacteristicManager : require('./characteristics/CharacteristicManager')),
 Characteristic_Physics = (typeof module == 'undefined' ? Characteristic_Physics : require('./characteristics/Characteristic_Physics')),
-Characteristic_ScreenWrapping = (typeof module == 'undefined' ? Characteristic_ScreenWrapping : require('./characteristics/Characteristic_ScreenWrapping'))
+Characteristic_DestroyOffScreen = (typeof module == 'undefined' ? Characteristic_DestroyOffScreen : require('./characteristics/Characteristic_DestroyOffScreen'))
 
 /*===================================================*\
  * Bullet()
 \*===================================================*/
-var Bullet = function(id, ownerId, x, y, angle) {
-  this.id = id || Math.round(Math.random() * 1000).toString(16);
-  this.ownerId=ownerId;
+var Bullet = function(id, parent, x, y, angle, velocity) {
+  this.id = id || Math.round(Math.random() * 100000).toString(16);
+  this.parent = parent;
 
   this.GLOBALS = {
     VELOCITY_MAX: 600,
-    VELOCITY_MIN: 90,
-    BANK_RATE: 160,
-    ACCELERATION_RATE: 250,
-    DECELERATION_RATE: 100,
-    LEFT: -30,
-    RIGHT: 30,
-    ACCEL: 15,
-    DECEL: -10
+    VELOCITY_MIN: 90
   };
 
   this.x = x;
   this.y = y;
   this.angle = angle;
-  
+  this.velocity = velocity;
+  this.sprite = undefined;
+  this.exists = true;
+
   this.charManager = new CharacteristicManager(this);
   this.charManager.add(new Characteristic_Physics(this.GLOBALS));
+  this.charManager.add(new Characteristic_DestroyOffScreen(this.parent.world));
 };
 
 /*===================================================*\
  * Prototype
 \*===================================================*/
 Bullet.prototype = {
-  /*=========================*\
-   * Variables
-  \*=========================*/
-  velocity: -50,
   /*=========================*\
    * Properties
   \*=========================*/
@@ -67,7 +60,13 @@ Bullet.prototype = {
    * Methods
   \*=========================*/
   update: function (elapsed) {
-    //this.charManager.applyAll(elapsed);
+    this.charManager.applyAll(elapsed);
+  },
+  destroy: function () {
+    this.exists = false;
+
+    if (this.sprite)
+      this.sprite.destroy(true);
   }
 };
 
