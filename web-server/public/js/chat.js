@@ -139,13 +139,6 @@ function setName() {
 function setRoom() {
 	$("#room").text(rid);
 };
-
-// show error
-function showError(content) {
-	$("#loginError").text(content);
-	$("#loginError").show();
-};
-
 // show chat panel
 function showChat() {
 	$("#loginView").hide();

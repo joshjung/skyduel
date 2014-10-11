@@ -7,6 +7,7 @@ Characteristic_ScreenWrapping = (typeof module == 'undefined' ? Characteristic_S
 Characteristic_ShootsBullets = (typeof module == 'undefined' ? Characteristic_ShootsBullets : require('./characteristics/Characteristic_ShootsBullets')),
 Bullet = (typeof module == 'undefined' ? Bullet : require('./Bullet'));
 
+var playerCount = 0;
 
 /*===================================================*\
  * Player()

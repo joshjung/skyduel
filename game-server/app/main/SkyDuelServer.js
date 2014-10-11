@@ -29,6 +29,9 @@ var SkyDuelServer = function(socketHandler, msg, session) {
   this.startSession = session;
 
   this.reset();
+
+  console.log(session);
+  session.on('closed', this.session_closedHandler.bind(this))
 };
 
 /*===================================================*\
@@ -80,7 +83,7 @@ SkyDuelServer.prototype = {
     }
   },
   addPlayerFor: function(session) {
-    this.players.add(new Player(this.world, session.uid));
+    this.players.add(new Player(this.world, session.uid, this.players.all.length));
   },
   updateClients: function() {
     this.socketHandler.app.get('channelService').getChannel(this.rid, false).pushMessage('serverState', this.state);
@@ -109,7 +112,10 @@ SkyDuelServer.prototype = {
 
     // First manage user input.
     for (var key in this.userInputsByUID)
+    {
       this.userInput(key, this.userInputsByUID[key], elapsed);
+      delete this.userInputsByUID[key];
+    }
 
     this.players.all.forEach(function (player) {
       player.update(elapsed);
@@ -135,6 +141,10 @@ SkyDuelServer.prototype = {
   },
   socket_startHandler: function (msg, session) {
     this.server.addPlayer(session);
+  },
+  session_closedHandler: function (session) {
+    console.log('USER SESSION ENDED: ', session.sid);
+    this.players.removeByKey(session.uid);
   }
 };
 

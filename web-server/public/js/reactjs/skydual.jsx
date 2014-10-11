@@ -92,8 +92,10 @@ var rjSkyduel = React.createClass({
     window.client.gGameObjects = this.phaser.add.group();
     window.client.gText = this.phaser.add.group();
 
-    window.client.txtHealth = this.phaser.add.text(5, 5, 'Health: 100%', { font: "25px Arial", fill: "#333333", align: "center" });
-    window.client.txtAmmo = this.phaser.add.text(5, 55, 'Ammo: 100', { font: "25px Arial", fill: "#333333", align: "center" });
+    var style1 =  { font: "25px Arial", fill: "#333333", align: "center" };
+    
+    window.client.txtHealth = this.phaser.add.text(5, 5, 'Health: 100%', style1);
+    window.client.txtAmmo = this.phaser.add.text(5, 55, 'Ammo: 100', style1);
 
     window.client.gText.add(window.client.txtHealth);
     window.client.gText.add(window.client.txtAmmo);

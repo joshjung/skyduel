@@ -1,33 +1,36 @@
 module.exports = function(app) {
-  return new SkyDuelHandler(app);
+  return new EntryHandler(app);
 };
 
-var SkyDuelHandler = function(app) {
+var EntryHandler = function(app) {
   this.app = app;
 };
 
-SkyDuelHandler.prototype.enter = function(msg, session, next) {
-  var self = this;
-  var rid = msg.rid;
-  var uid = msg.username + '*' + rid
-  var sessionService = self.app.get('sessionService');
+EntryHandler.prototype.enter = function(msg, session, next) {
+  var self = this,
+    rid = msg.rid,
+    uid = msg.username + '*' + rid,
+    sessionService = self.app.get('sessionService');
 
   //duplicate log in
-  if (!!sessionService.getByUid(uid)) {
-    next(null, {
+  if (!!sessionService.getByUid(uid))
+    return next(null, {
       code: 500,
-      error: true
+      error: true,
+      errorText: 'Uid already exists:' + uid
     });
-    return;
-  }
 
   session.bind(uid);
+
   session.set('rid', rid);
+
   session.push('rid', function(err) {
     if (err) {
       console.error('set rid for session service failed! error is : %j', err.stack);
     }
   });
+  
+  console.log(session);
   session.on('closed', onUserLeave.bind(null, self.app));
 
   //put user into channel

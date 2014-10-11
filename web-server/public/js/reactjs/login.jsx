@@ -4,7 +4,7 @@ var rjLogin = React.createClass({
     $(this.refs.loginUser.getDOMNode()).val('user' + Math.round(Math.random() * 100));
     $(this.refs.channel.getDOMNode()).val('chan');
 
-    $(this.refs.loginError.getDOMNode()).show();
+    $(this.refs.loginError.getDOMNode()).hide();
     $(this.refs.login.getDOMNode()).show();
   },
   render: function() {
@@ -39,7 +39,8 @@ var rjLogin = React.createClass({
     }
 
     if (!reg.test(username) || !reg.test(rid)) {
-      showError(NAME_ERROR);
+      $("#loginError").text(content);
+      $("#loginError").show();
       return false;
     }
 
