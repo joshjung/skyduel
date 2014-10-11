@@ -5,7 +5,7 @@
   "dependencies": {
     "crc": "0.2.0",
     "log4js": "^0.6.21",
-    "pomelo": "~1.0.0",
+    "pomelo": "~1.1.1",
     "pomelo-logger": "^0.1.6"
   }
 }

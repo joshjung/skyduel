@@ -1,6 +1,6 @@
 #!/bin/bash
 ./kill.sh
 cd game-server
-nohup pomelo start > ../game-server.log &
+nohup sh -c 'pomelo start -e production' > ../shared/log/game-server.log &
 cd ../web-server
-nohup pomelo start > ../web-server.log &
+nohup sh -c 'pomelo start -e production' > ../shared/log/web-server.log &
