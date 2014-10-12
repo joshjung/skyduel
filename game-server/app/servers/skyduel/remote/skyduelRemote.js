@@ -3,7 +3,7 @@
 \*===================================================*/
 var SkyduelRemote = function(app) {
   this.app = app;
-  this.server = require('../../../main/skyDuelServer');
+  this.server = require('../../../main/SkyDuelServer');
   this.channelService = app.get('channelService');
   this.server = app.get('skyduelServer');
 };
