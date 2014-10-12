@@ -37,7 +37,11 @@ SkyDuelClient.prototype = {
   set state(value) {
     var self = this;
 
-    var keys = this.players.keys;
+
+    var oldPlayerIds = {};
+    this.players.all.forEach(function (player) {
+      oldPlayerIds[player.id] = true;
+    });
 
     value.players.forEach(function (playerState) {
       if (self.players.has(playerState.id))
@@ -50,7 +54,16 @@ SkyDuelClient.prototype = {
         player.state = playerState;
         self.players.add(player);
       }
+      delete oldPlayerIds[playerState.id];
     });
+
+    // All remaining ids are players that no longer exist. Remove them!
+    for (var key in oldPlayerIds)
+    {
+      var player = this.players.get(key);
+      player.destroy();
+      this.players.remove(player);
+    }
 
     value.birds.forEach(function (birdState) {
       if (self.birds.has(birdState.id))

@@ -133,6 +133,12 @@ Player.prototype = {
         this.sprite.frame = 1;
       else this.sprite.frame = 0;
     }
+  },
+  destroy: function() {
+    if (this.sprite) {
+      this.sprite.destroy(true);
+      this.sprite = null;
+    }
   }
 };
 

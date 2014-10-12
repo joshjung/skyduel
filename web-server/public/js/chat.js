@@ -100,7 +100,7 @@ function tip(type, name) {
 			title = 'Message Notify';
 			break;
 	}
-	var pop = new Pop(title, tip);
+	//var pop = new Pop(title, tip);
 };
 
 // init user list
