@@ -31,7 +31,6 @@ var SkyDuelServer = function(socketHandler, msg, session) {
   this.reset();
 
   console.log(session);
-  session.on('closed', this.session_closedHandler.bind(this))
 };
 
 /*===================================================*\

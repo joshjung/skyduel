@@ -1,7 +1,3 @@
-module.exports = function(app) {
-  return new EntryHandler(app);
-};
-
 var EntryHandler = function(app) {
   this.app = app;
 };
@@ -50,4 +46,9 @@ var onUserLeave = function(app, session) {
   console.log(app.rpc.skyduel);
   if (app.rpc.skyduel.skyduelHandler)
     app.rpc.skyduel.skyduelHandler.end(app, session);
+};
+
+
+module.exports = function(app) {
+  return new EntryHandler(app);
 };

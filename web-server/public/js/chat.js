@@ -7,7 +7,7 @@ var pomelo = window.pomelo,
 	rid,
 	base = 1000,
 	increase = 25,
-	reg = /^[a-zA-Z0-9_\u4e00-\u9fa5]+$/,
+	
 	LOGIN_ERROR = "There is no server to log in, please wait.",
 	LENGTH_ERROR = "Name/Channel is too long or too short. 20 character max.",
 	NAME_ERROR = "Bad character in Name/Channel. Can only have letters, numbers, Chinese characters, and '_'",
@@ -147,26 +147,3 @@ function showChat() {
 	$("entry").focus();
 	scrollDown(base);
 };
-
-// query connector
-function queryEntry(uid, callback) {
-	var route = 'gate.gateHandler.queryEntry';
-	
-	pomelo.init({
-		host: window.location.hostname,
-		port: 3014,
-		log: true
-	}, function() {
-		pomelo.request(route, {
-			uid: uid
-		}, function(data) {
-			pomelo.disconnect();
-			if (data.code === 500) {
-				showError(LOGIN_ERROR + ':' + data.reason);
-				return;
-			}
-			callback(data.host, data.port);
-		});
-	});
-};
-

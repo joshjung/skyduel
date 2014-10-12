@@ -1,46 +1,40 @@
-var dispatcher = require('../../../util/dispatcher');
+var connectorFinder = require('../../../util/connectorFinder');
 
-module.exports = function(app) {
-	return new Handler(app);
-};
-
-var Handler = function(app) {
+var GateHandler = function(app) {
 	this.app = app;
 };
 
-var handler = Handler.prototype;
+GateHandler.prototype = {
+	requestConnectorForClient: function(msg, session, next) {
+		var clientId = msg.clientId;
+		if(!clientId) {
+			next(null, {
+				code: 500,
+				reason: 'no clientId provided'
+			});
+			return;
+		}
 
-/**
- * Gate handler that dispatch user to connectors.
- *
- * @param {Object} msg message from client
- * @param {Object} session
- * @param {Function} next next stemp callback
- *
- */
-handler.queryEntry = function(msg, session, next) {
-	var uid = msg.uid;
-	if(!uid) {
+		// get all connectors
+		var connectors = this.app.getServersByType('connector');
+		if(!connectors || connectors.length === 0) {
+			next(null, {
+				code: 500,
+				reason: 'no connectors found'
+			});
+			return;
+		}
+
+		// select connector for provided client.
+		var connector = connectorFinder.findFor(clientId, connectors);
 		next(null, {
-			code: 500,
-			reason: 'no uid provided'
+			code: 200,
+			host: connector.host,
+			port: connector.clientPort
 		});
-		return;
 	}
-	// get all connectors
-	var connectors = this.app.getServersByType('connector');
-	if(!connectors || connectors.length === 0) {
-		next(null, {
-			code: 500,
-			reason: 'no connectors found'
-		});
-		return;
-	}
-	// select connector
-	var res = dispatcher.dispatch(uid, connectors);
-	next(null, {
-		code: 200,
-		host: res.host,
-		port: res.clientPort
-	});
+};
+
+module.exports = function(app) {
+	return new GateHandler(app);
 };
