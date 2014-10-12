@@ -14,6 +14,7 @@ var SkyDuelClient = function() {
   this.userInputProcessor = new UserInputProcessor();
 
   this.players = new HashArray(['uid', 'id']);
+  this.birds   = new HashArray(['id']);
 };
 
 /*===================================================*\
@@ -46,6 +47,19 @@ SkyDuelClient.prototype = {
         var player = new Player(self.world, self.uid, playerState.id);
         player.state = playerState;
         self.players.add(player);
+      }
+    });
+
+    value.birds.forEach(function (birdState) {
+      if (self.birds.has(birdState.id))
+      {
+        self.birds.get(birdState.id).state = birdState;    
+      }
+      else
+      {
+        var bird = new Bird(self.world, birdState.id);
+        bird.state = bird;
+        self.birds.add(bird);   
       }
     });
   },
@@ -111,6 +125,10 @@ SkyDuelClient.prototype = {
 
     this.players.all.forEach(function (player) {
       player.update(elapsed);
+    });
+
+    this.birds.all.forEach(function (bird) {
+      bird.update(elapsed); 
     });
   },
   //SCStateManager Interface
