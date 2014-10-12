@@ -72,9 +72,21 @@ var rjSkyduel = React.createClass({
         player.updateSprite();
       });
   },
-  updateText: function () {
-    window.client.txtError.text = window.client.errorText || '';
+  updateBirds: function () {
+    var self = this;
+    
+    window.client.birds.all.forEach(function (bird) {
+      if (!bird.sprite)
+      {
+        bird.sprite = self.phaser.add.sprite(0, 0, 'bird');
+        bird.sprite.anchor.set(0.5);
+        window.client.gGameObjects.add(bird.sprite);
+      } 
 
+      bird.updateSprite();
+    });
+  },
+  updateText: function () {
     if (window.client.player)
     {
       window.client.txtHealth.text = 'Health: ' + window.client.player.health + '%';
@@ -87,6 +99,7 @@ var rjSkyduel = React.createClass({
   phaser_preloadHandler: function (e) {
     this.phaser.load.spritesheet('aircraft', 'images/plane1.png', 30, 30, 3);
     this.phaser.load.spritesheet('ground', 'images/ground.png', 50, 50, 4);
+    this.phaser.load.image('bird', 'images/bird.png', 14, 9);
     this.phaser.load.image('bullet', 'images/bullet.png', 2, 2);
   },
   phaser_createHandler: function (e) {
@@ -94,11 +107,10 @@ var rjSkyduel = React.createClass({
     window.client.gGameObjects = this.phaser.add.group();
     window.client.gText = this.phaser.add.group();
 
-    var style1 =  {font: "24px Arial", fill: "#FFFFFF"};
+    var style1 =  { font: "25px Arial", fill: "#333333", align: "center" };
     
     window.client.txtHealth = this.phaser.add.text(5, 5, 'Health: 100%', style1);
-    window.client.txtAmmo = this.phaser.add.text(5, 35, 'Ammo: 100', style1);
-    window.client.txtError = this.phaser.add.text(600, 5, '', style1);
+    window.client.txtAmmo = this.phaser.add.text(5, 55, 'Ammo: 100', style1);
 
     window.client.gText.add(window.client.txtHealth);
     window.client.gText.add(window.client.txtAmmo);
@@ -115,6 +127,7 @@ var rjSkyduel = React.createClass({
       this.updateText();
       this.updateBackground();
       this.updatePlayers();
+      this.updateBirds();
     }
   }
 });

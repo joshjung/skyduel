@@ -2,6 +2,7 @@
  * Requires
 \*===================================================*/
 var Player = require('../../../shared/js/Player'),
+  Bird = require('../../../shared/js/Bird'),
   UserInputProcessor = require('../../../shared/js/UserInputProcessor'),
   HashArray = require('../../../shared/js/lib/HashArray'),
   USER_ACTIONS = require('../../../shared/js/UserActions');
@@ -49,6 +50,7 @@ SkyDuelServer.prototype = {
   \*============================*/
   reset: function() {
     this.players = new HashArray(['uid', 'id']);
+    this.birds   = new HashArray(['id']);
 
     this.generateWorld();
 
@@ -62,7 +64,8 @@ SkyDuelServer.prototype = {
       tileHeight: 50,
       tiles: []
     };
-
+    
+    // build the world tiles
     for (var x = 0; x < this.world.width; x+= this.world.tileWidth)
     {
       this.world.tiles[x / this.world.tileWidth] = [];
@@ -71,6 +74,12 @@ SkyDuelServer.prototype = {
       {
         this.world.tiles[x / this.world.tileWidth][y / this.world.tileHeight] = Math.floor(Math.random() * 3.9999);
       }
+    }
+    
+    // insert fixed entities
+    for(var i=0 ; i < 10 ; i++)
+    {
+      this.birds.add(new Bird(this.world));
     }
   },
   addPlayerFor: function(session) {
@@ -117,6 +126,10 @@ SkyDuelServer.prototype = {
     this.players.all.forEach(function (player) {
       player.update(elapsed);
     });
+
+    this.birds.all.forEach(function (bird) {
+      bird.update(elapsed);
+    });
   },
   userInput: function (uid, userInput, elapsed) {
     // It's possible the player has left.
@@ -151,7 +164,10 @@ Object.defineProperty(SkyDuelServer.prototype, 'state', {
       world: this.world,
       players: this.players.all.map(function (player) {
           return player.state;
-        })
+      }),
+      birds: this.birds.all.map(function (bird) {
+          return bird.state;  
+      })
     };
   },
   set: function(value) {
