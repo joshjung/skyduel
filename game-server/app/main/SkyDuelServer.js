@@ -1,10 +1,10 @@
 /*===================================================*\
  * Requires
 \*===================================================*/
-var Player = (typeof module == 'undefined' ? Player : require('../../../shared/js/Player')),
-  UserInputProcessor = (typeof module == 'undefined' ? Player : require('../../../shared/js/UserInputProcessor'))
-  HashArray = (typeof module == 'undefined' ? HashArray : require('../../../shared/js/lib/HashArray')),
-  USER_ACTIONS = (typeof module == 'undefined' ? USER_ACTIONS : require('../../../shared/js/UserActions'));
+var Player = require('../../../shared/js/Player'),
+  UserInputProcessor = require('../../../shared/js/UserInputProcessor'),
+  HashArray = require('../../../shared/js/lib/HashArray'),
+  USER_ACTIONS = require('../../../shared/js/UserActions');
 
 /*===================================================*\
  * Globals
@@ -19,8 +19,7 @@ var FPS = 30,
  * SkyDuelServer()
 \*===================================================*/
 var SkyDuelServer = function(socketHandler, msg, session) {
-  console.log('Setting up server');
-  console.log('msg:', msg);
+  console.log('Setting up server', msg);
   
   this.userInputProcessor = new UserInputProcessor();
   this.socketHandler = socketHandler;
@@ -130,13 +129,9 @@ SkyDuelServer.prototype = {
   \*============================*/
   socket_userInputHandler: function(msg, session) {
     if (this.players.has(session.uid))
-    {
       this.userInputsByUID[session.uid] = msg;
-    }
     else
-    {
       throw Error('socket_userInputHandler(): no player matched session uid', session.uid);
-    }
   },
   socket_startHandler: function (msg, session) {
     this.server.addPlayer(session);

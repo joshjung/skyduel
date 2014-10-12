@@ -56,9 +56,10 @@ Edit `%systemroot%\drivers\etc\hosts` and add:
 Running
 =======
 
-Navigation to `./game-server` and run `pomelo start`. This spins up the game socket servers.
+    chmod +x start-dev.sh
+    ./start-dev.sh
 
-Navigation to `./web-server` and run `pomelo start`. This spins up the NodeJS Express web server.
+Log files should be put into `shared/log/game-server.log` and `shared/log/web-server.log`.
 
 Open `http://local.skyduel.com:3001` in your web browser.
 

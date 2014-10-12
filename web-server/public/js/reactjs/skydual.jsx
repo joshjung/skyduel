@@ -73,6 +73,8 @@ var rjSkyduel = React.createClass({
       });
   },
   updateText: function () {
+    window.client.txtError.text = window.client.errorText || '';
+
     if (window.client.player)
     {
       window.client.txtHealth.text = 'Health: ' + window.client.player.health + '%';
@@ -92,10 +94,11 @@ var rjSkyduel = React.createClass({
     window.client.gGameObjects = this.phaser.add.group();
     window.client.gText = this.phaser.add.group();
 
-    var style1 =  { font: "25px Arial", fill: "#333333", align: "center" };
+    var style1 =  {font: "24px Arial", fill: "#FFFFFF"};
     
     window.client.txtHealth = this.phaser.add.text(5, 5, 'Health: 100%', style1);
-    window.client.txtAmmo = this.phaser.add.text(5, 55, 'Ammo: 100', style1);
+    window.client.txtAmmo = this.phaser.add.text(5, 35, 'Ammo: 100', style1);
+    window.client.txtError = this.phaser.add.text(600, 5, '', style1);
 
     window.client.gText.add(window.client.txtHealth);
     window.client.gText.add(window.client.txtAmmo);

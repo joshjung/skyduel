@@ -2,6 +2,7 @@
  * Globals
 \*======================================================*/
 var FPS = 60,
+  SERVER_TIMEOUT_MS = 10000,
   PLANE_GLOBALS = Player.prototype.GLOBALS;
 
 /*===================================================*\
@@ -25,6 +26,7 @@ SkyDuelClient.prototype = {
   started: false,
   input: {},
   player: undefined,
+  errorText: undefined,
   /*===========================*\
    * Properties
   \*===========================*/
@@ -84,6 +86,10 @@ SkyDuelClient.prototype = {
 
     this.latencyCheck(10, this.startServerConnection.bind(this));
   },
+  stop: function (reason) {
+    this.errorText = reason;
+    this.scStateManager.pause();
+  },
   startServerConnection: function () {
     this.scStateManager.latency = this.latencyAnalyzer.latency;
     pomelo.request('skyduel.skyduelHandler.start', {
@@ -94,8 +100,12 @@ SkyDuelClient.prototype = {
   simulateUpdate: function (userInput, elapsed) {
     elapsed =  elapsed / 1000.0;
 
+    if (elapsed > SERVER_TIMEOUT_MS)
+    {
+      this.stop('Server disconnected');      
+    }
     if (elapsed > 0.2)
-      throw Error('Elapsed is wayyyy too high man');
+      throw Error('Elapsed is wayyyy too high man. Did server disconnect?');
 
     this.userInputProcessor.update(userInput, elapsed, this);
 
