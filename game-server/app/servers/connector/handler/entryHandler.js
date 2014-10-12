@@ -42,7 +42,6 @@ EntryHandler.prototype = {
 
     app.rpc.skyduel.skyduelRemote.kick(session, session.uid, app.get('serverId'), session.get('rid'), null);
 
-    console.log(app.rpc.skyduel);
     if (app.rpc.skyduel.skyduelHandler)
       app.rpc.skyduel.skyduelHandler.end(app, session);
   }

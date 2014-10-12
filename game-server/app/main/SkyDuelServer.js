@@ -28,8 +28,6 @@ var SkyDuelServer = function(socketHandler, msg, session) {
   this.startSession = session;
 
   this.reset();
-
-  console.log(session);
 };
 
 /*===================================================*\
