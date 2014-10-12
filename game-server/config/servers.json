@@ -22,19 +22,19 @@
     "production": {
         "connector": [{
             "id": "connector-server-1",
-            "host": "www.joshjung.com",
+            "host": "www.skyduel.com",
             "port": 4050,
             "clientPort": 3050,
             "frontend": true
         }],
         "skyduel": [{
             "id": "skyduel-server-1",
-            "host": "www.joshjung.com",
+            "host": "www.skyduel.com",
             "port": 6050
         }],
         "gate": [{
             "id": "gate-server-1",
-            "host": "www.joshjung.com",
+            "host": "www.skyduel.com",
             "clientPort": 3014,
             "frontend": true
         }]
