@@ -1,7 +1,9 @@
 var pomelo = require('pomelo'),
-  routeUtil = require('./app/util/routeUtil');
+  routeUtil = require('./app/util/routeUtil'),
+  SkyDuelServer = require('./app/main/SkyDuelServer');
 
 var app = pomelo.createApp();
+
 app.set('name', 'skyduel');
 
 app.configure('production|development', 'connector', function() {
@@ -18,6 +20,10 @@ app.configure('production|development', 'gate', function() {
     connector: pomelo.connectors.hybridconnector,
     useProtobuf: true
   });
+});
+
+app.configure('production|development', 'skyduel', function() {
+  app.set('skyduelServer', new SkyDuelServer(app));
 });
 
 // app configure

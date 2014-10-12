@@ -3,14 +3,16 @@
 \*===================================================*/
 var SkyduelRemote = function(app) {
   this.app = app;
+  this.server = require('../../../main/skyDuelServer');
   this.channelService = app.get('channelService');
+  this.server = app.get('skyduelServer');
 };
 
 /*===================================================*\
  * SkyduelRemote Prototype
 \*===================================================*/
 SkyduelRemote.prototype = {
-  add: function(uid, sid, name, flag, cb) {
+  add: function(uid, sid, name, flag, callback) {
     var channel = this.channelService.getChannel(name, flag),
       username = uid.split('*')[0],
       param = {
@@ -24,7 +26,7 @@ SkyduelRemote.prototype = {
       channel.add(uid, sid);
     }
 
-    cb(this.getUserList(name, flag));
+    callback(this.getUserList(name, flag));
   },
   getUserList: function(name, flag) {
     var channel = this.channelService.getChannel(name, flag),
@@ -34,7 +36,7 @@ SkyduelRemote.prototype = {
       return user.split('*')[0];
     });
   },
-  kick: function(uid, sid, name, cb) {
+  kick: function(uid, sid, name, callback) {
     var username = uid.split('*')[0],
       param = {
         route: 'onLeave',
@@ -47,13 +49,15 @@ SkyduelRemote.prototype = {
 
     channel.pushMessage(param);
 
-    cb();
+    this.server.kickByUid(uid);
+
+    callback();
   }
 };
 
 /*===================================================*\
  * Exports
 \*===================================================*/
-module.exports = function(app) {
+exports = module.exports = function(app) {
   return new SkyduelRemote(app);
 };

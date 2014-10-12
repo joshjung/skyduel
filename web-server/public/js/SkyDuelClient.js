@@ -36,6 +36,8 @@ SkyDuelClient.prototype = {
   set state(value) {
     var self = this;
 
+    var keys = this.players.keys;
+
     value.players.forEach(function (playerState) {
       if (self.players.has(playerState.id))
       {
