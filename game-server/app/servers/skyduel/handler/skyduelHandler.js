@@ -30,7 +30,6 @@ SkyDuelHandler.prototype = {
     if (!this.server)
     {
       this.server = new SkyDuelServer(this, msg, session);
-      console.log('new server', SkyDuelServer);
     }
     else
     {
