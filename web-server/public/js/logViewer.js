@@ -72,6 +72,6 @@ function updatePage() {
       }
       logDiv.innerHTML = logLine;
     } else
-      alert("Error! Request status is " + request.status);
+      console.log("Error! Request status is " + request.status);
   }
 }
