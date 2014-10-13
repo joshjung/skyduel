@@ -1,5 +1,9 @@
 #!/bin/bash
-./kill.sh
+echo 'Killing Pomelo'
+pomelo stop
+echo 'Browserifying'
+browserify -d browserify.me.js > web-server/public/js/browserify.bundle.js
+echo 'Starting Game Server (to shared/log/game-server.log)'
 cd game-server
 nohup sh -c 'pomelo start -e production' > ../shared/log/game-server.log &
 cd ../web-server
