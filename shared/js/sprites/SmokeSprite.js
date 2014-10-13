@@ -13,6 +13,7 @@ function SmokeSprite(game, x, y) {
   this.smokeSprite = this.create(0, 0, 'smoke');
   this.smokeSprite.x = -this.smokeSprite.width / 2.0;
   this.smokeSprite.y = -this.smokeSprite.height / 2.0;
+  this.smokeSprite.scale.x = this.smokeSprite.scale.y = 1.0;
   this.smokeSprite.frame = 0;
 };
 
@@ -34,7 +35,7 @@ SmokeSprite.prototype.setLife = function (life) {
   if (life < 0)
       life = 0
 
-  this.scale.x = this.scale.y = Math.max((this.startScale * life) + 0.2, 1.0);
+  this.scale.x = this.scale.y = 1.0;// Math.max((this.startScale * life) + 0.2, 1.0);
 
   this.alpha = life * 0.8;
 };
