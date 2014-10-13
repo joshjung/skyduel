@@ -5,11 +5,6 @@ var GameObject = require('../GameObject');
 \*===================================================*/
 var Bird = GameObject.extend({
   /*=========================*\
-   * Variables
-  \*=========================*/
-  angle: 0,
-  bank: 0,
-  /*=========================*\
    * Properties
   \*=========================*/
   getState: function() {
@@ -21,7 +16,8 @@ var Bird = GameObject.extend({
       angle: this.angle,
       velocity: this.velocity,
       scale: this.scale,
-      type: this.type
+      type: this.type,
+      radius: this.radius
     };
   },
   setState: function(value) {
@@ -39,6 +35,7 @@ var Bird = GameObject.extend({
     this.bank = value.bank;
     this.scale = value.scale;
     this.type = value.type;
+    this.radius = value.radius;
   },
   /*=========================*\
    * Methods
@@ -47,6 +44,9 @@ var Bird = GameObject.extend({
     this._super(parent, id || this.getId());
 
     this.type = 'bird';
+
+    this.angle = this.bank = 0;
+    this.radius = 5;
 
     this.x = Math.random() * this.world.width;
     this.y = Math.random() * this.world.height;
@@ -82,6 +82,12 @@ var Bird = GameObject.extend({
     var bankMagnitude = Math.PI / 2.0;
     // scale the magnitude by the randomized factor
     return bankFactor * bankMagnitude; 
+  },
+  destroy: function () {
+    this.destroyed = true;
+
+    if (this.sprite)
+      this.sprite.destroy(true);
   }
 });
 

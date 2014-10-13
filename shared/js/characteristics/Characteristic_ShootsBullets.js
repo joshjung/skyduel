@@ -7,6 +7,8 @@ var Characteristic_ShootsBullets = function(options) {
   this.options = options;
   this.options.fireRate = options.fireRate || 50.0;
   this.options.fireVelocity = options.fireVelocity || 700.0;
+  // Bullets need to start 'ahead' of teh object firing them a little.
+  this.options.offset = options.offset || 50;
 };
 
 /*===================================================*\
@@ -31,7 +33,7 @@ Characteristic_ShootsBullets.prototype = {
     if (target.ammo <= 0)
       return;
     
-    var bullet = new Bullet(target, undefined, x, y, angle, velocity);
+    var bullet = new Bullet(target, undefined, x + Math.cos(angle) * this.options.offset, y + Math.sin(angle) * this.options.offset, angle, velocity);
     target.getChildren().add(bullet);
     target.ammo--;
     this.nextBulletTime = this.now + this.options.fireRate;

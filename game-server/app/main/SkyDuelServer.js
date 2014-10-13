@@ -77,7 +77,7 @@ SkyDuelServer.prototype = {
     }
     
     // insert fixed entities
-    for(var i=0 ; i < 10 ; i++)
+    for(var i=0 ; i < 30 ; i++)
       this.world.getChildren().add(new Bird(this.world, 'bird' + i));
   },
   addPlayerFor: function(session) {

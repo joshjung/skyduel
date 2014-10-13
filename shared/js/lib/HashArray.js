@@ -54,6 +54,13 @@ HashArray.prototype = {
   get: function(key) {
     return (!(this._map[key] instanceof Array) || this._map[key].length != 1) ? this._map[key] : this._map[key][0];
   },
+  getAll: function(keys) {
+    var res = [];
+    for (var key in keys)
+      res = res.concat(this.getAsArray(keys[key]));
+
+    return res;
+  },
   getAsArray: function(key) {
     return this._map[key] || [];
   },

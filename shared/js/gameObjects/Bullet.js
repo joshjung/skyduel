@@ -13,7 +13,8 @@ var Bullet = GameObject.extend({
       x: this.x,
       y: this.y,
       angle: this.angle,
-      velocity: this.velocity
+      velocity: this.velocity,
+      radius: this.radius
     };
   },
   setState: function(value) {
@@ -26,6 +27,7 @@ var Bullet = GameObject.extend({
     this.y = value.y;
     this.angle = value.angle;
     this.velocity = value.velocity;
+    this.radius = value.radius;
   },
   /*=========================*\
    * Methods
@@ -43,9 +45,11 @@ var Bullet = GameObject.extend({
     this.angle = angle;
     this.velocity = velocity;
     this.sprite = undefined;
+    this.radius = 2;
 
     this.type = 'bullet';
 
+    this.charManager.add(new (require('../characteristics/Characteristic_Collides'))({callback: this.collideHandler.bind(this)}));
     this.charManager.add(new (require('../characteristics/Characteristic_Physics'))(this.GLOBALS));
     this.charManager.add(new (require('../characteristics/Characteristic_DestroyOffScreen'))(this.world));
   },
@@ -60,6 +64,13 @@ var Bullet = GameObject.extend({
 
     if (this.sprite)
       this.sprite.destroy(true);
+  },
+  collideHandler: function (target, distance) {
+    if (target.type == 'bird')
+    {
+      target.destroy();
+      this.destroy();
+    }
   }
 });
 

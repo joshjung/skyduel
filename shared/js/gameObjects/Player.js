@@ -30,6 +30,7 @@ var Player = GameObject.extend({
       velocity: this.velocity,
       ammo: this.ammo,
       type: this.type,
+      radius: this.radius,
       children: this.getChildrenState()
     };
   },
@@ -50,7 +51,8 @@ var Player = GameObject.extend({
     this.health = value.health;
     this.accelerater = value.accelerater;
     this.ammo = value.ammo;
-    
+    this.radius = value.radius;
+
     this.setChildrenState(value.children);
   },
   /*=========================*\
@@ -84,6 +86,7 @@ var Player = GameObject.extend({
     this.ammo = 1000;
     this.velocity = this.GLOBALS.VELOCITY_MIN;
     this.angle = Math.random() * Math.PI * 2;
+    this.radius = 15;
 
     this.triggerDown = false;
 
@@ -94,8 +97,9 @@ var Player = GameObject.extend({
   update: function (elapsed) {
     this.bulletProps.fireVelocity = 500.0 + this.velocity;
 
-    if (!this.x)
-      throw Error('x is undefined',x );
+    if (typeof this.x == 'undefined' || this.x === null)
+      throw Error('x is ',this.x);
+
     this._super(elapsed);
   },
   buildSprite: function (phaser) {
