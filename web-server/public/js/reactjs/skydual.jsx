@@ -54,7 +54,8 @@ var rjSkyduel = React.createClass({
       window.client.txtHealth.text = 'Health: ' + Math.round(window.client.player.health) + '%';
       window.client.txtAmmo.text = 'Ammo: ' + window.client.player.ammo;
       window.client.txtKills.text = 'Kills: ' + Math.round(window.client.player.kills);
-      window.client.txtAmmo.deaths = 'Deaths: ' + window.client.player.deaths;
+      window.client.txtDeaths.text = 'Deaths: ' + window.client.player.deaths;
+      window.client.txtLatency.text = 'Latency: ' + Math.round(window.client.latencyAnalyzer.latency);
     }
   },
   /*=============================*\
@@ -76,11 +77,13 @@ var rjSkyduel = React.createClass({
     window.client.gText = this.phaser.add.group();
 
     var style1 =  { font: "22px Arial", fill: "#111111", align: "center" };
+    var style2 =  { font: "12px Arial", fill: "#111111", align: "right" };
     
     window.client.txtHealth = this.phaser.add.text(5, 5, 'Health: 100%', style1);
     window.client.txtAmmo = this.phaser.add.text(5, 25, 'Ammo: 100', style1);
     window.client.txtKills = this.phaser.add.text(5, 45, 'Kills: 0', style1);
     window.client.txtDeaths = this.phaser.add.text(5, 65, 'Deaths: 0', style1);
+    window.client.txtLatency = this.phaser.add.text(5, 550, 'Latency: -1', style2);
 
     window.client.gText.add(window.client.txtHealth);
     window.client.gText.add(window.client.txtAmmo);
