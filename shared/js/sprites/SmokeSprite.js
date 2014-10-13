@@ -33,7 +33,8 @@ SmokeSprite.prototype.setLife = function (life) {
 
   if (life < 0)
       life = 0
-  this.scale.x = this.scale.y = (this.startScale * life) + 0.2;
+
+  this.scale.x = this.scale.y = Math.max((this.startScale * life) + 0.2, 1.0);
 
   this.alpha = life * 0.8;
 };
