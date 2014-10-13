@@ -10,16 +10,6 @@ var GameObject = require('../GameObject'),
 \*===================================================*/
 var Player = GameObject.extend({
   /*=========================*\
-   * Variables
-  \*=========================*/
-  x: 400,
-  y: 400,
-  angle: 0,
-  velocity: 6,
-  bank: 0,
-  accelerater: 0,
-  triggerDown: false,
-  /*=========================*\
    * Properties
   \*=========================*/
   getState: function() {
@@ -60,7 +50,7 @@ var Player = GameObject.extend({
     this.health = value.health;
     this.accelerater = value.accelerater;
     this.ammo = value.ammo;
-
+    
     this.setChildrenState(value.children);
   },
   /*=========================*\
@@ -86,8 +76,16 @@ var Player = GameObject.extend({
       fireVelocity: 500
     };
 
+    this.x = 400;
+    this.y = 400;
+    this.bank = 0;
+    this.accelerater = 0;
     this.health = 100;
     this.ammo = 1000;
+    this.velocity = this.GLOBALS.VELOCITY_MIN;
+    this.angle = Math.random() * Math.PI * 2;
+
+    this.triggerDown = false;
 
     this.charManager.add(new (require('../characteristics/Characteristic_Physics'))(this.GLOBALS));
     this.charManager.add(new (require('../characteristics/Characteristic_ScreenWrapping'))(this.world));
@@ -96,6 +94,8 @@ var Player = GameObject.extend({
   update: function (elapsed) {
     this.bulletProps.fireVelocity = 500.0 + this.velocity;
 
+    if (!this.x)
+      throw Error('x is undefined',x );
     this._super(elapsed);
   },
   buildSprite: function (phaser) {

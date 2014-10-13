@@ -38,9 +38,13 @@ var World = GameObject.extend({
   \*=========================*/
   init: function () {
     console.log('World init!');
+    this.type = 'world';
     this._super(null, 'root');
   },
   update: function (elapsed) {
+    if (!elapsed)
+      return;
+       
     this._super(elapsed);
   },
   buildChildrenObject: function () {

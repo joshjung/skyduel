@@ -28,6 +28,7 @@ BirdSprite.prototype.updateWithModel = function(model) {
   this.x = model.x;
   this.y = model.y;
   this.angle = model.angle * 57.2957795;
+  this.scale.x = this.scale.y = model.scale;
 };
 
 /*======================================================*\

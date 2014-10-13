@@ -27,7 +27,7 @@ var rjSkyduel = React.createClass({
   updateBackground: function () {
     var w = window.client.world;
 
-    if (w && !window.client.backgroundBitmapData)
+    if (w && w.width && !window.client.backgroundBitmapData)
     {
       var bgs = window.client.backgroundBitmapData = this.phaser.add.bitmapData(w.width, w.height);
       window.client.backgroundSprite = this.phaser.add.sprite(0,0,bgs);

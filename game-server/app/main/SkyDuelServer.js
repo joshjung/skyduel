@@ -81,7 +81,7 @@ SkyDuelServer.prototype = {
       this.world.getChildren().add(new Bird(this.world, 'bird' + i));
   },
   addPlayerFor: function(session) {
-    var id = this.world.getChildren().get('player') ? this.world.getChildren().get('player').length : 0;
+    var id = this.world.getChildren().getAsArray('player').length;
     if (id == 0)
       this.reset();
 

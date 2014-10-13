@@ -43,7 +43,7 @@ SkyDuelClient.prototype = {
     return {};
   },
   set state(value) {
-    this.world.setState(value);
+    this.world.setState(value.world);
   },
   get userInput() {
     return {
