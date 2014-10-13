@@ -1,14 +1,9 @@
 /*===================================================*\
- * Requires
-\*===================================================*/
-var chatRemote = require('../remote/skyduelRemote'),
-  SkyDuelServer = require('../../../main/SkyDuelServer');
-
-/*===================================================*\
  * SkyDuelHandler()
 \*===================================================*/
 var SkyDuelHandler = function(app) {
   this.app = app;
+  this.server = app.get('skyduelServer');
 };
 
 /*===================================================*\
@@ -16,25 +11,15 @@ var SkyDuelHandler = function(app) {
 \*===================================================*/
 SkyDuelHandler.prototype = {
   /*========================*\
-   * Variables
-  \*========================*/
-  server: undefined,
-  /*========================*\
    * Client Interface
   \*========================*/
   ping: function (msg, session, next) {
     next(null, {code: 200});
   },
   start: function (msg, session, next) {
-    console.log('skyduelHandler: start');
-    if (!this.server)
-    {
-      this.server = new SkyDuelServer(this, msg, session);
-    }
-    else
-    {
-      this.server.addPlayerFor(session);  
-    }
+    this.server.app = this.app;
+    this.server.rid = msg.rid;
+    this.server.addPlayerFor(session);  
 
     next(null, {
       code: 200,
@@ -42,10 +27,12 @@ SkyDuelHandler.prototype = {
     });
   },
   userInput: function (msg, session, next) {
-    if (this.server)
-      this.server.socket_userInputHandler(msg, session)
+    this.server.socket_userInputHandler(msg, session)
     
     next(null, {code: 200});
+  },
+  kickByUid: function (uid) {
+    this.server.kickByUid(uid);
   }
   // ,sendChat: function(msg, session, next) {
   //   var rid = session.get('rid'),

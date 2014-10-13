@@ -26,24 +26,20 @@ EntryHandler.prototype = {
         console.error('set rid for session service failed! error is : %j', err.stack);
     });
     
-    session.on('closed', this.socket_closedHandler.bind(this, this.app));
+    session.on('closed', this.session_closedHandler.bind(this, this.app));
 
-    //put user into channel
-    this.app.rpc.skyduel.skyduelRemote.add(session, uid, self.app.get('serverId'), rid, true, this.skyduelRemote_addHandler.bind(this, next));
+    this.app.rpc.skyduel.skyduelRemote.add(session, uid, self.app.get('serverId'), rid, true, this.skyduelRemote_addCallback.bind(this, next));
   },
-  skyduelRemote_addHandler: function (next, users) {
+  skyduelRemote_addCallback: function (next, users) {
     next(null, {
       users: users
     });
   },
-  socket_closedHandler: function (app, session) {
+  session_closedHandler: function (app, session) {
     if (!session || !session.uid)
       return;
 
     app.rpc.skyduel.skyduelRemote.kick(session, session.uid, app.get('serverId'), session.get('rid'), null);
-
-    if (app.rpc.skyduel.skyduelHandler)
-      app.rpc.skyduel.skyduelHandler.end(app, session);
   }
 };
 

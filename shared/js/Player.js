@@ -117,12 +117,17 @@ Player.prototype = {
   \*=========================*/
   update: function (elapsed) {
     this.charManager.applyAll(elapsed);
-
     this.bulletProps.fireVelocity = 500.0 + this.velocity;
   },
   updateSprite: function () {
     if(this.sprite)
       this.sprite.updateWithModel(this);
+  },
+  destroy: function() {
+    if (this.sprite) {
+      this.sprite.destroy(true);
+      this.sprite = null;
+    }
   }
 };
 

@@ -19,16 +19,13 @@ var FPS = 30,
 /*===================================================*\
  * SkyDuelServer()
 \*===================================================*/
-var SkyDuelServer = function(socketHandler, msg, session) {
-  console.log('Setting up server', msg);
-  
-  this.userInputProcessor = new UserInputProcessor();
-  this.socketHandler = socketHandler;
-  this.resetMsg = msg;
-  this.rid = msg.rid;
-  this.startSession = session;
+var SkyDuelServer = function(app) {
+  this.app = app;
+  this.id = 'sid:' + Math.round(Math.random() * 100).toString(16) + ':' + process.pid;
 
-  this.reset();
+  this.userInputProcessor = new UserInputProcessor();
+
+  console.log('SkyDuelServer()', this.id);
 };
 
 /*===================================================*\
@@ -56,8 +53,6 @@ SkyDuelServer.prototype = {
     this.birds   = new HashArray(['id']);
 
     this.generateWorld();
-
-    this.addPlayerFor(this.startSession);
 
     setInterval(this.updateInternal.bind(this), 1000 / FPS);
   },
@@ -88,10 +83,16 @@ SkyDuelServer.prototype = {
     }
   },
   addPlayerFor: function(session) {
+    if (!this.players)
+      this.reset();
+
     this.players.add(new Player(this.world, session.uid, this.players.all.length));
   },
   updateClients: function() {
-    this.socketHandler.app.get('channelService').getChannel(this.rid, false).pushMessage('serverState', this.state);
+    var channel = this.app.get('channelService').getChannel(this.rid, false);
+
+    if (channel)
+      channel.pushMessage('serverState', this.state);
   },
   updateInternal: function () {
     var self = this;
@@ -131,9 +132,16 @@ SkyDuelServer.prototype = {
     });
   },
   userInput: function (uid, userInput, elapsed) {
-    this.userInputProcessor.update(userInput, elapsed, {
-      player: this.players.get(uid)
-    });
+    // It's possible the player has left.
+    if (this.players.get(uid))
+      this.userInputProcessor.update(userInput, elapsed, {
+        player: this.players.get(uid)
+      });
+  },
+  kickByUid: function (uid) {
+    console.log('This user was kicked!', uid);
+
+    this.players.removeByKey(uid);
   },
   /*============================*\
    * Events
@@ -143,13 +151,6 @@ SkyDuelServer.prototype = {
       this.userInputsByUID[session.uid] = msg;
     else
       throw Error('socket_userInputHandler(): no player matched session uid', session.uid);
-  },
-  socket_startHandler: function (msg, session) {
-    this.server.addPlayer(session);
-  },
-  session_closedHandler: function (session) {
-    console.log('USER SESSION ENDED: ', session.sid);
-    this.players.removeByKey(session.uid);
   }
 };
 
@@ -194,11 +195,9 @@ Object.defineProperty(SkyDuelServer.prototype, 'state', {
   }
 });
 
+console.log('Compiling SkyDuelServer');
+
 /*===================================================*\
  * Export
 \*===================================================*/
-if (typeof module != 'undefined') {
-  module.exports = SkyDuelServer;
-} else {
-  window.SkyDuelServer = SkyDuelServer;
-}
+module.exports = SkyDuelServer;

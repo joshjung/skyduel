@@ -1,5 +1,11 @@
 {
     "development": {
+        "gate": [{
+            "id": "gate-server-1",
+            "host": "local.skyduel.com",
+            "clientPort": 3014,
+            "frontend": true
+        }],
         "connector": [{
             "id": "connector-server-1",
             "host": "local.skyduel.com",
@@ -11,12 +17,6 @@
             "id": "skyduel-server-1",
             "host": "local.skyduel.com",
             "port": 6050
-        }],
-        "gate": [{
-            "id": "gate-server-1",
-            "host": "local.skyduel.com",
-            "clientPort": 3014,
-            "frontend": true
         }]
     },
     "production": {
