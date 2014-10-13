@@ -58,6 +58,8 @@ var Player = GameObject.extend({
     this.ammo = value.ammo;
     this.radius = value.radius;
     this.smokes = value.smokes;
+    if (value.destroyed && !this.destroyed)
+      this.destroy();
     this.destroyed = value.destroyed;
     this.kills = value.kills;
     this.deaths = value.deaths;
@@ -161,6 +163,7 @@ var Player = GameObject.extend({
     this.destroyed = true;
 
     if (this.sprite) {
+      console.log('Destroying plane sprite', this.uid);
       this.sprite.destroy(true);
       this.sprite = null;
     }
