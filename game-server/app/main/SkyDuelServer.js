@@ -42,6 +42,7 @@ SkyDuelServer.prototype = {
   elapsed: undefined,
   clientUpdateTimer: 0,
   userInputsByUID: {},
+  lastPlayerId: 0,
   /*============================*\
    * Properties
   \*============================*/
@@ -81,12 +82,11 @@ SkyDuelServer.prototype = {
       this.world.getChildren().add(new Bird(this.world, 'bird' + i));
   },
   addPlayerFor: function(session) {
-    var id = this.world.getChildren().getAsArray('player').length;
-    if (id == 0)
+    if (this.world.getChildren().getAsArray('player').length == 0)
       this.reset();
 
-    console.log('Adding player with id', id);
-    var player = new Player(this.world, 'player' + id, session.uid);
+    console.log('Adding player with id', lastPlayerId);
+    var player = new Player(this.world, 'player' + (lastPlayerId++), session.uid);
     this.world.players.add(player);
     this.world.getChildren().add(player);
   },
