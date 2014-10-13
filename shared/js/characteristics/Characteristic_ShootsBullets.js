@@ -5,8 +5,8 @@ var Bullet = (typeof module == 'undefined' ? Bullet : require('../Bullet'));
 \*===================================================*/
 var Characteristic_ShootsBullets = function(options) {
   this.options = options;
-  this.options.fireRate = options.fireRate || 200;
-  this.options.fireVelocity = options.fireVelocity || 500.0;
+  this.options.fireRate = options.fireRate || 100.0;
+  this.options.fireVelocity = options.fireVelocity || 700.0;
 };
 
 /*===================================================*\
@@ -50,13 +50,13 @@ Characteristic_ShootsBullets.prototype = {
 
     if (target.triggerDown)
     {
-      var t = this.lastBulletTime + this.options.fireRate;
+      var t = 0;
       
-      while (t < this.now)
+      while (t < elapsed)
       {
         this.fire(target, target.x, target.y, target.angle, this.options.fireVelocity);
 
-        t += this.options.fireRate;
+        t += this.options.fireRate / 1000.0;
       }
     }
   }

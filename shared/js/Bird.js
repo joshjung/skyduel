@@ -17,6 +17,8 @@ var Bird = function (world, id) {
   this.y = Math.random() * world.height;
   this.angle = Math.random() * Math.PI * 2;
   this.bank = this.randomizedBank();
+  this.velocity = 25 + Math.random() * 10;
+  this.scale = (Math.random() * 0.4) + 0.1;
 
   this.GLOBALS = {
     VELOCITY_MAX: Bird.velocity,
@@ -35,7 +37,6 @@ Bird.prototype = {
   /*=========================*\
    * Variables
   \*=========================*/
-  velocity: 20,
   angle: 0,
   bank: 0,
   /*=========================*\
@@ -48,7 +49,8 @@ Bird.prototype = {
       y: this.y,
       bank: this.bank,
       angle: this.angle,
-      velocity: this.velocity
+      velocity: this.velocity,
+      scale: this.scale
     };
   },
   set state(value) {
@@ -64,6 +66,7 @@ Bird.prototype = {
     this.angle = value.angle;
     this.velocity = value.velocity;
     this.bank = value.bank;
+    this.scale = value.scale;
   },
   /*=========================*\
    * Methods
@@ -83,8 +86,8 @@ Bird.prototype = {
     {
       this.sprite.x = this.x;
       this.sprite.y = this.y;
-      this.sprite.angle = this.angle * 57.2957795 + 90;
-      
+      this.sprite.angle = this.angle * 57.2957795;
+      this.sprite.scale.x = this.sprite.scale.y = this.scale;
       // TODO: need a spritesheet 
       //if (this.bank < 0)
         //this.sprite.frame = 2;
@@ -112,4 +115,3 @@ if (typeof module != 'undefined') {
 } else {
   var Bird = window.Bird = Bird;
 }
-

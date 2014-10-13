@@ -9,7 +9,7 @@ Characteristic_DestroyOffScreen = (typeof module == 'undefined' ? Characteristic
  * Bullet()
 \*===================================================*/
 var Bullet = function(id, parent, x, y, angle, velocity) {
-  this.id = id || Math.round(Math.random() * 100000).toString(16);
+  this.id = id || Math.round(Math.random() * Number.MAX_VALUE).toString(16);
   this.parent = parent;
 
   this.GLOBALS = {

@@ -33,7 +33,7 @@ var Player = function(world, uid, id) {
 
   this.bullets = [];
   this.health = 100;
-  this.ammo = 100;
+  this.ammo = 1000;
 
   this.charManager = new CharacteristicManager(this);
   this.charManager.add(new Characteristic_Physics(this.GLOBALS));
