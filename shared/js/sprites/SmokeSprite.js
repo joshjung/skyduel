@@ -31,6 +31,8 @@ SmokeSprite.prototype.setLife = function (life) {
   if (this.smokeSprite)
     this.smokeSprite.frame = Math.floor(life * 4);
 
+  if (life < 0)
+      life = 0
   this.scale.x = this.scale.y = (this.startScale * life) + 0.2;
 
   this.alpha = life * 0.8;

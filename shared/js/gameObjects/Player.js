@@ -79,11 +79,11 @@ var Player = GameObject.extend({
     this.type = 'player';
 
     this.GLOBALS = {
-      VELOCITY_MAX: 600,
-      VELOCITY_MIN: 90,
+      VELOCITY_MAX: 300,
+      VELOCITY_MIN: 80,
       BANK_RATE: Math.PI / 2,
       ACCELERATION_RATE: 250,
-      DECELERATION_RATE: 100,
+      DECELERATION_RATE: 70,
       SMOKE_MAX: 20,
       SMOKE_START_HEALTH: 60,
       SMOKE_THRESHOLD: 5
