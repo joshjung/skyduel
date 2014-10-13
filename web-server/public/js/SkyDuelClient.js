@@ -120,7 +120,7 @@ SkyDuelClient.prototype = {
     if (!this.player)
     {
       console.log (state);
-      throw Error('Player could not be found in incoming state!');
+      console.log('Player could not be found in incoming state!', this.uid);
     }
 
     this.scStateManager.newServerState = state;

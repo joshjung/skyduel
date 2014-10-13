@@ -8,7 +8,7 @@ var Characteristic_ShootsBullets = function(options) {
   this.options.fireRate = options.fireRate || 50.0;
   this.options.fireVelocity = options.fireVelocity || 700.0;
   // Bullets need to start 'ahead' of teh object firing them a little.
-  this.options.offset = options.offset || 50;
+  this.options.offset = options.offset || 30;
 };
 
 /*===================================================*\

@@ -70,6 +70,8 @@ var Player = GameObject.extend({
    * Methods
   \*=========================*/
   init: function(parent, id, uid) {
+    console.log('Initing player', this.uid);
+
     this._super(parent, id || this.getId());
 
     this.uid = uid;
@@ -169,6 +171,9 @@ var Player = GameObject.extend({
     }
   },
   hit: function (projectile, distance) {
+    if (projectile.getParent() == this)
+      return;
+    
     this.health -= 1 * (projectile.velocity / 1000.0) * Math.max(15 - distance, 1);
     this.health = this.health < 0 ? 0 : this.health;
 

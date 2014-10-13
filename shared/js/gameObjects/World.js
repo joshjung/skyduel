@@ -60,9 +60,14 @@ var World = GameObject.extend({
       child = new Bird(this, childState.id);
     else if (childState.type == 'player')
     {
-      child = new Player(this, childState.id);
-      
-      this.players.add(child);
+      // Check to see if maybe we already have this child and it is being respawned.
+      if (this.players.get(childState.id))
+        child = this.players.get(childState.id);
+      else
+      {
+        child = new Player(this, childState.id);
+        this.players.add(child);
+      }
     }
     else if (childState.type == 'smoke')
       child = new Smoke(this, childState.id);
@@ -77,6 +82,9 @@ var World = GameObject.extend({
     child.setState(childState);
 
     return child;
+  },
+  destroyChildById: function (id) {
+    this._super(id);
   }
 });
 

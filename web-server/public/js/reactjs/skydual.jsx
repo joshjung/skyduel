@@ -83,7 +83,7 @@ var rjSkyduel = React.createClass({
     window.client.txtAmmo = this.phaser.add.text(5, 25, 'Ammo: 100', style1);
     window.client.txtKills = this.phaser.add.text(5, 45, 'Kills: 0', style1);
     window.client.txtDeaths = this.phaser.add.text(5, 65, 'Deaths: 0', style1);
-    window.client.txtLatency = this.phaser.add.text(5, 550, 'Latency: -1', style2);
+    window.client.txtLatency = this.phaser.add.text(5, 580, 'Latency: -1', style2);
 
     window.client.gText.add(window.client.txtHealth);
     window.client.gText.add(window.client.txtAmmo);
