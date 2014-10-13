@@ -4,6 +4,8 @@ var pomelo = require('pomelo'),
 
 var app = pomelo.createApp();
 
+global.isClient = false;
+
 app.set('name', 'skyduel');
 
 app.configure('production|development', 'connector', function() {

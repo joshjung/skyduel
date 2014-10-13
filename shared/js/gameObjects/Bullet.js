@@ -71,6 +71,10 @@ var Bullet = GameObject.extend({
       target.destroy();
       this.destroy();
     }
+    else if (target.type == 'player')
+    {
+      target.hit(this, distance);
+    }
   }
 });
 

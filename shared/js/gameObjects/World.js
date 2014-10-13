@@ -1,5 +1,6 @@
 var GameObject = require('../GameObject'),
   Bird = require('./Bird'),
+  Smoke = require('./Smoke'),
   Player = require('./Player'),
   HashArray = require('../lib/HashArray');
 
@@ -57,6 +58,8 @@ var World = GameObject.extend({
       child = new Bird(this, childState.id);
     else if (childState.type == 'player')
       child = new Player(this, childState.id);
+    else if (childState.type == 'smoke')
+      child = new Smoke(this, childState.id);
     else
     {
       console.log(childState);

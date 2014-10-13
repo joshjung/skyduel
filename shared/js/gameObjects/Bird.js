@@ -46,7 +46,7 @@ var Bird = GameObject.extend({
     this.type = 'bird';
 
     this.angle = this.bank = 0;
-    this.radius = 5;
+    this.radius = 3;
 
     this.x = Math.random() * this.world.width;
     this.y = Math.random() * this.world.height;

@@ -51,7 +51,7 @@ var rjSkyduel = React.createClass({
   updateText: function () {
     if (window.client.player)
     {
-      window.client.txtHealth.text = 'Health: ' + window.client.player.health + '%';
+      window.client.txtHealth.text = 'Health: ' + Math.round(window.client.player.health) + '%';
       window.client.txtAmmo.text = 'Ammo: ' + window.client.player.ammo;
     }
   },
@@ -62,6 +62,8 @@ var rjSkyduel = React.createClass({
     this.phaser.spritesByGameObjectId = {};
     this.phaser.load.spritesheet('airplane', 'images/plane1.png', 30, 30, 3);
     this.phaser.load.spritesheet('ground', 'images/ground.png', 50, 50, 4);
+    this.phaser.load.spritesheet('smoke', 'images/smoke.png', 12, 10, 4);
+
     this.phaser.load.image('bird', 'images/bird.png', 14, 9);
     this.phaser.load.image('bullet', 'images/bullet.png', 2, 2);
   },

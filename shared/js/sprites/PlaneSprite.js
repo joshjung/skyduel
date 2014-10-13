@@ -7,6 +7,7 @@ function Plane(game, x, y) {
   // configure group 
   this.x = x;
   this.y = y;
+  this.health = 100;
   
   // add the airplane 
   this.airplane   = this.create(0, 0, 'airplane');
@@ -27,12 +28,16 @@ Plane.prototype.constructor = Plane;
  * Public Methods 
 \*======================================================*/
 
-Plane.prototype.displayStatusRing = function(displaysStatusRing) {
-  this.statusRing.alpha = displaysStatusRing ? 0.5 : 0.0;
+Plane.prototype.displayStatusRing = function(displaysStatusRing, health) {
+  var ratio = (health / 100.0);
 
-  if(displaysStatusRing) {
-    this.statusRing.lineStyle(6.0, 0x3beb72);
-    this.statusRing.drawCircle(0, 0, 30.0); 
+  this.statusRing.alpha = displaysStatusRing ? 1.0 * ratio  : 0.0;
+
+  if (displaysStatusRing) {
+    this.statusRing.clear();
+    this.statusRing.lineStyle(3.0, 0x3beb72);
+    
+    this.statusRing.arc(0, 0, 20.0, -(Math.PI/4) * ratio, (Math.PI / 4) * ratio ); 
   }
 };
 

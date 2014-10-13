@@ -40,7 +40,7 @@ Characteristic_Physics.prototype = {
     res.x = target.x + Math.cos(res.angle) * res.velocity * elapsed;
     res.y = target.y + Math.sin(res.angle) * res.velocity * elapsed;
 
-    if (!res.x)
+    if (isNaN(res.x))
     {
       console.log(target);
       console.log(res);
