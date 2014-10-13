@@ -17,7 +17,8 @@ var Bird = GameObject.extend({
       velocity: this.velocity,
       scale: this.scale,
       type: this.type,
-      radius: this.radius
+      radius: this.radius,
+      health: this.health,
     };
   },
   setState: function(value) {
@@ -36,6 +37,7 @@ var Bird = GameObject.extend({
     this.scale = value.scale;
     this.type = value.type;
     this.radius = value.radius;
+    this.health = value.health;
   },
   /*=========================*\
    * Methods
@@ -55,6 +57,8 @@ var Bird = GameObject.extend({
     this.velocity = 25 + Math.random() * 10;
     this.scale = (Math.random() * 0.4) + 0.1;
 
+    this.health = 100;
+
     this.GLOBALS = {
       VELOCITY_MAX: Bird.velocity,
       VELOCITY_MIN: Bird.velocity,
@@ -64,7 +68,7 @@ var Bird = GameObject.extend({
     this.charManager.add(new (require('../characteristics/Characteristic_ScreenWrapping'))(this.world));
   },
   update: function (elapsed) {
-    this.charManager.applyAll(elapsed);
+    this._super(elapsed);
     
     // TODO: encapsulate bird AI
     

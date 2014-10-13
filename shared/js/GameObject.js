@@ -67,8 +67,14 @@ var GameObject = module.exports = JClass.extend({
       var child = self.getChildren().get(childState.id);
       if (!child)
         self.getChildren().add(self.newChildFromState(childState));
-      else
+      else {
+        if (Object.prototype.toString.call(child) === '[object Array]' )
+        {
+          console.log('Two ids are the same!', child[0].getId());
+          return;
+        }
         child.setState(childState);
+      }
 
       delete ids[childState.id];
     });
@@ -144,7 +150,18 @@ var GameObject = module.exports = JClass.extend({
   },
   destroyChildById: function (id) {
     var child = this.getChildren().get(id);
-    child.destroy();
+
+    if (!child)
+    {
+      console.log('Attempting to destroy non-existent child with id', id);
+      return;
+    }
+
+    if (child.destroy)
+    {
+      child.destroy();
+    }
+    
     this.getChildren().remove(child);
   },
   buildChildrenObject: function () {

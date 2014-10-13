@@ -20,6 +20,7 @@ require("./shared/js/UserState.js");
 require("./shared/js/UserInputProcessor.js");
 
 // Sprites
+require("./shared/js/sprites/PlanePartSprite.js");
 require("./shared/js/sprites/SmokeSprite.js");
 require("./shared/js/sprites/PlaneSprite.js");
 require("./shared/js/sprites/BulletSprite.js");

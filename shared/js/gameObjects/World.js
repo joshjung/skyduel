@@ -2,6 +2,7 @@ var GameObject = require('../GameObject'),
   Bird = require('./Bird'),
   Smoke = require('./Smoke'),
   Player = require('./Player'),
+  PlanePart = require('./PlanePart'),
   HashArray = require('../lib/HashArray');
 
 /*===================================================*\
@@ -60,6 +61,8 @@ var World = GameObject.extend({
       child = new Player(this, childState.id);
     else if (childState.type == 'smoke')
       child = new Smoke(this, childState.id);
+    else if (childState.type == 'planepart')
+      child = new PlanePart(this, childState.id);
     else
     {
       console.log(childState);

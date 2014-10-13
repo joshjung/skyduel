@@ -61,6 +61,7 @@ var rjSkyduel = React.createClass({
   phaser_preloadHandler: function (e) {
     this.phaser.spritesByGameObjectId = {};
     this.phaser.load.spritesheet('airplane', 'images/plane1.png', 30, 30, 3);
+    this.phaser.load.spritesheet('planeparts', 'images/planeparts.png', 15, 15, 5);
     this.phaser.load.spritesheet('ground', 'images/ground.png', 50, 50, 4);
     this.phaser.load.spritesheet('smoke', 'images/smoke.png', 12, 10, 4);
 

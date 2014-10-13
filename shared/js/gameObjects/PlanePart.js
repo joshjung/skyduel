@@ -1,9 +1,9 @@
 var GameObject = require('../GameObject');
 
 /*===================================================*\
- * Smoke()
+ * PlanePart()
 \*===================================================*/
-var Smoke = GameObject.extend({
+var PlanePart = GameObject.extend({
   /*=========================*\
    * Properties
   \*=========================*/
@@ -17,13 +17,15 @@ var Smoke = GameObject.extend({
       type: this.type,
       angle: this.angle,
       bank: this.bank,
-      velocity: this.velocity
+      smokes: this.smokes,
+      velocity: this.velocity,
+      index: this.index
     };
   },
   setState: function(value) {
     if (value.id != this.getId())
     {
-      throw Error('The Smoke ids do not match in \'set state()\'!');
+      throw Error('The PlanePart ids do not match in \'set state()\'!');
     }
 
     this.x = value.x;
@@ -34,33 +36,41 @@ var Smoke = GameObject.extend({
     this.angle = value.angle;
     this.bank = value.bank;
     this.velocity = value.velocity;
+    this.smokes = value.smokes;
+    this.index = value.index;
   },
   /*=========================*\
    * Methods
   \*=========================*/
-  init: function (parent, id, x, y, angle, callback) {
+  init: function (parent, id, x, y, angle, velocity, index) {
     this._super(parent, id || this.getId());
 
     this.GLOBALS = {
       VELOCITY_MAX: 600,
-      VELOCITY_MIN: 0
+      VELOCITY_MIN: 0,
+      SMOKE_MAX: 5,
+      SMOKE_START_HEALTH: NaN,
+      SMOKE_THRESHOLD: 3
     };
 
     this.timeStart = (new Date()).getTime();
-    this.duration = (Math.random() * 2.0 + 1.0) * 1000.0;
+    this.duration = (Math.random() * 3.0 + 1.0) * 1000.0;
     this.bank = -1 + (Math.random() * 2);
-    this.velocity = 0;
+    this.velocity = velocity;
     this.accelerator = 0;
     this.x = x;
     this.y = y;
     this.angle = angle;
+    this.health = 0;
+    this.smokes = 0;
+    this.index = index;
+
     this.sprite = undefined;
 
-    this.callback = callback;
+    this.type = 'planepart';
 
-    this.type = 'smoke';
-
-    //this.charManager.add(new (require('../characteristics/Characteristic_Physics'))(this.GLOBALS));
+    this.charManager.add(new (require('../characteristics/Characteristic_Physics'))(this.GLOBALS));
+    this.charManager.add(new (require('../characteristics/Characteristic_Smokes'))(this.GLOBALS));
   },
   update:function (elapsed) {
     this._super(elapsed);
@@ -77,13 +87,11 @@ var Smoke = GameObject.extend({
     var elapsed = (new Date()).getTime() - this.timeStart,
       ratio = 1.0 - (elapsed / this.duration);
 
-    this.sprite.setLife(ratio);
-
     if (ratio < 0.1)
       this.destroy();
   },
   buildSprite: function (phaser) {
-    this.sprite = phaser.add.smoke(this.x, this.y);
+    this.sprite = phaser.add.planePart(this.x, this.y, this.index);
   },
   destroy: function () {
     if (this.callback)
@@ -102,4 +110,4 @@ var Smoke = GameObject.extend({
 /*===================================================*\
  * Export (nodejs and browser agent)
 \*===================================================*/
-module.exports = Smoke;
+module.exports = PlanePart;

@@ -68,7 +68,7 @@ var Bullet = GameObject.extend({
   collideHandler: function (target, distance) {
     if (target.type == 'bird')
     {
-      target.destroy();
+      target.health -= 50;
       this.destroy();
     }
     else if (target.type == 'player')
