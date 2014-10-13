@@ -5,7 +5,7 @@ var Bullet = require('../gameObjects/Bullet');
 \*===================================================*/
 var Characteristic_ShootsBullets = function(options) {
   this.options = options;
-  this.options.fireRate = options.fireRate || 100.0;
+  this.options.fireRate = options.fireRate || 50.0;
   this.options.fireVelocity = options.fireVelocity || 700.0;
 };
 

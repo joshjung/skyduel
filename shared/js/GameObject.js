@@ -75,7 +75,7 @@ var GameObject = module.exports = JClass.extend({
 
     if (this.destroyUnfoundChildrenOnStateSet)
       for (var id in ids)
-        this.destroyChildById(ids[id]);
+        this.destroyChildById(id);
   },
   getChildrenState: function() {
     if (!this.inited)
@@ -101,7 +101,7 @@ var GameObject = module.exports = JClass.extend({
    * Methods
   \*======================*/
   randomId: function () {
-    return Math.round(Math.random() * Number.MAX_VALUE).toString(16);
+    return Math.round(Math.random() * 999999999).toString(16);
   },
   init: function (parent, id) {
     if (!parent)
