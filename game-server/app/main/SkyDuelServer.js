@@ -85,8 +85,8 @@ SkyDuelServer.prototype = {
     if (this.world.getChildren().getAsArray('player').length == 0)
       this.reset();
 
-    console.log('Adding player with id', lastPlayerId);
-    var player = new Player(this.world, 'player' + (lastPlayerId++), session.uid);
+    console.log('Adding player with id', this.lastPlayerId);
+    var player = new Player(this.world, 'player' + ( this.lastPlayerId++), session.uid);
     this.world.players.add(player);
     this.world.getChildren().add(player);
   },
