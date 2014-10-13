@@ -105,13 +105,12 @@ var Player = GameObject.extend({
     if (typeof isClient === 'undefined' || isClient)
       return;
 
-    if (this.health < 60 && this.smokes < 20)
+    if (this.health < 60 && this.smokes < 10)
     {
       var smokeDrop = (Math.random() * this.health) < 5.0;
 
       if (smokeDrop)
       {
-        console.log('smoke', this.smokes)
         this.smokes++;
         var smoke = new Smoke(this, 'smoke' + this.randomId(), this.x, this.y, this.angle, function () {
           self.smokes--;
