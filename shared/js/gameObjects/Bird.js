@@ -20,7 +20,8 @@ var Bird = GameObject.extend({
       bank: this.bank,
       angle: this.angle,
       velocity: this.velocity,
-      scale: this.scale
+      scale: this.scale,
+      type: this.type
     };
   },
   setState: function(value) {
@@ -37,12 +38,15 @@ var Bird = GameObject.extend({
     this.velocity = value.velocity;
     this.bank = value.bank;
     this.scale = value.scale;
+    this.type = value.type;
   },
   /*=========================*\
    * Methods
   \*=========================*/
   init: function (parent, id) {
     this._super(parent, id || this.getId());
+
+    this.type = 'bird';
 
     this.x = Math.random() * this.world.width;
     this.y = Math.random() * this.world.height;

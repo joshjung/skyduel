@@ -112,6 +112,7 @@ var Player = GameObject.extend({
   },
   destroy: function() {
     this.bullets = [];
+    this.destroyed = true;
 
     if (this.sprite) {
       this.sprite.destroy(true);

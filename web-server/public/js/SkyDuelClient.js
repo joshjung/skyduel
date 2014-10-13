@@ -78,8 +78,6 @@ SkyDuelClient.prototype = {
     this.rid = rid;
     this.started = true;
 
-    this.players = new HashArray(['uid', 'id']);
-
     this.latencyCheck(10, this.startServerConnection.bind(this));
   },
   stop: function (reason) {

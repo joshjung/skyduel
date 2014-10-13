@@ -1,5 +1,5 @@
 var GameObject = require('../GameObject'),
-  Bullet = require('./Bullet'),
+  Bird = require('./Bird'),
   Player = require('./Player'),
   HashArray = require('../lib/HashArray');
 
@@ -49,10 +49,15 @@ var World = GameObject.extend({
   newChildFromState: function (childState) {
     var child;
 
-    if (childState.type == 'bullet')
-      child = new Bullet(this, childState.id);
-    if (childState.type == 'player')
+    if (childState.type == 'bird')
+      child = new Bird(this, childState.id);
+    else if (childState.type == 'player')
       child = new Player(this, childState.id);
+    else
+    {
+      console.log(childState);
+      throw Error('Cannot figure out what the hell a \'' + childState.type + '\' is.');
+    }
 
     child.setState(childState);
 

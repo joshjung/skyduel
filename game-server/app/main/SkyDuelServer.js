@@ -1,8 +1,7 @@
 /*===================================================*\
  * Requires
 \*===================================================*/
-var 
-  GameObject = require('../../../shared/js/GameObject'),
+var GameObject = require('../../../shared/js/GameObject'),
   World = require('../../../shared/js/gameObjects/World'),
   Player = require('../../../shared/js/gameObjects/Player'),
   Bird = require('../../../shared/js/gameObjects/Bird'),
@@ -53,9 +52,6 @@ SkyDuelServer.prototype = {
    * Methods
   \*============================*/
   reset: function() {
-    this.players = new HashArray(['uid', 'id']);
-    this.birds   = new HashArray(['id']);
-
     this.generateWorld();
 
     setInterval(this.updateInternal.bind(this), 1000 / FPS);
@@ -82,16 +78,15 @@ SkyDuelServer.prototype = {
     
     // insert fixed entities
     for(var i=0 ; i < 10 ; i++)
-    {
-      var b = new Bird(this.world, 'bird' + i);
-      this.birds.add(b);
-    }
+      this.world.getChildren().add(new Bird(this.world, 'bird' + i));
   },
   addPlayerFor: function(session) {
-    if (!this.players)
+    var id = this.world.getChildren().get('player') ? this.world.getChildren().get('player').length : 0;
+    if (id == 0)
       this.reset();
 
-    var player = new Player(this.world, 'player' + this.players.all.length, session.uid);
+    console.log('Adding player with id', id);
+    var player = new Player(this.world, 'player' + id, session.uid);
     this.world.getChildren().add(player);
   },
   updateClients: function() {
@@ -133,15 +128,15 @@ SkyDuelServer.prototype = {
   },
   userInput: function (uid, userInput, elapsed) {
     // It's possible the player has left.
-    if (this.players.get(uid))
+    if (this.world.getChildren().get(uid))
       this.userInputProcessor.update(userInput, elapsed, {
-        player: this.players.get(uid)
+        player: this.world.getChildren().get(uid)
       });
   },
   kickByUid: function (uid) {
     console.log('This user was kicked!', uid);
 
-    this.players.removeByKey(uid);
+    this.world.getChildren().get(uid).destroy();
   },
   /*============================*\
    * Events
