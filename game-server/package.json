@@ -1,9 +1,11 @@
 {
-  "name": "skyduel",
+  "name": "skyduel-game-server",
   "version": "0.0.1",
   "private": false,
   "dependencies": {
+    "class.extend": "^0.9.1",
     "crc": "0.2.0",
+    "jclass": "^0.2.5",
     "log4js": "^0.6.21",
     "pomelo": "~1.1.1",
     "pomelo-logger": "^0.1.6"

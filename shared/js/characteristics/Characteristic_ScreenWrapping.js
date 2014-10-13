@@ -23,8 +23,4 @@ Characteristic_ScreenWrapping.prototype = {
 /*===================================================*\
  * Export (nodejs and browser agent)
 \*===================================================*/
-if (typeof module != 'undefined') {
-  module.exports = Characteristic_ScreenWrapping;
-} else {
-  var Characteristic_ScreenWrapping = window.Characteristic_ScreenWrapping = Characteristic_ScreenWrapping;
-}
+module.exports = Characteristic_ScreenWrapping;

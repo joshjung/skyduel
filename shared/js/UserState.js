@@ -13,3 +13,5 @@ UserInputState.prototype = {
   input: undefined,
   time: undefined
 };
+
+module.exports = UserInputState;

@@ -1,14 +1,12 @@
 /*======================================================*\
  * Plane() 
 \*======================================================*/
-
 function Plane(game, x, y) {
   Phaser.Group.call(this, game);
  
   // configure group 
   this.x = x;
   this.y = y;
-  
   
   // add the airplane 
   this.airplane   = this.create(0, 0, 'airplane');
@@ -60,4 +58,3 @@ Phaser.GameObjectFactory.prototype.plane = function(x, y, group) {
     group = this.world;
   return group.add(new Plane(this.game, x, y));
 };
-

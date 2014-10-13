@@ -69,8 +69,4 @@ LatencyAnalyzer.prototype = {
 /*===================================================*\
  * Export (nodejs and browser agent)
 \*===================================================*/
-if (typeof module != 'undefined') {
-  module.exports = LatencyAnalyzer;
-} else {
-  var LatencyAnalyzer = window.LatencyAnalyzer = LatencyAnalyzer;
-}
+module.exports = LatencyAnalyzer;

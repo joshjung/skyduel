@@ -45,51 +45,8 @@ var rjSkyduel = React.createClass({
       window.client.gBackground.add(window.client.backgroundSprite);
     }
   },
-  updatePlayers: function () {
-    var self = this;
-
-    window.client.players.all.forEach(function (player) {
-        if (!player.sprite)
-        {
-          // get current player's user ID 
-          var currentUid = window.client.player.uid;
-          
-          // create and customize the plane sprite
-          player.sprite = self.phaser.add.plane(0, 0);
-          player.sprite.displayStatusRing(player.uid === currentUid);
-
-          window.client.gGameObjects.add(player.sprite);
-        }
-
-        player.bullets.forEach(function (bullet) {
-          var bs = bullet.sprite;
-          if (!bs)
-          {
-            bullet.sprite = bs = self.phaser.add.sprite(0, 0, 'bullet');
-            window.client.gGameObjects.add(bullet.sprite);
-            bs.anchor.set(0.5);
-          }
-
-          bs.x = bullet.x;
-          bs.y = bullet.y;
-        });
-
-        player.updateSprite();
-      });
-  },
-  updateBirds: function () {
-    var self = this;
-    
-    window.client.birds.all.forEach(function (bird) {
-      if (!bird.sprite)
-      {
-        bird.sprite = self.phaser.add.sprite(0, 0, 'bird');
-        bird.sprite.anchor.set(0.5);
-        window.client.gGameObjects.add(bird.sprite);
-      } 
-
-      bird.updateSprite();
-    });
+  updateWorld: function () {
+    window.client.world.updatePhaser(this.phaser);
   },
   updateText: function () {
     if (window.client.player)
@@ -102,6 +59,7 @@ var rjSkyduel = React.createClass({
    * Event
   \*=============================*/
   phaser_preloadHandler: function (e) {
+    this.phaser.spritesByGameObjectId = {};
     this.phaser.load.spritesheet('airplane', 'images/plane1.png', 30, 30, 3);
     this.phaser.load.spritesheet('ground', 'images/ground.png', 50, 50, 4);
     this.phaser.load.image('bird', 'images/bird.png', 14, 9);
@@ -131,8 +89,7 @@ var rjSkyduel = React.createClass({
     {
       this.updateText();
       this.updateBackground();
-      this.updatePlayers();
-      this.updateBirds();
+      this.updateWorld();
     }
   }
 });

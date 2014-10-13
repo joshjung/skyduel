@@ -32,8 +32,4 @@ Characteristic_Physics.prototype = {
 /*===================================================*\
  * Export (nodejs and browser agent)
 \*===================================================*/
-if (typeof module != 'undefined') {
-  module.exports = Characteristic_Physics;
-} else {
-  var Characteristic_Physics = window.Characteristic_Physics = Characteristic_Physics;
-}
+module.exports = Characteristic_Physics;

@@ -1,4 +1,4 @@
-var Bullet = (typeof module == 'undefined' ? Bullet : require('../Bullet'));
+var Bullet = require('../gameObjects/Bullet');
 
 /*===================================================*\
  * Characteristic_ShootsBullets()
@@ -31,20 +31,12 @@ Characteristic_ShootsBullets.prototype = {
     if (target.ammo <= 0)
       return;
     
-    var bullet = new Bullet(undefined, target, x, y, angle, velocity);
-    target.bullets.push(bullet);
+    var bullet = new Bullet(target, undefined, x, y, angle, velocity);
+    target.getChildren().add(bullet);
     target.ammo--;
     this.lastBulletTime = this.now;
   },
   applyTo: function (target, elapsed, cache) {
-    target.bullets = target.bullets.filter(function (bullet) {
-      return bullet.exists;
-    });
-
-    target.bullets.forEach(function (bullet) {
-      bullet.update(elapsed);
-    });
-
     if (!this.lastBulletTime)
       this.lastBulletTime = this.now;
 
@@ -65,8 +57,4 @@ Characteristic_ShootsBullets.prototype = {
 /*===================================================*\
  * Export (nodejs and browser agent)
 \*===================================================*/
-if (typeof module != 'undefined') {
-  module.exports = Characteristic_ShootsBullets;
-} else {
-  var Characteristic_ShootsBullets = window.Characteristic_ShootsBullets = Characteristic_ShootsBullets;
-}
+module.exports = Characteristic_ShootsBullets;

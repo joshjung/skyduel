@@ -1,3 +1,12 @@
+var
+  GameObject = require('../../../shared/js/GameObject'),
+  World = require('../../../shared/js/gameObjects/World'),
+  Player = require('../../../shared/js/gameObjects/Player'),
+  LatencyAnalyzer = require('../../../shared/js/LatencyAnalyzer'),
+  SCStateManager = require('./ServerClientStateManager'),
+  UserInputProcessor = require('../../../shared/js/UserInputProcessor'),
+  HashArray = require('../../../shared/js/lib/HashArray');
+
 /*======================================================*\
  * Globals
 \*======================================================*/
@@ -13,8 +22,7 @@ var SkyDuelClient = function() {
   this.scStateManager = new SCStateManager(60, this);
   this.userInputProcessor = new UserInputProcessor();
 
-  this.players = new HashArray(['uid', 'id']);
-  this.birds   = new HashArray(['id']);
+  this.world = new World();
 };
 
 /*===================================================*\
@@ -35,48 +43,7 @@ SkyDuelClient.prototype = {
     return {};
   },
   set state(value) {
-    var self = this;
-
-
-    var oldPlayerIds = {};
-    this.players.all.forEach(function (player) {
-      oldPlayerIds[player.id] = true;
-    });
-
-    value.players.forEach(function (playerState) {
-      if (self.players.has(playerState.id))
-      {
-        self.players.get(playerState.id).state = playerState;
-      }
-      else
-      {
-        var player = new Player(self.world, self.uid, playerState.id);
-        player.state = playerState;
-        self.players.add(player);
-      }
-      delete oldPlayerIds[playerState.id];
-    });
-
-    // All remaining ids are players that no longer exist. Remove them!
-    for (var key in oldPlayerIds)
-    {
-      var player = this.players.get(key);
-      player.destroy();
-      this.players.remove(player);
-    }
-
-    value.birds.forEach(function (birdState) {
-      if (self.birds.has(birdState.id))
-      {
-        self.birds.get(birdState.id).state = birdState;    
-      }
-      else
-      {
-        var bird = new Bird(self.world, birdState.id);
-        bird.state = bird;
-        self.birds.add(bird);   
-      }
-    });
+    this.world.setState(value);
   },
   get userInput() {
     return {
@@ -138,13 +105,7 @@ SkyDuelClient.prototype = {
 
     this.userInputProcessor.update(userInput, elapsed, this);
 
-    this.players.all.forEach(function (player) {
-      player.update(elapsed);
-    });
-
-    this.birds.all.forEach(function (bird) {
-      bird.update(elapsed); 
-    });
+    this.world.update(elapsed);
   },
   //SCStateManager Interface
   updateServer: function (userInputState) {
@@ -152,19 +113,17 @@ SkyDuelClient.prototype = {
     pomelo.request('skyduel.skyduelHandler.userInput', this.userInput, this.socket_updateServerResponseHandler.bind(this));
   },
   setupStartState: function(state) {
-    var self = this;
-
     console.log('Initial world state', state.world);
 
-    this.world = state.world;
+    this.world.setState(state.world);
 
-    state.players.forEach(function (playerState) {
-      var player = new Player(self.world, self.uid, playerState.id);
-      player.state = playerState;
-      self.players.add(player);
-      console.log('attempting init', self.uid, playerState.uid)
-      self.player = (playerState.uid == self.uid) ? player : self.player;
-    });
+    this.player = this.world.getChildren().get(this.uid);
+
+    if (!this.player)
+    {
+      console.log (state);
+      throw Error('Player could not be found in incoming state!');
+    }
 
     this.scStateManager.newServerState = state;
 

@@ -1,7 +1,7 @@
 /*===================================================*\
  * Globals
 \*===================================================*/
-var HashArray = (typeof module == 'undefined' ? HashArray : require('../lib/HashArray'))
+var HashArray = require('../lib/HashArray');
 
 /*===================================================*\
  * CharacteristicManager()
@@ -38,8 +38,4 @@ CharacteristicManager.prototype = {
 /*===================================================*\
  * Export (nodejs and browser agent)
 \*===================================================*/
-if (typeof module != 'undefined') {
-  module.exports = CharacteristicManager;
-} else {
-  var CharacteristicManager = window.CharacteristicManager = CharacteristicManager;
-}
+module.exports = CharacteristicManager;

@@ -1,8 +1,11 @@
 /*===================================================*\
  * Requires
 \*===================================================*/
-var Player = require('../../../shared/js/Player'),
-  Bird = require('../../../shared/js/Bird'),
+var 
+  GameObject = require('../../../shared/js/GameObject'),
+  World = require('../../../shared/js/gameObjects/World'),
+  Player = require('../../../shared/js/gameObjects/Player'),
+  Bird = require('../../../shared/js/gameObjects/Bird'),
   UserInputProcessor = require('../../../shared/js/UserInputProcessor'),
   HashArray = require('../../../shared/js/lib/HashArray'),
   USER_ACTIONS = require('../../../shared/js/UserActions');
@@ -21,11 +24,12 @@ var FPS = 30,
 \*===================================================*/
 var SkyDuelServer = function(app) {
   this.app = app;
+
+  this.world = new World();
+
   this.id = 'sid:' + Math.round(Math.random() * 100).toString(16) + ':' + process.pid;
 
   this.userInputProcessor = new UserInputProcessor();
-
-  console.log('SkyDuelServer()', this.id);
 };
 
 /*===================================================*\
@@ -57,14 +61,14 @@ SkyDuelServer.prototype = {
     setInterval(this.updateInternal.bind(this), 1000 / FPS);
   },
   generateWorld: function() {
-    this.world = {
+    this.world.setState({
       width: 800,
       height: 600,
       tileWidth: 50,
       tileHeight: 50,
       tiles: []
-    };
-    
+    });
+
     // build the world tiles
     for (var x = 0; x < this.world.width; x+= this.world.tileWidth)
     {
@@ -79,14 +83,16 @@ SkyDuelServer.prototype = {
     // insert fixed entities
     for(var i=0 ; i < 10 ; i++)
     {
-      this.birds.add(new Bird(this.world));
+      var b = new Bird(this.world, 'bird' + i);
+      this.birds.add(b);
     }
   },
   addPlayerFor: function(session) {
     if (!this.players)
       this.reset();
 
-    this.players.add(new Player(this.world, session.uid, this.players.all.length));
+    var player = new Player(this.world, 'player' + this.players.all.length, session.uid);
+    this.world.getChildren().add(player);
   },
   updateClients: function() {
     var channel = this.app.get('channelService').getChannel(this.rid, false);
@@ -147,7 +153,7 @@ SkyDuelServer.prototype = {
    * Events
   \*============================*/
   socket_userInputHandler: function(msg, session) {
-    if (this.players.has(session.uid))
+    if (this.world.getChildren().has(session.uid))
       this.userInputsByUID[session.uid] = msg;
     else
       throw Error('socket_userInputHandler(): no player matched session uid', session.uid);
@@ -161,41 +167,10 @@ Object.defineProperty(SkyDuelServer.prototype, 'state', {
   get: function() {
     return {
       time: (new Date()).getTime(),
-      world: this.world,
-      players: this.players.all.map(function (player) {
-          return player.state;
-      }),
-      birds: this.birds.all.map(function (bird) {
-          return bird.state;  
-      })
+      world: this.world.getState()
     };
-  },
-  set: function(value) {
-    var self = this;
-
-    if (value.destructive)
-      this.players.removeAll();
-
-    value.players.forEach(function (player) {
-      if (self.players.has(player.id))
-      {
-        self.players.get(player.id).deserialize(player);
-      }
-      else
-      {
-        var _player = new Player(self, undefined, player.id);
-        _player.state = player;
-        _player.sprite = self.phaser.add.sprite(_player.x, _player.y, 'aircraft');
-        self.players.add(_player);
-
-        // If the server says we are controlling one of the players, assign it!
-        self.player = (player.uid == self.uid ? _player : self.player);
-      }
-    });
   }
 });
-
-console.log('Compiling SkyDuelServer');
 
 /*===================================================*\
  * Export

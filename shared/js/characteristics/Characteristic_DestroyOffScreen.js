@@ -22,8 +22,4 @@ Characteristic_DestroyOffScreen.prototype = {
 /*===================================================*\
  * Export (nodejs and browser agent)
 \*===================================================*/
-if (typeof module != 'undefined') {
-  module.exports = Characteristic_DestroyOffScreen;
-} else {
-  var Characteristic_DestroyOffScreen = window.Characteristic_DestroyOffScreen = Characteristic_DestroyOffScreen;
-}
+module.exports = Characteristic_DestroyOffScreen;

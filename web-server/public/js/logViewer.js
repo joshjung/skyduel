@@ -36,7 +36,7 @@ function createRequest() {
  
 var request = createRequest();
 
-function getLog(timer) {
+window.getLog = function(timer) {
   var url = "http://" + window.location.hostname + (window.location.hostname != 'www.skyduel.com' ? ':3001' : '') + "/log/game-server.log";
   request.open("GET", url, true);
   request.onreadystatechange = updatePage;

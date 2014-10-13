@@ -1,6 +1,4 @@
-/*===================================================*\
- * Globals
-\*===================================================*/
+var UserInputState = require('../../../shared/js/UserState');
 
 /*===================================================*\
  * SCStateManager()
@@ -113,3 +111,5 @@ SCStateManager.prototype = {
     this.update();
   }
 };
+
+module.exports = SCStateManager;

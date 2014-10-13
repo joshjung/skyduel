@@ -1,8 +1,8 @@
 {
-  "name": "skyduel-web-server",
+  "name": "skyduel",
   "version": "0.0.1",
   "private": false,
   "dependencies": {
-    "express": "3.4.8"
+    "jclass": "^0.2.5"
   }
 }

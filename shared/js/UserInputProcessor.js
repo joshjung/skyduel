@@ -30,8 +30,4 @@ UserInputProcessor.prototype = {
 /*===================================================*\
  * Export (nodejs and browser agent)
 \*===================================================*/
-if (typeof module != 'undefined') {
-  module.exports = UserInputProcessor;
-} else {
-  var UserInputProcessor = window.UserInputProcessor = UserInputProcessor;
-}
+module.exports = UserInputProcessor;
