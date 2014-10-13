@@ -117,22 +117,11 @@ Player.prototype = {
   \*=========================*/
   update: function (elapsed) {
     this.charManager.applyAll(elapsed);
-
     this.bulletProps.fireVelocity = 500.0 + this.velocity;
   },
   updateSprite: function () {
-    if (this.sprite)
-    {
-      this.sprite.x = this.x;
-      this.sprite.y = this.y;
-      this.sprite.angle = this.angle * 57.2957795;
-
-      if (this.bank < 0)
-        this.sprite.frame = 2;
-      else if (this.bank > 0)
-        this.sprite.frame = 1;
-      else this.sprite.frame = 0;
-    }
+    if(this.sprite)
+      this.sprite.updateWithModel(this);
   },
   destroy: function() {
     if (this.sprite) {
