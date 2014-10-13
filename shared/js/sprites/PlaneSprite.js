@@ -2,6 +2,8 @@
  * Plane() 
 \*======================================================*/
 function Plane(game, x, y) {
+  console.log('NEW PLANE SPRITE');
+  
   Phaser.Group.call(this, game);
  
   // configure group 
@@ -28,17 +30,20 @@ Plane.prototype.constructor = Plane;
  * Public Methods 
 \*======================================================*/
 
-Plane.prototype.displayStatusRing = function(displaysStatusRing, health) {
+Plane.prototype.displayStatusRing = function(isPlayer, health) {
   var ratio = (health / 100.0);
 
-  this.statusRing.alpha = displaysStatusRing ? 1.0 * ratio  : 0.0;
+  this.statusRing.alpha = 1.0 * ratio;
 
-  if (displaysStatusRing) {
-    this.statusRing.clear();
-    this.statusRing.lineStyle(3.0, 0x3beb72);
-    
-    this.statusRing.arc(0, 0, 20.0, -(Math.PI/4) * ratio, (Math.PI / 4) * ratio ); 
-  }
+  this.statusRing.clear();
+  this.statusRing.lineStyle(3.0, 0x3beb72);
+
+  this.statusRing.arc(0, 0, 20.0, -(Math.PI/4) * ratio, (Math.PI / 4) * ratio ); 
+
+  this.statusRing.lineStyle(1.0, 0x3beb72, 0.2);
+
+  if (isPlayer)
+    this.statusRing.drawCircle(0, 0, 25); 
 };
 
 Plane.prototype.updateWithModel = function(model) {

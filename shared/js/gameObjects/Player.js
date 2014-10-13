@@ -33,7 +33,10 @@ var Player = GameObject.extend({
       type: this.type,
       radius: this.radius,
       smokes: this.smokes,
-      children: this.getChildrenState()
+      destroyed: this.destroyed,
+      children: this.getChildrenState(),
+      kills: this.kills,
+      deaths: this.deaths
     };
   },
   setState: function(value) {
@@ -55,6 +58,9 @@ var Player = GameObject.extend({
     this.ammo = value.ammo;
     this.radius = value.radius;
     this.smokes = value.smokes;
+    this.destroyed = value.destroyed;
+    this.kills = value.kills;
+    this.deaths = value.deaths;
 
     this.setChildrenState(value.children);
   },
@@ -87,6 +93,8 @@ var Player = GameObject.extend({
     this.x = 400;
     this.y = 400;
     this.bank = 0;
+    this.kills = 0;
+    this.deaths = 0;
     this.accelerater = 0;
     this.health = 100;
     this.ammo = 1000;
@@ -98,26 +106,47 @@ var Player = GameObject.extend({
 
     this.triggerDown = false;
 
+    this.destroyed = false;
+
     this.charManager.add(new (require('../characteristics/Characteristic_Smokes'))(this.GLOBALS));
     this.charManager.add(new (require('../characteristics/Characteristic_Physics'))(this.GLOBALS));
     this.charManager.add(new (require('../characteristics/Characteristic_ScreenWrapping'))(this.world));
     this.charManager.add(new (require('../characteristics/Characteristic_ShootsBullets'))(this.bulletProps));
     this.charManager.add(new (require('../characteristics/Characteristic_Explodes'))(this.GLOBALS));
+    this.charManager.add(new (require('../characteristics/Characteristic_Respawns'))(this.GLOBALS));
   },
   update: function (elapsed) {
     this._super(elapsed);
 
     this.bulletProps.fireVelocity = 500.0 + this.velocity;
   },
+  respawn: function () {
+    console.log('Respawning player', this.uid);
+
+    this.x = 400;
+    this.y = 400;
+    this.bank = 0;
+    this.accelerater = 0;
+    this.health = 100;
+    this.ammo = 1000;
+    this.velocity = this.GLOBALS.VELOCITY_MIN;
+    this.angle = Math.random() * Math.PI * 2;
+    this.radius = 15;
+
+    this.smokes = 0;
+
+    this.exploded = false;
+    this.destroyed = false;
+
+    this.world.getChildren().add(this);
+  },
   updatePhaser: function (phaser) {
     this._super(phaser);
 
-    this.sprite.displayStatusRing(true, this.health);
+    this.sprite.displayStatusRing(this.uid == window.client.uid, this.health);
   },
   buildSprite: function (phaser) {
     this.sprite = phaser.add.plane(0, 0);
-
-    window.client.gGameObjects.add(this.sprite);
   },
   newChildFromState: function (childState) {
     var bullet = new Bullet(this, childState.id);
@@ -126,6 +155,8 @@ var Player = GameObject.extend({
     return bullet;
   },
   destroy: function() {
+    this._super();
+
     this.bullets = [];
     this.destroyed = true;
 
@@ -137,6 +168,12 @@ var Player = GameObject.extend({
   hit: function (projectile, distance) {
     this.health -= 1 * (projectile.velocity / 1000.0) * Math.max(15 - distance, 1);
     this.health = this.health < 0 ? 0 : this.health;
+
+    if (projectile.getParent().type == 'player' && this.health <= 0 && !this.destroyed)
+    {
+      projectile.getParent().kills++;
+      this.deaths++;
+    }
   }
 });
 

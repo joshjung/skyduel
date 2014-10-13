@@ -41,6 +41,7 @@ var World = GameObject.extend({
   init: function () {
     console.log('World init!');
     this.type = 'world';
+    this.players = new HashArray(['_id', 'uid', 'type']);
     this._super(null, 'root');
   },
   update: function (elapsed) {
@@ -58,7 +59,11 @@ var World = GameObject.extend({
     if (childState.type == 'bird')
       child = new Bird(this, childState.id);
     else if (childState.type == 'player')
+    {
       child = new Player(this, childState.id);
+      
+      this.players.add(child);
+    }
     else if (childState.type == 'smoke')
       child = new Smoke(this, childState.id);
     else if (childState.type == 'planepart')

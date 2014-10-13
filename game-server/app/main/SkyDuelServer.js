@@ -87,6 +87,7 @@ SkyDuelServer.prototype = {
 
     console.log('Adding player with id', id);
     var player = new Player(this.world, 'player' + id, session.uid);
+    this.world.players.add(player);
     this.world.getChildren().add(player);
   },
   updateClients: function() {
@@ -144,7 +145,7 @@ SkyDuelServer.prototype = {
   socket_userInputHandler: function(msg, session) {
     if (this.world.getChildren().has(session.uid))
       this.userInputsByUID[session.uid] = msg;
-    else
+    else if (!this.world.players.get(session.uid))
       throw Error('socket_userInputHandler(): no player matched session uid', session.uid);
   }
 };

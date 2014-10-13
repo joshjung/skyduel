@@ -112,7 +112,6 @@ var GameObject = module.exports = JClass.extend({
   init: function (parent, id) {
     if (!parent)
     {
-      console.log('Setting world and root to', this);
       GameObject.prototype.world = GameObject.prototype.root = this;
     }
 

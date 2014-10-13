@@ -66,15 +66,8 @@ var Bullet = GameObject.extend({
       this.sprite.destroy(true);
   },
   collideHandler: function (target, distance) {
-    if (target.type == 'bird')
-    {
-      target.health -= 50;
-      this.destroy();
-    }
-    else if (target.type == 'player')
-    {
+    if (target.hit)
       target.hit(this, distance);
-    }
   }
 });
 

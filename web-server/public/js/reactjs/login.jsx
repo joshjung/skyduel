@@ -31,8 +31,6 @@ var rjLogin = React.createClass({
               <input id="loginUser" ref="loginUser" type="text" placeholder="Username" />
               <input id="channelList" ref="channel" name="channels" type="text" placeholder="Channel" />
               <button className="btn btn-lg btn-primary btn-block" onClick={this.login_clickHandler}>Sign in</button>
-              <a href="/log/game-server.log" target="_blank">game-server.log</a><br/>
-              <a href="/log/web-server.log" target="_blank">web-server.log</a>
              </div>
             </div>
             <div id="loginError" ref="loginError"/>

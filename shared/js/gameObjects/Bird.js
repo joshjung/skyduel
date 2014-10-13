@@ -66,6 +66,7 @@ var Bird = GameObject.extend({
 
     this.charManager.add(new (require('../characteristics/Characteristic_Physics'))(this.GLOBALS));
     this.charManager.add(new (require('../characteristics/Characteristic_ScreenWrapping'))(this.world));
+    //this.charManager.add(new (require('../characteristics/Characteristic_Explodes'))(this.world));
   },
   update: function (elapsed) {
     this._super(elapsed);
