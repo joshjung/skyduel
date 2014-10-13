@@ -18,3 +18,15 @@ body {
   margin: auto;
   margin-top:50px;
 }
+
+.instructions {
+  font-weight:bold;
+  text-align:center;
+  background: rgba(230,230,230,0.5);
+  color: #333333;
+  width: 50%;
+  margin: auto;
+  margin-top:20px;
+  font-size:20px;
+  color: #222222;
+}

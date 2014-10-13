@@ -21,6 +21,9 @@ var rjSkyduel = React.createClass({
             <div id="dPhaserOutput"/>
           </div>
         </div>
+        <div className="row" className="instructions">
+          Fly: [Arrow Keys]. Shoot: [Space]
+        </div>
       </div>
     );
   },
