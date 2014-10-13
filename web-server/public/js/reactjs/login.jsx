@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-var GATE_PORT = 3014,
+var GATE_PORT = 3080,
   GATE_HOST = window.location.hostname,
   USERNAME_REGEX = /^[a-zA-Z0-9_\u4e00-\u9fa5]+$/;
 

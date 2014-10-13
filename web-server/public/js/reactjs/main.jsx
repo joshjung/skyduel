@@ -12,7 +12,6 @@ var rjMain = React.createClass({
   },
   componentDidMount: function() {
     this.showLogin();
-    getLog();
   },
   render: function() {
     return (
@@ -20,7 +19,6 @@ var rjMain = React.createClass({
         <rjLogin ref="login" main={this} />
         <rjSkyduel ref="skyduel" main={this} />
         <rjChat ref="chat" main={this} />
-        <pre id="log" />
       </div>);
   }
 });
