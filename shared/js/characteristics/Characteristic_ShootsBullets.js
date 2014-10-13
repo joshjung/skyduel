@@ -16,7 +16,7 @@ Characteristic_ShootsBullets.prototype = {
   /*=========================*\
    * Variables
   \*=========================*/
-  lastBulletTime: undefined,
+  nextBulletTime: undefined,
   /*=========================*\
    * Properties
   \*=========================*/
@@ -34,21 +34,19 @@ Characteristic_ShootsBullets.prototype = {
     var bullet = new Bullet(target, undefined, x, y, angle, velocity);
     target.getChildren().add(bullet);
     target.ammo--;
-    this.lastBulletTime = this.now;
+    this.nextBulletTime = this.now + this.options.fireRate;
   },
   applyTo: function (target, elapsed, cache) {
-    if (!this.lastBulletTime)
-      this.lastBulletTime = this.now;
+    if (!this.nextBulletTime)
+      this.nextBulletTime = this.now + this.options.fireRate;
 
     if (target.triggerDown)
     {
-      var t = 0;
+      var t = this.nextBulletTime + this.options.fireRate;
       
-      while (t < elapsed)
+      while (this.now > this.nextBulletTime)
       {
         this.fire(target, target.x, target.y, target.angle, this.options.fireVelocity);
-
-        t += this.options.fireRate / 1000.0;
       }
     }
   }

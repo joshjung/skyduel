@@ -43,13 +43,11 @@ var Bullet = GameObject.extend({
     this.angle = angle;
     this.velocity = velocity;
     this.sprite = undefined;
-    this.exists = true;
 
     this.type = 'bullet';
 
-    this.charManager = new CharacteristicManager(this);
     this.charManager.add(new (require('../characteristics/Characteristic_Physics'))(this.GLOBALS));
-    this.charManager.add(new (require('../characteristics/Characteristic_DestroyOffScreen'))(this.parent.world));
+    this.charManager.add(new (require('../characteristics/Characteristic_DestroyOffScreen'))(this.world));
   },
   update: function (elapsed) {
     this.charManager.applyAll(elapsed);
@@ -58,7 +56,7 @@ var Bullet = GameObject.extend({
     this.sprite = phaser.add.bullet(0, 0);
   },
   destroy: function () {
-    this.exists = false;
+    this.destroyed = true;
 
     if (this.sprite)
       this.sprite.destroy(true);

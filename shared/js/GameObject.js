@@ -123,6 +123,13 @@ var GameObject = module.exports = JClass.extend({
     this.inited= true;
   },
   update: function (elapsed) {
+    var self = this;
+    // Wipe out any destroyed children.
+    this.getChildren().all.concat().forEach(function (child) {
+      if (child.destroyed)
+        self.getChildren().remove(child);
+    });
+
     this.getChildren().all.forEach(function (child) {
       child.update(elapsed);
     });

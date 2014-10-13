@@ -40,6 +40,9 @@ var World = GameObject.extend({
     console.log('World init!');
     this._super(null, 'root');
   },
+  update: function (elapsed) {
+    this._super(elapsed);
+  },
   buildChildrenObject: function () {
     this.setChildren(new HashArray(['_id', 'uid', 'type']));
   },

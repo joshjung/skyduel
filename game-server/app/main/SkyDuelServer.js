@@ -129,13 +129,7 @@ SkyDuelServer.prototype = {
       delete this.userInputsByUID[key];
     }
 
-    this.players.all.forEach(function (player) {
-      player.update(elapsed);
-    });
-
-    this.birds.all.forEach(function (bird) {
-      bird.update(elapsed);
-    });
+    this.world.update(elapsed);
   },
   userInput: function (uid, userInput, elapsed) {
     // It's possible the player has left.
