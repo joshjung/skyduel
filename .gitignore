@@ -30,5 +30,5 @@ node_modules
 # Raw assets
 psds
 
-web-server/public/js/browserify.bundle.js
-shared/gitEntries.json
+*/web-server/public/js/browserify.bundle.js
+*/shared/gitEntries.json
