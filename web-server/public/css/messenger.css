@@ -22,6 +22,7 @@
 
 #messenger #history {
   height:400px;
+  overflow:scroll;
 }
 
 #messenger input {

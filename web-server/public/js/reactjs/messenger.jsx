@@ -17,6 +17,8 @@ var rjMessenger = React.createClass({
     {
       $('#history').append('<strong>' + from + '</strong>: ' + this.stripTags(message) + '<br/><div class=\'line\'');
     }
+    var elem = document.getElementById('history');
+    elem.scrollTop = elem.scrollHeight;
   },
   stripTags: function(value)
   {
@@ -34,7 +36,7 @@ var rjMessenger = React.createClass({
     return (
       <div id="messenger" className="panel">
         <rjPlayers />
-        <div id="history">{this.history}</div>
+        <div id="history" ref="history">{this.history}</div>
         <div id="input">
           <input id="iChat" ref="iChat" type="text" placeholder="Chat publicly here..." />
         </div>
