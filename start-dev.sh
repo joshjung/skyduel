@@ -1,6 +1,6 @@
 #!/bin/bash
 echo 'Killing Pomelo'
-pomelo stop
+pomelo kill --force
 echo 'Browserifying'
 browserify -d browserify.me.js > web-server/public/js/browserify.bundle.js
 echo 'Starting Game Server (to shared/log/game-server.log)'

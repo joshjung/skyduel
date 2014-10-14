@@ -55,15 +55,17 @@ var PlanePart = GameObject.extend({
 
     this.timeStart = (new Date()).getTime();
     this.duration = (Math.random() * 3.0 + 1.0) * 1000.0;
-    this.bank = -1 + (Math.random() * 2);
+    this.bank = -0.3 + (Math.random() * 0.6);
     this.velocity = velocity;
-    this.accelerator = 0;
+    this.accelerater = -70 * Math.random();
     this.x = x;
     this.y = y;
     this.angle = angle;
     this.health = 0;
     this.smokes = 0;
     this.index = index;
+    this.rotation = 0;
+    this.rotationSpeed = Math.random() * 100;
 
     this.sprite = undefined;
 
@@ -74,6 +76,8 @@ var PlanePart = GameObject.extend({
   },
   update:function (elapsed) {
     this._super(elapsed);
+
+    this.rotation += this.rotationSpeed * elapsed;
 
     var elapsed = (new Date()).getTime() - this.timeStart,
       ratio = 1.0 - (elapsed / this.duration);

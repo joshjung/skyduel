@@ -29,7 +29,7 @@ PlanePartSprite.prototype.constructor = PlanePartSprite;
 PlanePartSprite.prototype.updateWithModel = function(model) {
   this.x = model.x;
   this.y = model.y;
-  this.angle = model.angle;
+  this.angle = model.rotation;
 };
 
 /*======================================================*\

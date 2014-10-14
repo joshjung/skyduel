@@ -33,14 +33,12 @@ Plane.prototype.constructor = Plane;
 Plane.prototype.displayStatusRing = function(isPlayer, health) {
   var ratio = (health / 100.0);
 
-  this.statusRing.alpha = 1.0 * ratio;
-
   this.statusRing.clear();
-  this.statusRing.lineStyle(3.0, 0x3beb72);
+  this.statusRing.lineStyle(3.0, 0x3beb72, 1.0 * ratio);
 
   this.statusRing.arc(0, 0, 20.0, -(Math.PI/4) * ratio, (Math.PI / 4) * ratio ); 
 
-  this.statusRing.lineStyle(1.0, 0x3beb72, 0.2);
+  this.statusRing.lineStyle(1.0, 0x3beb72, 0.8);
 
   if (isPlayer)
     this.statusRing.drawCircle(0, 0, 25); 
