@@ -31,3 +31,4 @@ node_modules
 psds
 
 web-server/public/js/browserify.bundle.js
+shared/gitEntries.json

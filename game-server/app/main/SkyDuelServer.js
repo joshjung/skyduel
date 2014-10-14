@@ -56,6 +56,8 @@ var SkyDuelServer = function(app) {
   this.app = app;
 
   this.messaging = app.get('messagingService');
+  this.git = app.get('gitService');
+
 
   this.world = new World();
 

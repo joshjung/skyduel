@@ -1,9 +1,16 @@
-var pomelo = require('pomelo'),
+var fs = require('fs'),
+  pomelo = require('pomelo'),
   routeUtil = require('./app/util/routeUtil'),
   SkyDuelServer = require('./app/main/SkyDuelServer'),
-  MessagingService = require('./app/main/MessagingService');
+  MessagingService = require('./app/main/MessagingService'),
+  GitService = require('./GitService');
 
-var app = pomelo.createApp();
+var app = pomelo.createApp(),
+  gitService = new GitService();
+
+gitService.log(10, function (entries) {
+  fs.writeFileSync('../shared/gitEntries.json', JSON.stringify(entries));
+});
 
 global.isClient = false;
 
@@ -27,19 +34,15 @@ app.configure('production|development', 'gate', function() {
 
 app.configure('production|development', 'skyduel', function() {
   app.set('messagingService', new MessagingService(app));
+  app.set('gitService', gitService);
   app.set('skyduelServer', new SkyDuelServer(app));
 });
 
-// app configure
 app.configure('production|development', function() {
-  // route configures
   app.route('skyduel', routeUtil.skyduel);
-
-  // filter configures
   app.filter(pomelo.timeout());
 });
 
-// start app
 app.start();
 
 process.on('uncaughtException', function(err) {

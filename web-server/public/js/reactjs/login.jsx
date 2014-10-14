@@ -47,6 +47,11 @@ var rjLogin = React.createClass({
             <div id="loginError" ref="loginError"/>
           </section>
         </div>
+        <div className="row">
+          <div className="col-sm-7 col-md-7 col-md-offset-1 panel">
+            <rjGit />
+          </div>
+        </div>
       </div>);
   },
   showError: function (content) {
