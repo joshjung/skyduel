@@ -5,10 +5,10 @@
   "dependencies": {
     "class.extend": "^0.9.1",
     "crc": "0.2.0",
-    "github": "^0.2.2",
     "jclass": "^0.2.5",
     "log4js": "^0.6.21",
     "pomelo": "~1.1.1",
-    "pomelo-logger": "^0.1.6"
+    "pomelo-logger": "^0.1.6",
+    "nodegit": "^0.1.4"
   }
 }
