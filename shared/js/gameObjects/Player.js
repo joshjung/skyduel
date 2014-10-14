@@ -113,6 +113,8 @@ var Player = GameObject.extend({
 
     this.smokes = 0;
 
+    this.markedForDestroy = false;
+
     this.triggerDown = false;
 
     this.destroyed = false;
@@ -143,6 +145,7 @@ var Player = GameObject.extend({
     this.radius = 15;
 
     this.smokes = 0;
+    this.markedForDestroy = false;
 
     this.exploded = false;
     this.destroyed = false;
@@ -195,10 +198,12 @@ var Player = GameObject.extend({
     this.health -= 1 * (projectile.velocity / 1000.0) * Math.max(15 - distance, 1);
     this.health = this.health < 0 ? 0 : this.health;
 
-    if (projectile.getParent().type == 'player' && this.health <= 0 && !this.destroyed)
+    if (projectile.getParent().type == 'player' && this.health <= 0 && !this.destroyed && !this.markedForDestroy)
     {
       projectile.getParent().kills++;
       this.deaths++;
+
+      this.markedForDestroy = true;
 
       if (this.messaging)
       {
