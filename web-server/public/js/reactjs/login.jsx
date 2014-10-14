@@ -111,11 +111,6 @@ var rjLogin = React.createClass({
 
     this.props.main.showGame();
     
-    setName();
-    setRoom();
-    //showChat();
-    //initUserList(data);
-
     window.client.start(rid);
   }
 });
