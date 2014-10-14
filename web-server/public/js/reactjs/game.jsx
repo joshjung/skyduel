@@ -5,7 +5,9 @@ var rjGame = React.createClass({
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-4">
-            <img src="/images/skyduelLogo350.png" />
+            <a href="/">
+              <img src="/images/skyduelLogo350.png" />
+            </a>
           </div>
         </div>
         <div className="row">
