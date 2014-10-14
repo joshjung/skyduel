@@ -26,19 +26,28 @@ LatencyAnalyzer.prototype = {
   get latency() {
     // Returns a weighted average latency.
     // Item at ix 0 has weight of 1 and item at ix length has weight of length.
-    var latTot = 0,
-      tot = 0;
+    var _latency = 0, perc = 0;
 
-    this.stack.forEach(function (lat, ix, arr) {
-      latTot += lat * (ix+1);
-      tot += (ix+1);
+    var weights = [0.33];
+
+    for (var i = 0; i < this.stack.length; i++)
+    {
+      perc += weights[i];
+      weights[i+1] = weights[i] * 0.6666;
+    }
+
+    weights[0] += 1.0 - perc;
+    perc += 1.0 - perc;
+    weights.reverse();
+
+    this.stack.forEach(function (l, i) {
+      _latency += l * weights[i];
     });
 
-    var val = tot ? latTot / tot : 1;
     if (this.debug)
-          console.log('LATENCY', val);
+      console.log('LATENCY', _latency);
 
-    return val;
+    return _latency;
   },
   get now() {
     return (new Date()).getTime();
@@ -58,8 +67,8 @@ LatencyAnalyzer.prototype = {
   push: function(latency) {
     this.stack.push(latency);
 
-    if (this.stack.length > this.maxStackLength)
-      this.stack.unshift();
+    while (this.stack.length > this.maxStackLength)
+      this.stack.shift();
   },
   reset: function () {
     this.stack = [];

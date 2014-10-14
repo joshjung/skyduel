@@ -12,6 +12,12 @@ var GameObject = module.exports = JClass.extend({
   /*======================*\
    * Properties
   \*======================*/
+  stateSetProps: function() {
+    return [];
+  },
+  stateGetProps: function() {
+    return ['_id'];
+  },
   setParent: function(value) {
     this._parent = value;
   },
