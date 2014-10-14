@@ -19,7 +19,9 @@ LatencyAnalyzer.prototype = {
   \*===========================*/
   stack: [],
   maxStackLength: LATENCY_ANALYZER_DEFAULT_MAX,
-  lastTestTime: undefined,
+  lastTestTime: {},
+  lastLatencySampleTime: -1,
+  latencySample: -1,
   /*===========================*\
    * Properties
   \*===========================*/
@@ -55,13 +57,16 @@ LatencyAnalyzer.prototype = {
   /*===========================*\
    * Methods
   \*===========================*/
-  startTest: function () {
-    this.lastTestTime = this.now;
+  startTest: function (key) {
+    this.lastTestTime[key] = this.now;
   },
-  endTest: function () {
-    var elapsed = this.now - this.lastTestTime;
+  endTest: function (key) {
+    var elapsed = this.now - this.lastTestTime[key];
+    delete this.lastTestTime[key];
+
     if (this.debug)
       console.log('LATENCY', this.latency);
+
     this.push(elapsed);
   },
   push: function(latency) {
@@ -69,6 +74,12 @@ LatencyAnalyzer.prototype = {
 
     while (this.stack.length > this.maxStackLength)
       this.stack.shift();
+
+    if (this.lastLatencySampleTime == -1 || this.now - this.lastLatencySampleTime > 2000)
+    {
+      this.latencySample = this.latency;
+      this.lastLatencySampleTime = this.now;
+    }
   },
   reset: function () {
     this.stack = [];

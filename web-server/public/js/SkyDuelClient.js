@@ -107,8 +107,13 @@ SkyDuelClient.prototype = {
   },
   //SCStateManager Interface
   updateServer: function (userInputState) {
-    this.latencyAnalyzer.startTest();
-    pomelo.request('skyduel.skyduelHandler.userInput', this.userInput, this.socket_updateServerResponseHandler.bind(this));
+    var key = (Math.random() * 9999999).toString(16);
+
+    this.latencyAnalyzer.startTest(key);
+
+    pomelo.request('skyduel.skyduelHandler.userInput',
+      this.userInput,
+      this.socket_updateServerResponseHandler.bind(this, key));
   },
   setupStartState: function(state) {
     console.log('Initial world state', state.world);
@@ -148,8 +153,8 @@ SkyDuelClient.prototype = {
       this.scStateManager.newServerState = data;
     }
   },
-  socket_updateServerResponseHandler: function (data) {
-    this.latencyAnalyzer.endTest();
+  socket_updateServerResponseHandler: function (key, data) {
+    this.latencyAnalyzer.endTest(key);
   }
 };
 

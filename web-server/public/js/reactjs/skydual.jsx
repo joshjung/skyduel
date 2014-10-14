@@ -58,7 +58,7 @@ var rjSkyduel = React.createClass({
       window.client.txtAmmo.text = 'Ammo: ' + window.client.player.ammo;
       window.client.txtKills.text = 'Kills: ' + Math.round(window.client.player.kills);
       window.client.txtDeaths.text = 'Deaths: ' + window.client.player.deaths;
-      window.client.txtLatency.text = 'Latency: ' + Math.round(window.client.latencyAnalyzer.latency);
+      window.client.txtLatency.text = 'Latency: ' + Math.round(window.client.latencyAnalyzer.latencySample);
     }
   },
   /*=============================*\
