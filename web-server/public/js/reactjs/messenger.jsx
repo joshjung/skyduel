@@ -1,6 +1,9 @@
 /** @jsx React.DOM */
 var rjMessenger = React.createClass({
   componentDidMount: function () {
+    this.lastInputTime = undefined;
+    this.relinquishKeyboardTimeout = 0;
+
     this.history = '<h1>Welcome to Skyduel!!</h1>';
 
     pomelo.on('message', this.pomelo_messageHandler.bind(this));
@@ -53,6 +56,17 @@ var rjMessenger = React.createClass({
     this.props.main.showLogin();
   },
   iChat_keyPressHandler: function(e) {
+    this.lastInputTime = (new Date()).getTime();
+
+    window.client.stopKeyboard();
+
+    if (this.relinquishKeyboardTimeout)
+      clearTimeout(this.relinquishKeyboardTimeout)
+
+    this.relinquishKeyboardTimeout = setTimeout(function () {
+      window.client.startKeyboard();
+    }, 1000);
+
     if (e.keyCode != 13)
       return;
 

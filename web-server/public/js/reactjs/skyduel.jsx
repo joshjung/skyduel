@@ -22,7 +22,7 @@ var rjSkyduel = React.createClass({
           </div>
         </div>
         <div className="instructions">
-          Fly: [Arrow Keys]. Shoot: [Control]
+          Fly: [Arrow Keys]. Shoot: [Space]
         </div>
       </div>
     );
@@ -54,10 +54,6 @@ var rjSkyduel = React.createClass({
   updateText: function () {
     if (window.client.player)
     {
-      window.client.txtHealth.text = 'Health: ' + Math.round(window.client.player.health) + '%';
-      window.client.txtAmmo.text = 'Ammo: ' + window.client.player.ammo;
-      window.client.txtKills.text = 'Kills: ' + Math.round(window.client.player.kills);
-      window.client.txtDeaths.text = 'Deaths: ' + window.client.player.deaths;
       window.client.txtLatency.text = 'Latency: ' + Math.round(window.client.latencyAnalyzer.latencySample);
     }
   },
@@ -82,20 +78,10 @@ var rjSkyduel = React.createClass({
     var style1 =  { font: "22px Arial", fill: "#111111", align: "center" };
     var style2 =  { font: "12px Arial", fill: "#111111", align: "right" };
     
-    window.client.txtHealth = this.phaser.add.text(5, 5, 'Health: 100%', style1);
-    window.client.txtAmmo = this.phaser.add.text(5, 25, 'Ammo: 100', style1);
-    window.client.txtKills = this.phaser.add.text(5, 45, 'Kills: 0', style1);
-    window.client.txtDeaths = this.phaser.add.text(5, 65, 'Deaths: 0', style1);
     window.client.txtLatency = this.phaser.add.text(5, 580, 'Latency: -1', style2);
 
-    window.client.gText.add(window.client.txtHealth);
-    window.client.gText.add(window.client.txtAmmo);
-    
-    window.client.input.up = this.phaser.input.keyboard.addKey(Phaser.Keyboard.UP);
-    window.client.input.down = this.phaser.input.keyboard.addKey(Phaser.Keyboard.DOWN);
-    window.client.input.left = this.phaser.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-    window.client.input.right = this.phaser.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-    window.client.input.trigger = this.phaser.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
+    window.client.phaser = this.phaser;
+    window.client.startKeyboard();
   },
   phaser_updateHandler: function (e) {
     if (window.client.started)
