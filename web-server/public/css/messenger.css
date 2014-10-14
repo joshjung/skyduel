@@ -43,3 +43,13 @@
 .player-name {
   float:left;
 }
+
+.player-health-wrapper {
+  margin-left:10px;
+  margin-right: 10px;
+  width:52px;
+  height:16px;
+  padding:1px;
+  background-color: #000000;
+  display: inline-block;
+}

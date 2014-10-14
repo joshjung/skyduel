@@ -101,6 +101,7 @@ SkyDuelServer.prototype = {
         color: player.color,
         colorHex: player.getColorHex(),
         kills: player.kills,
+        health: player.health,
         deaths: player.deaths})
     });
     return ret;

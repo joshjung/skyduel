@@ -18,6 +18,8 @@ var rjLogin = React.createClass({
   \*==================================================*/
   componentDidMount: function () {
     $(this.refs.loginUser.getDOMNode()).val(mockUserNames[Math.floor(Math.random() * mockUserNames.length)]);
+    $(this.refs.loginUser.getDOMNode()).keypress(this.loginUser_keyPressHandler);
+    $(this.refs.loginUser.getDOMNode()).focus();
     $(this.refs.channel.getDOMNode()).val('chan');
 
     $(this.refs.loginError.getDOMNode()).hide();
@@ -39,7 +41,7 @@ var rjLogin = React.createClass({
             <div className="float-right">
               <button className="btn btn-lg btn-primary" onClick={this.login_clickHandler}>Join game...</button>
             </div>
-            <input id="loginUser" ref="loginUser" type="text" placeholder="Username" />
+            <input id="loginUser" ref="loginUser" type="text" placeholder="Username" autofocus />
             <input id="channelList" ref="channel" name="channels" type="text" placeholder="Channel" />
            </div>
             <div id="loginError" ref="loginError"/>
@@ -137,5 +139,11 @@ var rjLogin = React.createClass({
     }
 
     this.showError('Could not connect to the server. Please try again shortly. ' + reasonDetail);
+  },
+  loginUser_keyPressHandler: function(e) {
+    if (e.keyCode != 13)
+      return;
+
+    this.login_clickHandler(e);
   }
 });
