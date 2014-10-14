@@ -15,14 +15,14 @@ var rjSkyduel = React.createClass({
   },
   render: function() {
     return (
-      <div className="container-fluid">
-        <div className="row">
-          <div id="dPhaserWrapperOutput" className="col-sm-6 col-md-8 col-md-offset-2">
+      <div className="panel">
+        <div>
+          <div id="dPhaserWrapperOutput">
             <div id="dPhaserOutput"/>
           </div>
         </div>
-        <div className="row" className="instructions">
-          Fly: [Arrow Keys]. Shoot: [Space]
+        <div className="instructions">
+          Fly: [Arrow Keys]. Shoot: [Control]
         </div>
       </div>
     );
@@ -95,7 +95,7 @@ var rjSkyduel = React.createClass({
     window.client.input.down = this.phaser.input.keyboard.addKey(Phaser.Keyboard.DOWN);
     window.client.input.left = this.phaser.input.keyboard.addKey(Phaser.Keyboard.LEFT);
     window.client.input.right = this.phaser.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-    window.client.input.trigger = this.phaser.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    window.client.input.trigger = this.phaser.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
   },
   phaser_updateHandler: function (e) {
     if (window.client.started)

@@ -1,6 +1,7 @@
 var pomelo = require('pomelo'),
   routeUtil = require('./app/util/routeUtil'),
-  SkyDuelServer = require('./app/main/SkyDuelServer');
+  SkyDuelServer = require('./app/main/SkyDuelServer'),
+  MessagingService = require('./app/main/MessagingService');
 
 var app = pomelo.createApp();
 
@@ -25,6 +26,7 @@ app.configure('production|development', 'gate', function() {
 });
 
 app.configure('production|development', 'skyduel', function() {
+  app.set('messagingService', new MessagingService(app));
   app.set('skyduelServer', new SkyDuelServer(app));
 });
 

@@ -1,7 +1,10 @@
 /** @jsx React.DOM */
 var GATE_PORT = 3080,
   GATE_HOST = window.location.hostname,
-  USERNAME_REGEX = /^[a-zA-Z0-9_\u4e00-\u9fa5]+$/;
+  USERNAME_REGEX = /^[a-zA-Z0-9_\u4e00-\u9fa5]+$/,
+  mockUserNames = ['balloon_buster', 'bam', 'bird', 'black_swallow', 'blackie','buck',
+  'cowboy', 'demon_of_rabaul', 'drunken_duncan', 'flying_knight', 'hawkeye', 'little_dragon', 'moose', 'mad_major',
+  'petit_rouge', 'pyker', 'red_baron', 'the_red_baron', 'red_knight', 'robin', 'snow_eagle', 'tiger_tim', 'timbertoes', 'wiggly_wings', 'white_eagle', 'wrong_way'];
 
 /**========================================================================*\
  * Login Process:
@@ -14,25 +17,31 @@ var rjLogin = React.createClass({
    * Methods
   \*==================================================*/
   componentDidMount: function () {
-    $(this.refs.loginUser.getDOMNode()).val('user' + Math.round(Math.random() * 100));
+    $(this.refs.loginUser.getDOMNode()).val(mockUserNames[Math.floor(Math.random() * mockUserNames.length)]);
     $(this.refs.channel.getDOMNode()).val('chan');
 
     $(this.refs.loginError.getDOMNode()).hide();
     $(this.refs.login.getDOMNode()).show();
+
+    pomelo.on('disconnect', this.pomelo_disconnectHandler.bind(this));
   },
   render: function() {
     return (
       <div className="container-fluid"  ref="login">
         <div className="row">
-          <section id="loginView" className="col-sm-6 col-md-4 col-md-offset-4">
-            <h1 id="loginTitle" className="text-center login-title">SkyDuel</h1>
-            <div className="account-wall">
-             <div className="form-signin">
-              <input id="loginUser" ref="loginUser" type="text" placeholder="Username" />
-              <input id="channelList" ref="channel" name="channels" type="text" placeholder="Channel" />
-              <button className="btn btn-lg btn-primary btn-block" onClick={this.login_clickHandler}>Sign in</button>
-             </div>
+          <div className="col-md-4 col-md-offset-2">
+            <img src="/images/skyduelLogo800.png" />
+          </div>
+        </div>
+        <div className="row">
+          <section id="loginView" className="col-sm-7 col-md-7 col-md-offset-2 panel">
+           <div className="form-signin">
+            <div className="float-right">
+              <button className="btn btn-lg btn-primary" onClick={this.login_clickHandler}>Join game...</button>
             </div>
+            <input id="loginUser" ref="loginUser" type="text" placeholder="Username" />
+            <input id="channelList" ref="channel" name="channels" type="text" placeholder="Channel" />
+           </div>
             <div id="loginError" ref="loginError"/>
           </section>
         </div>
@@ -112,5 +121,15 @@ var rjLogin = React.createClass({
     this.props.main.showGame();
     
     window.client.start(rid);
+  },
+  pomelo_disconnectHandler: function (reason) {
+    var reasonDetail = '';
+
+    if (reason.type == 'close')
+    {
+      reasonDetail = 'Socket connection was closed. Server is probably down temporarily.';
+    }
+
+    this.showError('Could not connect to the server. Please try again shortly. ' + reasonDetail);
   }
 });

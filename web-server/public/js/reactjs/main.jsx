@@ -2,13 +2,11 @@
 var rjMain = React.createClass({
   showLogin: function() {
     $(this.refs.login.getDOMNode()).show();
-
-    $(this.refs.chat.getDOMNode()).hide();
-    $(this.refs.skyduel.getDOMNode()).hide();
+    $(this.refs.game.getDOMNode()).hide();
   },
   showGame: function () {
-    $(this.refs.chat.getDOMNode()).show();
-    $(this.refs.skyduel.getDOMNode()).show();
+    $(this.refs.login.getDOMNode()).hide();
+    $(this.refs.game.getDOMNode()).show();
   },
   componentDidMount: function() {
     this.showLogin();
@@ -16,9 +14,9 @@ var rjMain = React.createClass({
   render: function() {
     return (
       <div id = "app">
+        
         <rjLogin ref="login" main={this} />
-        <rjSkyduel ref="skyduel" main={this} />
-        <rjChat ref="chat" main={this} />
+        <rjGame ref="game" main={this} />
       </div>);
   }
 });

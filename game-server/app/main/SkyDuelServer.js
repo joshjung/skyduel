@@ -24,6 +24,8 @@ var FPS = 30,
 var SkyDuelServer = function(app) {
   this.app = app;
 
+  this.messaging = app.get('messagingService');
+
   this.world = new World();
 
   this.id = 'sid:' + Math.round(Math.random() * 100).toString(16) + ':' + process.pid;
