@@ -169,7 +169,7 @@ SkyDuelServer.prototype = {
     // Elapsed is 0.0-0.2 seconds.
     this.elapsed =  (this.now - this.lastTime) / 1000.0;
     this.lastTime = this.now;
-    this.elapsed = (this.elapsed > 0.2 ? 0.2 : this.elapsed);
+    this.elapsed = (this.elapsed > 0.3 ? 0.3 : this.elapsed);
 
     this.update(this.elapsed);
 
