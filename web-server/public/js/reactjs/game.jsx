@@ -4,10 +4,15 @@ var rjGame = React.createClass({
     return (
       <div className="container-fluid">
         <div className="row">
-          <div className="col-sm-8 col-md-9 col-lg-8 game-panel">
+          <div className="col-md-4">
+            <img src="/images/skyduelLogo350.png" />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-sm-8 col-md-8 col-lg-8 game-panel">
             <rjSkyduel main={this.props.main} />
           </div>
-          <div className="col-sm-4 col-md-3 col-lg-4">
+          <div className="col-sm-3 col-md-3 col-lg-3">
             <rjMessenger main={this.props.main} />
           </div>
         </div>

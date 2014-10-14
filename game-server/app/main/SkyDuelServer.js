@@ -16,8 +16,39 @@ var FPS = 30,
   /**
    * How many seconds to wait to update the clients with data.
    */
-  CLIENT_UPDATE_INTERVAL = 0.033;
-
+  CLIENT_UPDATE_INTERVAL = 0.033,
+  PLAYER_COLORS = [
+    {
+      used: false,
+      color: 0xff8080
+    },{
+      used: false,
+      color: 0x78bef0
+    },{
+      used: false,
+      color: 0xded16f
+    },{
+      used: false,
+      color: 0xcc66c9
+    },{
+      used: false,
+      color: 0x5dbaac
+    },{
+      used: false,
+      color: 0xf2a279
+    },{
+      used: false,
+      color: 0x7182e3
+    },{
+      used: false,
+      color: 0x92d169
+    },{
+      used: false,
+      color: 0xbf607c
+    },{
+      used: false,
+      color: 0x7cddf7
+    }];
 /*===================================================*\
  * SkyDuelServer()
 \*===================================================*/
@@ -59,6 +90,21 @@ SkyDuelServer.prototype = {
 
     setInterval(this.updateInternal.bind(this), 1000 / FPS);
   },
+  getPlayers: function () {
+    var self = this;
+    var ret = [];
+    this.world.players.all.forEach(function (player) {
+      ret.push({
+        uid: player.uid,
+        username: player.uid.split('*')[0],
+        id: player._id,
+        color: player.color,
+        colorHex: player.getColorHex(),
+        kills: player.kills,
+        deaths: player.deaths})
+    });
+    return ret;
+  },
   generateWorld: function() {
     this.world.setState({
       width: 800,
@@ -89,8 +135,24 @@ SkyDuelServer.prototype = {
 
     console.log('Adding player with id', this.lastPlayerId);
     var player = new Player(this.world, 'player' + ( this.lastPlayerId++), session.uid);
+    player.color = this.getAvailablePlayerColor(session.uid);
+    player.messaging = this.messaging;
     this.world.players.add(player);
     this.world.getChildren().add(player);
+  },
+  getAvailablePlayerColor: function (uid) {
+    var ret = false,self= this;
+    for (var i = 0; i <PLAYER_COLORS.length;i++)
+    {
+      var col = PLAYER_COLORS[i];
+      if (!self.world.players.has(col.usedBy))
+      {
+        PLAYER_COLORS[i].usedBy = uid;
+        ret = col.color;
+        break;
+      }
+    }
+    return ret;
   },
   updateClients: function() {
     var channel = this.app.get('channelService').getChannel(this.rid, false);
@@ -139,6 +201,7 @@ SkyDuelServer.prototype = {
   kickByUid: function (uid) {
     console.log('This user was kicked!', uid);
 
+    this.world.players.removeByKey(uid);
     this.world.getChildren().get(uid).destroy();
   },
   /*============================*\
@@ -159,6 +222,7 @@ Object.defineProperty(SkyDuelServer.prototype, 'state', {
   get: function() {
     return {
       time: (new Date()).getTime(),
+      players: this.getPlayers(),
       world: this.world.getState()
     };
   }

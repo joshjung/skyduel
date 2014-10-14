@@ -34,20 +34,22 @@ Plane.prototype.displayStatusRing = function(isPlayer, health) {
   var ratio = (health / 100.0);
 
   this.statusRing.clear();
-  this.statusRing.lineStyle(3.0, 0x3beb72, 1.0 * ratio);
+  this.statusRing.lineStyle(3.0, this.tint, 1.0 * ratio);
 
   this.statusRing.arc(0, 0, 20.0, -(Math.PI/4) * ratio, (Math.PI / 4) * ratio ); 
 
-  this.statusRing.lineStyle(1.0, 0x3beb72, 0.8);
-
   if (isPlayer)
-    this.statusRing.drawCircle(0, 0, 25); 
+  {
+    this.statusRing.lineStyle(1.0, this.tint, 0.8);
+    this.statusRing.drawCircle(0, 0, 25, this.tint); 
+  }
 };
 
 Plane.prototype.updateWithModel = function(model) {
   this.x = model.x;
   this.y = model.y;
   this.angle = model.angle * 57.2957795;
+  this.tint = model.color;
 
   if (model.bank < 0)
     this.airplane.frame = 2;

@@ -36,7 +36,8 @@ var Player = GameObject.extend({
       destroyed: this.destroyed,
       children: this.getChildrenState(),
       kills: this.kills,
-      deaths: this.deaths
+      deaths: this.deaths,
+      color: this.color
     };
   },
   setState: function(value) {
@@ -63,6 +64,9 @@ var Player = GameObject.extend({
     this.destroyed = value.destroyed;
     this.kills = value.kills;
     this.deaths = value.deaths;
+    this.color = value.color;
+
+    this.messaging = undefined;
 
     this.setChildrenState(value.children);
   },
@@ -94,6 +98,7 @@ var Player = GameObject.extend({
       fireVelocity: 500
     };
 
+    this.color = 0xFFFFFF;
     this.x = 400;
     this.y = 400;
     this.bank = 0;
@@ -170,6 +175,19 @@ var Player = GameObject.extend({
       this.sprite = null;
     }
   },
+  getUsername: function () {
+    return this.uid.split('*')[0];
+  },
+  getColorHex: function () {
+    return this.componentToHex(this.color);
+  },
+  componentToHex: function(c) {
+      var hex = c.toString(16);
+      return hex.length == 1 ? "0" + hex : hex;
+  },
+  getUsernameHTML: function () {
+    return '<span style=\'color:#' + this.getColorHex() + '\'>' + this.getUsername() + '</span>';
+  },
   hit: function (projectile, distance) {
     if (projectile.getParent() == this)
       return;
@@ -181,6 +199,13 @@ var Player = GameObject.extend({
     {
       projectile.getParent().kills++;
       this.deaths++;
+
+      if (this.messaging)
+      {
+        var insults = ['humiliated', 'embarrassed', 'mortified', 'humbled', 'shamed', 'disgraced', 'chastened', 'deflated', 'squashed', 'abased', 'demeaned', 'degraded', 'demoted', 'belittled'];
+        var ranInsult = insults[Math.floor(Math.random() * insults.length)];
+        this.messaging.send('SKYDUEL', projectile.getParent().getUsernameHTML() + ' ' + ranInsult + ' ' + this.getUsernameHTML() + '!');
+      }
     }
   }
 });

@@ -1,18 +1,27 @@
+#messenger {
+  width:100%;
+}
+
 #messenger .input {
   width:100%;
 }
 
-#messenger #history {
-  height:300px;
+#messenger #history,
+#messenger #players {
   width:100%;
 
+  color:#FFF;
   margin-bottom:5px;
   padding: 10px;
-  background: rgba(230,230,230, 0.75);
+  background: rgba(30,30,30, 0.75);
   border-radius:10px;
   -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+#messenger #history {
+  height:400px;
 }
 
 #messenger input {
@@ -22,4 +31,15 @@
 #messenger .line {
   height:1px;
   border:1px solid #000;
+}
+
+.player {
+  height:24px;
+}
+.player-score {
+  float:right;
+}
+
+.player-name {
+  float:left;
 }

@@ -29,12 +29,12 @@ var rjLogin = React.createClass({
     return (
       <div className="container-fluid"  ref="login">
         <div className="row">
-          <div className="col-md-4 col-md-offset-2">
+          <div className="col-md-4 col-md-offset-1">
             <img src="/images/skyduelLogo800.png" />
           </div>
         </div>
         <div className="row">
-          <section id="loginView" className="col-sm-7 col-md-7 col-md-offset-2 panel">
+          <section id="loginView" className="col-sm-7 col-md-7 col-md-offset-1 panel">
            <div className="form-signin">
             <div className="float-right">
               <button className="btn btn-lg btn-primary" onClick={this.login_clickHandler}>Join game...</button>
@@ -114,7 +114,8 @@ var rjLogin = React.createClass({
   },
   connector_enterResponseHandler: function (data) {
     if (data.error) {
-      this.showError(DUPLICATE_ERROR);
+      this.showError('A player already exists with that name! Choose a different one.');
+      $(this.refs.loginUser.getDOMNode()).val(mockUserNames[Math.floor(Math.random() * mockUserNames.length)]);
       return;
     }
 

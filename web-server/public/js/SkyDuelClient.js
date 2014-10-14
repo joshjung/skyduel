@@ -34,6 +34,7 @@ SkyDuelClient.prototype = {
   input: {},
   player: undefined,
   errorText: undefined,
+  playerMetaData: [],
   /*===========================*\
    * Properties
   \*===========================*/
@@ -41,6 +42,7 @@ SkyDuelClient.prototype = {
     return {};
   },
   set state(value) {
+    this.playerMetaData = value.players;
     this.world.setState(value.world);
   },
   get userInput() {
