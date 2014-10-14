@@ -60,6 +60,7 @@ SkyDuelClient.prototype = {
   startKeyboard: function () {
     console.log('Starting Keyboard Input');
 
+    this.input.up = this.phaser.input.keyboard.addKey(Phaser.Keyboard.UP);
     this.input.down = this.phaser.input.keyboard.addKey(Phaser.Keyboard.DOWN);
     this.input.left = this.phaser.input.keyboard.addKey(Phaser.Keyboard.LEFT);
     this.input.right = this.phaser.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
@@ -71,6 +72,7 @@ SkyDuelClient.prototype = {
     
     console.log('Stopping Keyboard Input');
 
+    this.phaser.input.keyboard.removeKey(Phaser.Keyboard.UP);
     this.phaser.input.keyboard.removeKey(Phaser.Keyboard.DOWN);
     this.phaser.input.keyboard.removeKey(Phaser.Keyboard.LEFT);
     this.phaser.input.keyboard.removeKey(Phaser.Keyboard.RIGHT);
