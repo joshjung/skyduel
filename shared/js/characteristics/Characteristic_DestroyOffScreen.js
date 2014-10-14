@@ -1,14 +1,9 @@
+var CharacteristicBase = require('./CharacteristicBase');
+
 /*===================================================*\
  * Characteristic_DestroyOffScreen()
 \*===================================================*/
-var Characteristic_DestroyOffScreen = function(options) {
-  this.options = options;
-};
-
-/*===================================================*\
- * Prototype
-\*===================================================*/
-Characteristic_DestroyOffScreen.prototype = {
+var Characteristic_DestroyOffScreen = CharacteristicBase.extend({
   /*=========================*\
    * Methods
   \*=========================*/
@@ -17,7 +12,7 @@ Characteristic_DestroyOffScreen.prototype = {
     if (destroy)
       target.destroy();
   }
-};
+});
 
 /*===================================================*\
  * Export (nodejs and browser agent)

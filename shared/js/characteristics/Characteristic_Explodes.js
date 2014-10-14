@@ -1,23 +1,14 @@
-var PlanePart = require('../gameObjects/PlanePart');
+var CharacteristicBase = require('./CharacteristicBase'),
+  PlanePart = require('../gameObjects/PlanePart');
 
 /*===================================================*\
  * Characteristic_Explodes()
 \*===================================================*/
-var Characteristic_Explodes = function(options) {
-  this.options = options;
-};
-
-/*===================================================*\
- * Prototype
-\*===================================================*/
-Characteristic_Explodes.prototype = {
+var Characteristic_Explodes = CharacteristicBase.extend({
   /*=========================*\
    * Methods
   \*=========================*/
-  applyTo: function (target, elapsed, cache) {
-    if (typeof isClient === 'undefined' || isClient)
-      return;
-
+  applyToServerOnly: function (target, elapsed, cache) {
     if (target.health <= 0 && !target.exploded)
     {
       target.exploded = true;
@@ -32,7 +23,7 @@ Characteristic_Explodes.prototype = {
       target.world.getChildren().add(part);
     }
   }
-};
+});
 
 /*===================================================*\
  * Export (nodejs and browser agent)

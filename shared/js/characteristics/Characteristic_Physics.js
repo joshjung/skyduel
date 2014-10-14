@@ -1,14 +1,9 @@
+var CharacteristicBase = require('./CharacteristicBase');
+
 /*===================================================*\
  * Characteristic_Physics()
 \*===================================================*/
-var Characteristic_Physics = function(options) {
-  this.options = options;
-};
-
-/*===================================================*\
- * Prototype
-\*===================================================*/
-Characteristic_Physics.prototype = {
+var Characteristic_Physics = CharacteristicBase.extend({
   /*=========================*\
    * Methods
   \*=========================*/
@@ -50,7 +45,7 @@ Characteristic_Physics.prototype = {
 
     return res;
   }
-};
+});
 
 /*===================================================*\
  * Export (nodejs and browser agent)

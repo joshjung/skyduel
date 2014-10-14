@@ -1,14 +1,9 @@
+var CharacteristicBase = require('./CharacteristicBase');
+
 /*===================================================*\
  * Characteristic_ScreenWrapping()
 \*===================================================*/
-var Characteristic_ScreenWrapping = function(options) {
-  this.options = options;
-};
-
-/*===================================================*\
- * Prototype
-\*===================================================*/
-Characteristic_ScreenWrapping.prototype = {
+var Characteristic_ScreenWrapping = CharacteristicBase.extend({
   /*=========================*\
    * Methods
   \*=========================*/
@@ -18,7 +13,7 @@ Characteristic_ScreenWrapping.prototype = {
     target.y = target.y < 0 ? this.options.height : target.y;
     target.y = target.y > this.options.height ? target.y % this.options.height : target.y;
   }
-};
+});
 
 /*===================================================*\
  * Export (nodejs and browser agent)

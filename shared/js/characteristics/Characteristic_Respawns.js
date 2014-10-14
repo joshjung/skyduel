@@ -1,20 +1,21 @@
+var CharacteristicBase = require('./CharacteristicBase');
+
 /*===================================================*\
  * Characteristic_Respawns()
 \*===================================================*/
-var Characteristic_Respawns = function(options) {
-  this.options = options;
+var Characteristic_Respawns = CharacteristicBase.extend({
+  /*=========================*\
+   * Constructor
+  \*=========================*/
+  init: function(options) {
+    this._super(options);
 
-  // Default 5.0 second respawn if none provided
-  this.options.RESPAWN_TIME = this.options.RESPAWN_TIME || 5000;
-  // Default 5.0 second respawn if none provided
-  this.options.RESPAWN_LOCATION = this.options.RESPAWN_LOCATION || 'random';
-  this.options.RESPAWN_ORIENTATION = this.options.RESPAWN_ORIENTATION || 'random';
-};
-
-/*===================================================*\
- * Prototype
-\*===================================================*/
-Characteristic_Respawns.prototype = {
+    // Default 5.0 second respawn if none provided
+    this.options.RESPAWN_TIME = this.options.RESPAWN_TIME || 5000;
+    // Default 5.0 second respawn if none provided
+    this.options.RESPAWN_LOCATION = this.options.RESPAWN_LOCATION || 'random';
+    this.options.RESPAWN_ORIENTATION = this.options.RESPAWN_ORIENTATION || 'random';
+  },
   /*=========================*\
    * Methods
   \*=========================*/
@@ -31,7 +32,7 @@ Characteristic_Respawns.prototype = {
   respawnHandler: function (target) {
     target.respawn();
   }
-};
+});
 
 /*===================================================*\
  * Export (nodejs and browser agent)

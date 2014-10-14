@@ -1,4 +1,5 @@
-var Characteristic_Physics = require('./Characteristic_Physics');
+var CharacteristicBase = require('./CharacteristicBase'),
+  Characteristic_Physics = require('./Characteristic_Physics');
 
 /*===================================================*\
  * Math Bullshit
@@ -20,17 +21,16 @@ function distToSegment(p, v, w) { return Math.sqrt(distToSegmentSquared(p, v, w)
 /*===================================================*\
  * Characteristic_Collides()
 \*===================================================*/
-var Characteristic_Collides = function(options) {
-  this.options = options;
-  // These are the keys of the world objects that the this object can collide with!
-  this.options.keys = this.options.keys || ['player', 'bird'];
-};
-
-/*===================================================*\
- * Prototype
-\*===================================================*/
-Characteristic_Collides.prototype = {
+var Characteristic_Collides = CharacteristicBase.extend({
   tempPhysics: new Characteristic_Physics(),
+  /*=========================*\
+   * Constructor
+  \*=========================*/
+  init: function(options) {
+    this.options = options;
+    // These are the keys of the world objects that the this object can collide with!
+    this.options.keys = this.options.keys || ['player', 'bird'];
+  },
   /*=========================*\
    * Methods
   \*=========================*/
@@ -52,7 +52,7 @@ Characteristic_Collides.prototype = {
       }
     });
   }
-};
+});
 
 /*===================================================*\
  * Export (nodejs and browser agent)

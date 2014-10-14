@@ -1,16 +1,10 @@
-var Smoke = require('../gameObjects/Smoke');
+var CharacteristicBase = require('./CharacteristicBase'),
+  Smoke = require('../gameObjects/Smoke');
 
 /*===================================================*\
  * Characteristic_Smokes()
 \*===================================================*/
-var Characteristic_Smokes = function(options) {
-  this.options = options;
-};
-
-/*===================================================*\
- * Prototype
-\*===================================================*/
-Characteristic_Smokes.prototype = {
+var Characteristic_Smokes = CharacteristicBase.extend({
   /*=========================*\
    * Methods
   \*=========================*/
@@ -39,7 +33,7 @@ Characteristic_Smokes.prototype = {
   smokeFadeHandler: function (target) {
     target.smokes--;
   }
-};
+})
 
 /*===================================================*\
  * Export (nodejs and browser agent)
