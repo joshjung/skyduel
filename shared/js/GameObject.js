@@ -195,5 +195,12 @@ var GameObject = module.exports = JClass.extend({
   },
   destroy: function () {
     this.destroyed = true;
+  },
+  forEach: function (callback) {
+    this.getChildren().all.concat().forEach(function (child) {
+      child.forEach(callback);
+    });
+
+    callback.apply(this);
   }
 });

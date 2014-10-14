@@ -94,7 +94,9 @@ var rjLogin = React.createClass({
     }, this.gateHandler_queryEntryResponseHandler.bind(this));
   },
   gateHandler_queryEntryResponseHandler: function (data) {
+    this.ignoreDisconnect= true;
     pomelo.disconnect();
+    this.ignoreDisconnect= false;
 
     if (data.code === 500) {
       this.showError(LOGIN_ERROR + ':' + data.reason);
@@ -123,6 +125,9 @@ var rjLogin = React.createClass({
     window.client.start(rid);
   },
   pomelo_disconnectHandler: function (reason) {
+    if (this.ignoreDisconnect)
+      return;
+
     var reasonDetail = '';
 
     if (reason.type == 'close')

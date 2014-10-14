@@ -29,3 +29,5 @@ node_modules
 
 # Raw assets
 psds
+
+web-server/public/js/browserify.bundle.js

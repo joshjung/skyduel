@@ -38,6 +38,17 @@ SCStateManager.prototype = {
   play: function () {
     this.intervalId = setInterval(this.intervalHandler.bind(this), this.frameTime);
   },
+  reset: function () {
+    this.pause();
+
+    this.userInputStates = [];
+    this.lastUpdateTimeEnd = undefined;
+    this.estServerTime = undefined;
+    this.lastServerState = undefined;
+    this.intervalId = undefined;
+    this.latency = 0;
+    this.lastSendToServerTime = 1000.0 / 30.0;
+  },
   pause: function () {
     if (this.intervalId)
       clearInterval(this.intervalId);

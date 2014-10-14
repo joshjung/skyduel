@@ -18,11 +18,9 @@ var FPS = 60,
  * SkyDuelClient()
 \*===================================================*/
 var SkyDuelClient = function() {
-  this.latencyAnalyzer = new LatencyAnalyzer();
-  this.scStateManager = new SCStateManager(60, this);
-  this.userInputProcessor = new UserInputProcessor();
+  this.resetAll();
 
-  this.world = new World();
+  pomelo.on('disconnect', this.pomelo_disconnectHandler.bind(this))
 };
 
 /*===================================================*\
@@ -57,6 +55,23 @@ SkyDuelClient.prototype = {
   /*===========================*\
    * Methods
   \*===========================*/
+  resetAll: function () {
+
+    if (this.scStateManager)
+      this.scStateManager.reset();
+
+    if (this.world)
+      this.world.forEach(function () {
+        console.log('destroying', this);
+        this.destroy();
+      });
+
+    this.latencyAnalyzer = new LatencyAnalyzer();
+    this.scStateManager = new SCStateManager(60, this);
+    this.userInputProcessor = new UserInputProcessor();
+
+    this.world = new World();
+  },
   latencyCheck: function (count, callback) {
     var self = this,
       i = 0;
@@ -155,6 +170,11 @@ SkyDuelClient.prototype = {
   },
   socket_updateServerResponseHandler: function (key, data) {
     this.latencyAnalyzer.endTest(key);
+  },
+  pomelo_disconnectHandler: function (reason) 
+  {
+    console.log('skyDuelClient: pomelo disconnected. Resetting everything.');
+    this.resetAll();
   }
 };
 
