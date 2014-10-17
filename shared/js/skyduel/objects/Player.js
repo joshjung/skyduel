@@ -1,7 +1,7 @@
 /*===================================================*\
  * Requirements
 \*===================================================*/
-var GameObject = require('../GameObject'),
+var GameObject = require('./GameObject'),
   Bullet = require('./Bullet'),
   Smoke = require('./Smoke'),
   playerCount = 0;
@@ -13,6 +13,18 @@ var Player = GameObject.extend({
   /*=========================*\
    * Properties
   \*=========================*/
+  getMetaData: function () {
+    return {
+        uid: player.uid,
+        username: player.uid.split('*')[0],
+        id: player._id,
+        color: player.color,
+        colorHex: player.getColorHex(),
+        kills: player.kills,
+        health: player.health,
+        deaths: player.deaths
+      };
+  },
   getState: function() {
     if (!this.inited)
       return {};
@@ -119,12 +131,12 @@ var Player = GameObject.extend({
 
     this.destroyed = false;
 
-    this.charManager.add(new (require('../characteristics/Characteristic_Smokes'))(this.GLOBALS));
-    this.charManager.add(new (require('../characteristics/Characteristic_Physics'))(this.GLOBALS));
-    this.charManager.add(new (require('../characteristics/Characteristic_ScreenWrapping'))(this.world));
-    this.charManager.add(new (require('../characteristics/Characteristic_ShootsBullets'))(this.bulletProps));
-    this.charManager.add(new (require('../characteristics/Characteristic_Explodes'))(this.GLOBALS));
-    this.charManager.add(new (require('../characteristics/Characteristic_Respawns'))(this.GLOBALS));
+    this.charManager.add(new (require('./characteristics/Characteristic_Smokes'))(this.GLOBALS));
+    this.charManager.add(new (require('./characteristics/Characteristic_Physics'))(this.GLOBALS));
+    this.charManager.add(new (require('./characteristics/Characteristic_ScreenWrapping'))(this.world));
+    this.charManager.add(new (require('./characteristics/Characteristic_ShootsBullets'))(this.bulletProps));
+    this.charManager.add(new (require('./characteristics/Characteristic_Explodes'))(this.GLOBALS));
+    this.charManager.add(new (require('./characteristics/Characteristic_Respawns'))(this.GLOBALS));
   },
   update: function (elapsed) {
     this._super(elapsed);

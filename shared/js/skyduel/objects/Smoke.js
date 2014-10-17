@@ -1,4 +1,4 @@
-var GameObject = require('../GameObject');
+var GameObject = require('./GameObject');
 
 /*===================================================*\
  * Smoke()
@@ -59,8 +59,6 @@ var Smoke = GameObject.extend({
     this.callback = callback;
 
     this.type = 'smoke';
-
-    //this.charManager.add(new (require('../characteristics/Characteristic_Physics'))(this.GLOBALS));
   },
   update:function (elapsed) {
     this._super(elapsed);

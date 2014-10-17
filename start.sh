@@ -6,10 +6,17 @@ pomelo kill --force
 echo '--------------Javascript Browserifying-------------'
 browserify -d browserify.me.js > web-server/public/js/browserify.bundle.js
 echo '-------------------Server NoHupping-----------------'
+if [ -z "$1" ]; then
+	ENV="development"
+else
+	ENV="$1"
+fi
 cd game-server
-nohup sh -c 'pomelo start -e production' > ../shared/log/game-server.log &
+CMD="pomelo start -e $ENV"
+echo "$CMD"
+nohup sh -c "$CMD" > ../shared/log/game-server.log &
 cd ../web-server
-nohup sh -c 'pomelo start -e production' > ../shared/log/web-server.log &
+nohup sh -c "$CMD" > ../shared/log/web-server.log &
 echo '-----------------------Waiting----------------------'
 sleep 5
 echo '-----------------------Catting-----------------------'

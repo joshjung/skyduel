@@ -1,4 +1,4 @@
-var GameObject = require('../GameObject');
+var GameObject = require('./GameObject');
 
 /*===================================================*\
  * PlanePart()
@@ -71,8 +71,8 @@ var PlanePart = GameObject.extend({
 
     this.type = 'planepart';
 
-    this.charManager.add(new (require('../characteristics/Characteristic_Physics'))(this.GLOBALS));
-    this.charManager.add(new (require('../characteristics/Characteristic_Smokes'))(this.GLOBALS));
+    this.charManager.add(new (require('./characteristics/Characteristic_Physics'))(this.GLOBALS));
+    this.charManager.add(new (require('./characteristics/Characteristic_Smokes'))(this.GLOBALS));
   },
   update:function (elapsed) {
     this._super(elapsed);

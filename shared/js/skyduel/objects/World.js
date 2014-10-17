@@ -1,9 +1,9 @@
-var GameObject = require('../GameObject'),
+var GameObject = require('./GameObject'),
   Bird = require('./Bird'),
   Smoke = require('./Smoke'),
   Player = require('./Player'),
   PlanePart = require('./PlanePart'),
-  HashArray = require('../lib/HashArray');
+  HashArray = require('../../lib/HashArray');
 
 /*===================================================*\
  * Bird()

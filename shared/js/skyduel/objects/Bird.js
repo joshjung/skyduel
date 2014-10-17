@@ -1,4 +1,4 @@
-var GameObject = require('../GameObject');
+var GameObject = require('./GameObject');
 
 /*===================================================*\
  * Bird()
@@ -64,8 +64,8 @@ var Bird = GameObject.extend({
       VELOCITY_MIN: Bird.velocity,
     };
 
-    this.charManager.add(new (require('../characteristics/Characteristic_Physics'))(this.GLOBALS));
-    this.charManager.add(new (require('../characteristics/Characteristic_ScreenWrapping'))(this.world));
+    this.charManager.add(new (require('./characteristics/Characteristic_Physics'))(this.GLOBALS));
+    this.charManager.add(new (require('./characteristics/Characteristic_ScreenWrapping'))(this.world));
     //this.charManager.add(new (require('../characteristics/Characteristic_Explodes'))(this.world));
   },
   update: function (elapsed) {

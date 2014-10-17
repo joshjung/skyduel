@@ -1,4 +1,4 @@
-var UserInputState = require('../../../shared/js/UserState');
+var UserInputState = require('./UserState');
 
 /*===================================================*\
  * SCStateManager()
@@ -35,6 +35,9 @@ SCStateManager.prototype = {
   /*===========================*\
    * Methods
   \*===========================*/
+  setServerState: function (value) {
+    this.lastServerState = value;
+  },
   play: function () {
     this.intervalId = setInterval(this.intervalHandler.bind(this), this.frameTime);
   },

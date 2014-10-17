@@ -1,7 +1,13 @@
+/*===================================================*\
+ * EntryHandler()
+\*===================================================*/
 var EntryHandler = function(app) {
   this.app = app;
 };
 
+/*===================================================*\
+ * Prototype
+\*===================================================*/
 EntryHandler.prototype = {
   enter: function(msg, session, next) {
     var self = this,
@@ -43,6 +49,9 @@ EntryHandler.prototype = {
   }
 };
 
+/*===================================================*\
+ * Module Exports
+\*===================================================*/
 module.exports = function(app) {
   return new EntryHandler(app);
 };
