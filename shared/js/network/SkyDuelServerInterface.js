@@ -12,7 +12,8 @@ var SERVER_TIMEOUT_MS = 10000;
 var SkyDuelServerInterface = function(client) {
   this.client = client;
   this.latencyAnalyzer = new LatencyAnalyzer();
-  this.client.pomelo.on('disconnect', this.pomelo_disconnectHandler.bind(this))
+  
+  pomelo.on('disconnect', this.pomelo_disconnectHandler.bind(this))
 };
 
 /*===================================================*\
@@ -95,4 +96,7 @@ SkyDuelServerInterface.prototype = {
   }
 };
 
-window.client = new SkyDuelClient();
+/*===================================================*\
+ * Export
+\*===================================================*/
+module.exports = SkyDuelServerInterface;

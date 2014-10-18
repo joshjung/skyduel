@@ -27,6 +27,6 @@ var rjPlayers = React.createClass({
     return (<div id="players">{playerList}</div>);
   },
   update: function () {
-    this.setState({players: window.client.playerMetaData});
+    this.setState({players: window.client.game.playerMetaData});
   }
 });

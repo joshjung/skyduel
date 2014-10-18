@@ -65,8 +65,6 @@ var GameControllerBase = module.exports = JClass.extend({
    * Constructor
   \*======================*/
   init: function () {
-    this.userInputProcessor = new UserInputProcessor(this);
-
     this.started = false;
     this.startTime = undefined;
 
@@ -86,6 +84,10 @@ var GameControllerBase = module.exports = JClass.extend({
   /*======================*\
    * Methods
   \*======================*/
+  setPhaser: function(phaser) {
+    this.userInputProcessor = new UserInputProcessor(this, phaser);
+    this.userInputProcessor.startKeyboard();
+  },
   applyUserAction: function(actions, elapsed) {
     this.player.bank = this.player.accelerater = 0;
     this.player.trigger = actions.has(UA.TRIGGER.id);

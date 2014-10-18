@@ -80,8 +80,7 @@ var rjSkyduel = React.createClass({
     
     window.client.txtLatency = this.phaser.add.text(5, 580, 'Latency: -1', style2);
 
-    window.client.phaser = this.phaser;
-    window.client.startKeyboard();
+    window.client.setPhaser(this.phaser);
   },
   phaser_updateHandler: function (e) {
     if (window.client.started)
