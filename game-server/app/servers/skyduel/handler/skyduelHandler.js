@@ -4,6 +4,7 @@
 var SkyDuelHandler = function(app) {
   this.app = app;
 
+  this.skyduelService = app.get('skyduelService');
   this.messaging = app.get('messagingService');
 };
 

@@ -48,7 +48,7 @@ SkyduelRemote.prototype = {
 
     channel.pushMessage(param);
 
-    this.service.kickByUid(uid);
+    this.service.kickSession(uid);
 
     callback();
   }

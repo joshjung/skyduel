@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": false,
   "dependencies": {
+    "dead-reckoning": "0.0.3",
     "jclass": "^0.2.5"
   }
 }

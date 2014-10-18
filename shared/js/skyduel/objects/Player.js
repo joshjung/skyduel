@@ -15,14 +15,14 @@ var Player = GameObject.extend({
   \*=========================*/
   getMetaData: function () {
     return {
-        uid: player.uid,
-        username: player.uid.split('*')[0],
-        id: player._id,
-        color: player.color,
-        colorHex: player.getColorHex(),
-        kills: player.kills,
-        health: player.health,
-        deaths: player.deaths
+        uid: this.uid,
+        username: this.uid.split('*')[0],
+        id: this._id,
+        color: this.color,
+        colorHex: this.getColorHex(),
+        kills: this.kills,
+        health: this.health,
+        deaths: this.deaths
       };
   },
   getState: function() {

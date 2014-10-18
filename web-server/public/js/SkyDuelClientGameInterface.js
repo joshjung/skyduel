@@ -20,6 +20,10 @@ var SkyDuelClientGameInterface = function() {
  * Prototype
 \*===================================================*/
 SkyDuelClientGameInterface.prototype = {
+  setUID: function (value) {
+    this.uid = value;
+    this.game.setUsername(value);
+  },
   /*===========================*\
    * Methods
   \*===========================*/

@@ -3,8 +3,10 @@
 \*===================================================*/
 var JClass = require('jclass'),
   World = require('../objects/World'),
+  Player = require('../objects/Player'),
   UA = require('../../input/SkyDuelUserActions'),
   HashArray = require('../../lib/HashArray'),
+  Util = require('../Util.js'),
   UserInputProcessor = require('../../input/SkyDuelUserInputProcessor');
 
 /*===================================================*\
@@ -53,7 +55,7 @@ var GameControllerBase = module.exports = JClass.extend({
     }
   },
   getPlayers: function () {
-    return this.world.getChildren().get('player');
+    return this.world.getChildren().getAsArray('player');
   },
   getPlayersMetaData: function () {
     return this.world.players.all.map(function (player) {
@@ -63,6 +65,10 @@ var GameControllerBase = module.exports = JClass.extend({
   getFPS: function () {
     return this.fps;
   },
+  setUsername: function (value) {
+    this.username = value;
+  },
+  
   /*======================*\
    * Constructor
   \*======================*/
@@ -118,17 +124,17 @@ var GameControllerBase = module.exports = JClass.extend({
 
     console.log('Adding player with id', this.server.lastPlayerId);
 
-    var player = new Player(this.world, 'player' + ( this.lastPlayerId++), session.uid);
-    player.color = this.getAvailablePlayerColor(session.uid);
+    var player = new Player(this.world, 'player' + ( this.lastPlayerId++), this.username);
+    player.color = this.getAvailablePlayerColor(this.username);
     player.messaging = this.messaging;
     this.world.players.add(player);
     this.world.getChildren().add(player);
   },
   addUserInputForSession: function (sid) {
-    if (this.world.getChildren().has(session.uid))
-      this.server.userInputsByUID[session.uid] = msg;
+    if (this.world.getChildren().has(this.username))
+      this.server.userInputsByUID[this.username] = msg;
     else
-      throw Error('addUserInputForSession(): no player matched session uid', session.uid);
+      throw Error('addUserInputForSession(): no player matched session uid', this.username);
   },
   start: function () {
     this.newGame();
@@ -222,12 +228,12 @@ var GameControllerBase = module.exports = JClass.extend({
   },
   getAvailablePlayerColor: function (uid) {
     var ret = false,self= this;
-    for (var i = 0; i <PLAYER_COLORS.length;i++)
+    for (var i = 0; i < Util.PLAYER_COLORS.length;i++)
     {
-      var col = PLAYER_COLORS[i];
+      var col = Util.PLAYER_COLORS[i];
       if (!self.world.players.has(col.usedBy))
       {
-        PLAYER_COLORS[i].usedBy = uid;
+        Util.PLAYER_COLORS[i].usedBy = uid;
         ret = col.color;
         break;
       }
