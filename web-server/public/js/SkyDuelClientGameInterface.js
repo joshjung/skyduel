@@ -11,7 +11,7 @@ var FPS = 60;
 \*===================================================*/
 var SkyDuelClientGameInterface = function() {
   this.game                   = GameControllerFactory.newInstanceOf('0');
-  this.serverInterface        = new SkyDuelServerInterface(this.game);
+  this.serverInterface        = new SkyDuelServerInterface(this);
 
   this.errorText = undefined;
 };
@@ -23,17 +23,21 @@ SkyDuelClientGameInterface.prototype = {
   /*===========================*\
    * Methods
   \*===========================*/
-  startWithRid: function (rid) {
-    this.serverInterface.start(rid);
-  },
   error: function (reason) {
     this.errorText = reason;
 
     this.game.pause();
   },
-  setPhaser : function (phaser) {
+  setPhaser: function (phaser) {
     this.phaser = phaser;
     this.game.setPhaser(phaser);
+  },
+  enterGame: function (rid) {
+    this.serverInterface.start(rid);
+  },
+  pomelo_disconnectHandler: function () {
+    // Reset all.
+    this.game.setState(null);
   }
 };
 

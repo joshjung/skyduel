@@ -1,10 +1,9 @@
+/*===================================================*\
+ * Requires
+\*===================================================*/
 var LatencyAnalyzer = require('./LatencyAnalyzer'),
-  HashArray = require('../../../shared/js/lib/HashArray');
-
-/*======================================================*\
- * Globals
-\*======================================================*/
-var SERVER_TIMEOUT_MS = 10000;
+  HashArray = require('../../../shared/js/lib/HashArray'),
+  DeadReckoner = require('./deadReckoner/DeadReckoner');
 
 /*===================================================*\
  * SkyDuelServerInterface()
@@ -12,7 +11,8 @@ var SERVER_TIMEOUT_MS = 10000;
 var SkyDuelServerInterface = function(client) {
   this.client = client;
   this.latencyAnalyzer = new LatencyAnalyzer();
-  
+  this.deadReckoner = new DeadReckoner(this.client.game, this.latencyAnalyzer);
+
   pomelo.on('disconnect', this.pomelo_disconnectHandler.bind(this))
 };
 
@@ -20,36 +20,27 @@ var SkyDuelServerInterface = function(client) {
  * Prototype
 \*===================================================*/
 SkyDuelServerInterface.prototype = {
-  latencyCheck: function (count, callback) {
-    var self = this,
-      i = 0;
-      count = count || 10;
-
-    ping();
-
-    function ping() {
-      self.latencyAnalyzer.startTest();
-      pomelo.request('skyduel.skyduelHandler.ping', skyduel_skyduelHandler_pingHandler);
-    }
-
-    function skyduel_skyduelHandler_pingHandler() {
-      self.latencyAnalyzer.endTest();
-      (++i < count) ? ping() : callback();
-    }
-  },
   start: function (rid) {
     this.rid = rid;
-    
-    this.latencyCheck(10, this.startServerConnection.bind(this));
+
+    var self = this;
+
+    console.log('SkyDuelServerInterface::start()')
+
+    this.latencyAnalyzer.sampleLatency(function (pingHandler, done) {
+      if (done)
+        self.startServerConnection();
+
+      pomelo.request('skyduel.skyduelHandler.ping', pingHandler);
+    });
   },
   startServerConnection: function () {
-    this.scStateManager.latency = this.latencyAnalyzer.latency;
     pomelo.request('skyduel.skyduelHandler.start', {
       rid: this.rid
     }, this.serverConnection_startedHandler.bind(this));
   },  
   setupStartState: function(state) {
-    console.log('Initial world state', state.world);
+    console.log('SkyDuelServerInterfaceInitial world state', state.world);
 
     this.world.setState(state.world);
 
@@ -92,7 +83,7 @@ SkyDuelServerInterface.prototype = {
   pomelo_disconnectHandler: function (reason) 
   {
     console.log('skyDuelClient: pomelo disconnected. Resetting everything.');
-    this.resetAll();
+    this.client.pomelo_disconnectHandler();
   }
 };
 

@@ -5,8 +5,7 @@ var JClass = require('jclass'),
   World = require('../objects/World'),
   UA = require('../../input/SkyDuelUserActions'),
   HashArray = require('../../lib/HashArray'),
-  UserInputProcessor = require('../../input/SkyDuelUserInputProcessor'),
-  DeadReckoner = require('../../network/deadReckoner/DeadReckoner');
+  UserInputProcessor = require('../../input/SkyDuelUserInputProcessor');
 
 /*===================================================*\
  * GameControllerBase()
@@ -60,6 +59,9 @@ var GameControllerBase = module.exports = JClass.extend({
     return this.world.players.all.map(function (player) {
       return player.getMetaData();
     });
+  },
+  getFPS: function () {
+    return this.fps;
   },
   /*======================*\
    * Constructor
@@ -144,7 +146,6 @@ var GameControllerBase = module.exports = JClass.extend({
         this.destroy();
       });
     
-    this.deadReckoner = new DeadReckoner(this.fps, this);
     this.world = new World();
   },
   stop: function () {

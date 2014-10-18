@@ -1,7 +1,7 @@
 /*===================================================*\
  * Requires
 \*===================================================*/
-var GameControllerBase = require('./GameControllerBase');;
+var GameControllerBase = require('./GameControllerBase');
 
 /*===================================================*\
  * GameControllerArcade()

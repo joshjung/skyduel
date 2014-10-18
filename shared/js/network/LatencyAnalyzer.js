@@ -57,6 +57,23 @@ LatencyAnalyzer.prototype = {
   /*===========================*\
    * Methods
   \*===========================*/
+  sampleLatency: function (callback, count) {
+    var self = this,
+      i = 0;
+      count = count || 10;
+
+    ping();
+
+    function ping() {
+      self.startTest();
+      callback(pingHandler, false);
+    }
+
+    function pingHandler() {
+      self.endTest();
+      (++i < count) ? ping() : callback(null, true);
+    }
+  },
   startTest: function (key) {
     this.lastTestTime[key] = this.now;
   },

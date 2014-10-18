@@ -1,17 +1,18 @@
 var UserInputState = require('./UserState');
 
 /*===================================================*\
- * SCStateManager()
+ * DeadReckoner()
 \*===================================================*/
-var SCStateManager = function(fps, gameInterface) {
+var DeadReckoner = function(gameInterface, latencyAnalyzer) {
   this.gameInterface = gameInterface;
-  this.frameTime = 1000.0 / fps;
+  this.latencyAnalyzer = latencyAnalyzer;
+  this.frameTime = 1000.0 / gameInterface.getFPS();
 };
 
 /*===================================================*\
  * Prototype
 \*===================================================*/
-SCStateManager.prototype = {
+DeadReckoner.prototype = {
   /*===========================*\
    * Variables
   \*===========================*/
@@ -20,7 +21,6 @@ SCStateManager.prototype = {
   estServerTime: undefined,
   lastServerState: undefined,
   intervalId: undefined,
-  latency: 0,
   lastSendToServerTime: 1000.0 / 30.0,
   /**
    * Send an update to the server every this so often.
@@ -49,7 +49,6 @@ SCStateManager.prototype = {
     this.estServerTime = undefined;
     this.lastServerState = undefined;
     this.intervalId = undefined;
-    this.latency = 0;
     this.lastSendToServerTime = 1000.0 / 30.0;
   },
   pause: function () {
@@ -62,7 +61,7 @@ SCStateManager.prototype = {
       this.lastServerState = this.newServerState;
 
     // As long as the server has never sent us a state, we do nothing.
-    if (!this.lastServerState || this.latency == 0)
+    if (!this.lastServerState || this.latencyAnalyzer.latency == 0)
       return;
 
     var self = this,
@@ -82,7 +81,7 @@ SCStateManager.prototype = {
     this.gameInterface.state = this.lastServerState;
 
     // Estimate the current server time at this exact point (the server will be behind us by a period of time)
-    this.estServerTime = Math.round(this.newServerState ? this.newServerState.time + (this.latency / 2.0) : this.estServerTime + elapsed);
+    this.estServerTime = Math.round(this.newServerState ? this.newServerState.time + (this.latencyAnalyzer.latency / 2.0) : this.estServerTime + elapsed);
 
     // Establish our simulation starting time.
     var t = this.lastServerState.time,
@@ -126,4 +125,4 @@ SCStateManager.prototype = {
   }
 };
 
-module.exports = SCStateManager;
+module.exports = DeadReckoner;
