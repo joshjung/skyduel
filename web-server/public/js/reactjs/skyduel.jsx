@@ -50,9 +50,9 @@ var rjSkyduel = React.createClass({
     }
   },
   updateText: function () {
-    if (window.client.player)
+    if (window.client.game.player)
     {
-      window.client.txtLatency.text = 'Latency: ' + Math.round(window.client.latencyAnalyzer.latencySample);
+      window.client.txtLatency.text = 'Latency: ' + Math.round(window.client.serverInterface.deadReckoning.latencySampler.getLatency());
     }
   },
   /*=============================*\
@@ -76,7 +76,7 @@ var rjSkyduel = React.createClass({
     var style1 =  { font: "22px Arial", fill: "#111111", align: "center" };
     var style2 =  { font: "12px Arial", fill: "#111111", align: "right" };
     
-    window.client.txtLatency = this.phaser.add.text(5, 580, 'Latency: -1', style2);
+    window.client.txtLatency = this.phaser.add.text(5, 580, 'Latency: N/A', style2);
 
     window.client.setPhaser(this.phaser);
   },
@@ -85,6 +85,8 @@ var rjSkyduel = React.createClass({
     {
       this.updateText();
       this.updateBackground();
+      if (window.client.game.world)
+        window.client.game.world.updatePhaser(this.phaser);
     }
   }
 });
