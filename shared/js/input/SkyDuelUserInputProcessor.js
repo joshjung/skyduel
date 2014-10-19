@@ -18,7 +18,7 @@ SkyDuelUserInputProcessor.prototype = {
   /*===========================*\
    * Methods
   \*===========================*/
-  update: function (userInput, elapsed) {
+  update: function (userInput, elapsed, username) {
     var actions = new HashArray(['id', 'name']);
 
     if (userInput.left)
@@ -34,7 +34,7 @@ SkyDuelUserInputProcessor.prototype = {
     if (userInput.trigger)
       actions.add(UA.TRIGGER);
 
-    this.game.applyUserAction(actions, elapsed);
+    this.game.applyUserAction(actions, elapsed, username);
   }
 };
 

@@ -37,10 +37,6 @@ SkyDuelClientGameInterface.prototype = {
 
     this.game.pause();
   },
-  setPhaser: function (phaser) {
-    this.phaser = phaser;
-    this.game.setPhaser(phaser);
-  },
   enterGame: function (rid) {
     this.serverInterface.start(rid);
   },
@@ -49,6 +45,7 @@ SkyDuelClientGameInterface.prototype = {
     this.game.setState(null);
   },
   setPhaser: function(phaser) {
+    this.phaser = phaser;
     this.userInputReceiver = new UserInputReceiver(this, phaser);
     this.userInputReceiver.startKeyboard();
   },

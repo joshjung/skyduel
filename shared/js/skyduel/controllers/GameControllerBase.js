@@ -107,21 +107,23 @@ var GameControllerBase = module.exports = JClass.extend({
       })
     }
   },
-  applyUserAction: function(actions, elapsed) {
-    this.player.bank = this.player.accelerater = 0;
-    this.player.trigger = actions.has(UA.TRIGGER.id);
+  applyUserAction: function(actions, elapsed, username) {
+    var player = username ? this.world.getChildren().get(username) : this.player;
+
+    player.bank = player.accelerater = 0;
+    player.trigger = actions.has(UA.TRIGGER.id);
 
     if (actions.has(UA.BANK_LEFT.id))
-      this.player.bank = -this.player.GLOBALS.BANK_RATE;
+      player.bank = -player.GLOBALS.BANK_RATE;
 
     if (actions.has(UA.BANK_RIGHT.id))
-      this.player.bank = this.player.GLOBALS.BANK_RATE;
+      player.bank = player.GLOBALS.BANK_RATE;
 
     if (actions.has(UA.ACCELERATE.id))
-      this.player.accelerater = this.player.GLOBALS.ACCELERATION_RATE;
+      player.accelerater = player.GLOBALS.ACCELERATION_RATE;
 
     if (actions.has(UA.DECELERATE.id))
-      this.player.accelerater = this.player.GLOBALS.DECELERATION_RATE;
+      player.accelerater = player.GLOBALS.DECELERATION_RATE;
   },
   isServer: function () {
     return typeof window === 'undefined';
@@ -138,9 +140,9 @@ var GameControllerBase = module.exports = JClass.extend({
     this.world.players.add(player);
     this.world.getChildren().add(player);
   },
-  addUserInputForSession: function (username) {
+  addUserInputForSession: function (username, input) {
     if (this.world.getChildren().has(username))
-      this.server.userInputsByUID[username] = msg;
+      this.server.userInputsByUID[username] = input;
     else
       throw Error('addUserInputForSession(): no player matched session username', username);
   },
@@ -186,26 +188,20 @@ var GameControllerBase = module.exports = JClass.extend({
     this.world.update(elapsed);
   },
   serverProcessUserInputFor: function (username, elapsed) {
-    var userInput = this.userInputsByUID[username];
+    var userInput = this.server.userInputsByUID[username];
 
+    
     // It's possible the player has left.
     if (this.world.getChildren().get(username))
-      this.userInputProcessor.update(userInput, elapsed, {
-        player: this.world.getChildren().get(username)
-      });
+    {
+      console.log('trying input for ', username);
+      console.log(userInput)
+      this.userInputProcessor.update(userInput, elapsed, username);
+    }
 
-    delete this.server.userInputsByUID[key];
+    delete this.server.userInputsByUID[username];
   },
-  // DeadReckoner Interface
-  updateServer: function (userInputState) {
-    var key = (Math.random() * 9999999).toString(16);
-
-    this.latencyAnalyzer.startTest(key);
-
-    pomelo.request('skyduel.skyduelHandler.userInput',
-      this.userInput,
-      this.socket_updateServerResponseHandler.bind(this, key));
-  },
+  
   generateWorld: function() {
     console.log('GENERATING WORLD');
 

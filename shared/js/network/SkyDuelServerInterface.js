@@ -38,7 +38,7 @@ SkyDuelServerInterface.prototype = {
       getUserInput: this.client.getUserInput.bind(this.client),            // REQUIRED
       setState: this.client.setState.bind(this.client),                    // REQUIRED
       simulateUpdate: this.client.simulateUpdate.bind(this.client),        // REQUIRED
-      updateServer: this.updateServer             // REQUIRED
+      updateServer: this.updateServer.bind(this)             // REQUIRED
     }
   },
   start: function (rid) {
@@ -55,6 +55,15 @@ SkyDuelServerInterface.prototype = {
   },
   sampleLatency: function (callback) {
     pomelo.request('skyduel.skyduelHandler.ping', callback);
+  },
+  updateServer: function (userInputState) {
+    var key = (Math.random() * 9999999).toString(16);
+
+    this.deadReckoning.latencySampler.start(key);
+
+    pomelo.request('skyduel.skyduelHandler.userInput',
+      userInputState,
+      this.socket_updateServerResponseHandler.bind(this, key));
   },
   /*===========================*\
    * Events
@@ -77,7 +86,7 @@ SkyDuelServerInterface.prototype = {
     this.setServerState(data);
   },
   socket_updateServerResponseHandler: function (key, data) {
-    this.latencyAnalyzer.endTest(key);
+    this.deadReckoning.latencySampler.end(key);
   },
   pomelo_disconnectHandler: function (reason) 
   {

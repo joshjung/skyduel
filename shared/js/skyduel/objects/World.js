@@ -41,7 +41,7 @@ var World = GameObject.extend({
   init: function () {
     console.log('World init!');
     this.type = 'world';
-    this.players = new HashArray(['_id', 'uid', 'type']);
+    this.players = new HashArray(['_id', 'username', 'type']);
     this._super(null, 'root');
   },
   update: function (elapsed) {
@@ -51,7 +51,7 @@ var World = GameObject.extend({
     this._super(elapsed);
   },
   buildChildrenObject: function () {
-    this.setChildren(new HashArray(['_id', 'uid', 'type']));
+    this.setChildren(new HashArray(['_id', 'username', 'type']));
   },
   newChildFromState: function (childState) {
     var child;

@@ -90,7 +90,8 @@ var SkyDuelService = JClass.extend({
    * Called when the socket receives user input.
    */
   session_userInputHandler: function(msg, session) {
-    this.game.addUserInputForSession(session.uid);
+    console.log('user input!', msg)
+    this.game.addUserInputForSession(session.uid, msg);
   },
   /**
    * Called by the skyduelHandler whenever a user disconnects or is forcibly removed from
