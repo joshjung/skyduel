@@ -81,7 +81,6 @@ var SkyDuelService = JClass.extend({
 
     if (this.clientUpdateTimer > CLIENT_UPDATE_FPS / 1000.0)
     {
-      console.log('updating client');
       this.__sendState();
       this.clientUpdateTimer = 0;
     }

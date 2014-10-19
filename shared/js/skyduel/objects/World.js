@@ -65,7 +65,7 @@ var World = GameObject.extend({
         child = this.players.get(childState.id);
       else
       {
-        child = new Player(this, childState.id);
+        child = new Player(this, childState.id, childState.username);
         this.players.add(child);
       }
     }

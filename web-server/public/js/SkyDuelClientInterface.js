@@ -1,6 +1,6 @@
 var GameControllerFactory = require('../../../shared/js/skyduel/controllers/GameControllerFactory'),
   SkyDuelServerInterface = require('../../../shared/js/network/SkyDuelServerInterface'),
-  UserInputProcessor = require('../../../shared/js/input/SkyDuelUserInputProcessor');
+  UserInputReceiver = require('../../../shared/js/input/SkyDuelUserInputReceiver');
 
 /*======================================================*\
  * Globals
@@ -45,14 +45,17 @@ SkyDuelClientGameInterface.prototype = {
     this.game.setState(null);
   },
   setPhaser: function(phaser) {
-    this.userInputProcessor = new UserInputProcessor(this, phaser);
-    this.userInputProcessor.startKeyboard();
+    this.userInputReceiver = new UserInputReceiver(this, phaser);
+    this.userInputReceiver.startKeyboard();
   },
   getUserInput: function () {
-    return this.userInputProcessor.getUserInput();
+    return this.userInputReceiver.getUserInput();
   },
   setState: function (value) {
     this.game.setState(value);
+  },
+  simulateUpdate: function (userInput, elapsed) {
+    this.game.clientUpdate(userInput, elapsed);
   }
 };
 

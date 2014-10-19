@@ -10,6 +10,11 @@ var JClass = require('jclass'),
   UserInputProcessor = require('../../input/SkyDuelUserInputProcessor');
 
 /*===================================================*\
+ * Constants
+\*===================================================*/
+var SERVER_TIMEOUT_MS = 10000;
+
+/*===================================================*\
  * GameControllerBase()
 \*===================================================*/
 var GameControllerBase = module.exports = JClass.extend({
@@ -38,15 +43,10 @@ var GameControllerBase = module.exports = JClass.extend({
     if (value)
     {
       // For client, we pass off when to apply the state to the state manager.
-      if (this.isClient)
-      {
-        this.playerMetaData = value.players;
-        this.deadReckoner.setServerState(value);
-      }
+      this.playerMetaData = value.players;
 
-      // For server, we immediately set any state. This could be rather destructive.
-      else
-        this.world.setState(value.world);
+      this.world.setState(value.world);
+      this.__fetchPlayer();
     }
     else
     {
@@ -87,12 +87,25 @@ var GameControllerBase = module.exports = JClass.extend({
       lastPlayerId: 0
     };
 
+    this.userInputProcessor = new UserInputProcessor(this);
+
     this.reset();
   },
   /*======================*\
    * Methods
   \*======================*/
-  
+  __fetchPlayer: function () {
+    if (!this.player)
+    {
+      var self = this,
+        players = this.world.getChildren().getAsArray('player');
+
+      players.forEach(function (player) {
+        var un = player.username.split('*')[0];
+        self.player = (un == this.username) ? player : self.player;
+      })
+    }
+  },
   applyUserAction: function(actions, elapsed) {
     this.player.bank = this.player.accelerater = 0;
     this.player.trigger = actions.has(UA.TRIGGER.id);
@@ -119,19 +132,19 @@ var GameControllerBase = module.exports = JClass.extend({
     if (this.getPlayers().length == 0)
       this.reset();
 
-    console.log('Adding player with id ' + this.server.lastPlayerId + ' and uid ' + session.uid);
+    console.log('Adding player with id ' + this.server.lastPlayerId + ' and username ' + session.uid);
 
-    var player = new Player(this.world, 'player' + ( this.lastPlayerId++), session.uid);
-    player.color = this.getAvailablePlayerColor(this.username);
+    var player = new Player(this.world, 'player' + ( this.server.lastPlayerId++), session.uid);
+    player.color = this.getAvailablePlayerColor(session.uid);
     player.messaging = this.messaging;
     this.world.players.add(player);
     this.world.getChildren().add(player);
   },
-  addUserInputForSession: function (sid) {
-    if (this.world.getChildren().has(this.username))
-      this.server.userInputsByUID[this.username] = msg;
+  addUserInputForSession: function (username) {
+    if (this.world.getChildren().has(username))
+      this.server.userInputsByUID[username] = msg;
     else
-      throw Error('addUserInputForSession(): no player matched session uid', this.username);
+      throw Error('addUserInputForSession(): no player matched session username', username);
   },
   start: function () {
     this.newGame();
@@ -164,7 +177,7 @@ var GameControllerBase = module.exports = JClass.extend({
     if (elapsed > 0.2)
       throw Error('Elapsed is wayyyy too high man. Did server disconnect?');
 
-    this.userInputProcessor.update(userInput, elapsed, this);
+    this.userInputProcessor.update(userInput, elapsed);
 
     this.world.update(elapsed);
   },
@@ -175,13 +188,13 @@ var GameControllerBase = module.exports = JClass.extend({
 
     this.world.update(elapsed);
   },
-  serverProcessUserInputFor: function (uid, elapsed) {
-    var userInput = this.userInputsByUID[uid];
+  serverProcessUserInputFor: function (username, elapsed) {
+    var userInput = this.userInputsByUID[username];
 
     // It's possible the player has left.
-    if (this.world.getChildren().get(uid))
+    if (this.world.getChildren().get(username))
       this.userInputProcessor.update(userInput, elapsed, {
-        player: this.world.getChildren().get(uid)
+        player: this.world.getChildren().get(username)
       });
 
     delete this.server.userInputsByUID[key];
@@ -220,14 +233,14 @@ var GameControllerBase = module.exports = JClass.extend({
     for(var i=0 ; i < 10 ; i++)
       this.world.getChildren().add(new Bird(this.world, 'bird' + i));
   },
-  getAvailablePlayerColor: function (uid) {
+  getAvailablePlayerColor: function (username) {
     var ret = false,self= this;
     for (var i = 0; i < Util.PLAYER_COLORS.length;i++)
     {
       var col = Util.PLAYER_COLORS[i];
       if (!self.world.players.has(col.usedBy))
       {
-        Util.PLAYER_COLORS[i].usedBy = uid;
+        Util.PLAYER_COLORS[i].usedBy = username;
         ret = col.color;
         break;
       }

@@ -15,8 +15,8 @@ var Player = GameObject.extend({
   \*=========================*/
   getMetaData: function () {
     return {
-        uid: this.uid,
-        username: this.uid.split('*')[0],
+        username: this.username,
+        username: this.username.split('*')[0],
         id: this._id,
         color: this.color,
         colorHex: this.getColorHex(),
@@ -30,7 +30,7 @@ var Player = GameObject.extend({
       return {};
 
     return {
-      uid: this.uid,
+      username: this.username,
       id: this._id,
       x: this.x,
       y: this.y,
@@ -60,7 +60,7 @@ var Player = GameObject.extend({
       throw Error('The plane ids do not match in \'set state()\'!');
     }
 
-    this.uid = value.uid;
+    this.username = value.username;
     this.x = value.x;
     this.y = value.y;
     this.angle = value.angle;
@@ -85,12 +85,15 @@ var Player = GameObject.extend({
   /*=========================*\
    * Methods
   \*=========================*/
-  init: function(parent, id, uid) {
-    console.log('Initing player, uid: ', uid);
+  init: function(parent, id, username) {
+    if (!username)
+      throw Error('Username is not provided to new player!', this);
+    
+    console.log('Initing player, username: ', username);
 
     this._super(parent, id || this.getId());
 
-    this.uid = uid;
+    this.username = username;
 
     this.type = 'player';
 
@@ -144,7 +147,7 @@ var Player = GameObject.extend({
     this.bulletProps.fireVelocity = 500.0 + this.velocity;
   },
   respawn: function () {
-    console.log('Respawning player', this.uid);
+    console.log('Respawning player', this.username);
 
     this.x = 400;
     this.y = 400;
@@ -167,7 +170,7 @@ var Player = GameObject.extend({
   updatePhaser: function (phaser) {
     this._super(phaser);
 
-    this.sprite.displayStatusRing(this.uid == window.client.uid, this.health);
+    this.sprite.displayStatusRing(this.username == window.client.username, this.health);
   },
   buildSprite: function (phaser) {
     this.sprite = phaser.add.plane(0, 0);
@@ -185,13 +188,13 @@ var Player = GameObject.extend({
     this.destroyed = true;
 
     if (this.sprite) {
-      console.log('Destroying plane sprite', this.uid);
+      console.log('Destroying plane sprite', this.username);
       this.sprite.destroy(true);
       this.sprite = null;
     }
   },
   getUsername: function () {
-    return this.uid.split('*')[0];
+    return this.username.split('*')[0];
   },
   getColorHex: function () {
     return this.componentToHex(this.color);

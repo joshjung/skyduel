@@ -20,7 +20,10 @@ var SkyDuelServerInterface = function(client) {
 SkyDuelServerInterface.prototype = {
   setServerState: function (value) {
     if (!this.deadReckoning.started)
+    {
+      console.log('RECEIVED initial server state', value);
       this.deadReckoning.start(value);
+    }
     else
       this.deadReckoning.setServerState(value);
   },
@@ -34,7 +37,7 @@ SkyDuelServerInterface.prototype = {
       sampleLatencyCompletedHandler: this.sampleLatencyCompletedHandler.bind(this),
       getUserInput: this.client.getUserInput.bind(this.client),            // REQUIRED
       setState: this.client.setState.bind(this.client),                    // REQUIRED
-      simulateUpdate: this.client.simulateUpdate,        // REQUIRED
+      simulateUpdate: this.client.simulateUpdate.bind(this.client),        // REQUIRED
       updateServer: this.updateServer             // REQUIRED
     }
   },
@@ -59,6 +62,7 @@ SkyDuelServerInterface.prototype = {
   sampleLatencyCompletedHandler: function () {
     console.log('Latency sampling complete:', this.deadReckoning.latencySampler.getLatency())
     this.startServerConnection();
+    return true;
   },
   serverConnection_startedHandler: function (data) {
     this.uid = data.uid;
