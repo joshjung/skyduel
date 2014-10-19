@@ -9,7 +9,6 @@ var HashArray = require('../../../shared/js/lib/HashArray'),
 \*===================================================*/
 var SkyDuelServerInterface = function(client) {
   this.client = client;
-  this.latencyAnalyzer = new LatencyAnalyzer();
   this.deadReckoning = new DeadReckoning(this.getDeadReckoningInterface());
 
   pomelo.on('disconnect', this.pomelo_disconnectHandler.bind(this))
@@ -45,7 +44,7 @@ SkyDuelServerInterface.prototype = {
   },
   getDeadReckoningInterface: function () {
     var game = this.client.game;
-    
+
     return {
       fps: this.client.game.getFPS(),
       latencySampleCount: 10,

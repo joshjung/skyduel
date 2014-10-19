@@ -1,5 +1,6 @@
 var GameControllerFactory = require('../../../shared/js/skyduel/controllers/GameControllerFactory'),
-  SkyDuelServerInterface = require('../../../shared/js/network/SkyDuelServerInterface');
+  SkyDuelServerInterface = require('../../../shared/js/network/SkyDuelServerInterface'),
+  UserInputProcessor = require('../../../shared/js/input/SkyDuelUserInputProcessor');
 
 /*======================================================*\
  * Globals
@@ -42,14 +43,17 @@ SkyDuelClientGameInterface.prototype = {
   pomelo_disconnectHandler: function () {
     // Reset all.
     this.game.setState(null);
+  },
+  setPhaser: function(phaser) {
+    this.userInputProcessor = new UserInputProcessor(this, phaser);
+    this.userInputProcessor.startKeyboard();
+  },
+  getUserInput: function () {
+    return this.userInputProcessor.getUserInput();
+  },
+  setState: function (value) {
+    this.game.setState(value);
   }
-};
-
-var errs = [];
-
-window.onerror = function(err) {
-  breakpoint;
-  throw err;
 };
 
 window.client = new SkyDuelClientGameInterface();
