@@ -182,21 +182,20 @@ var GameControllerBase = module.exports = JClass.extend({
   },
   serverUpdate: function(elapsed) {
     // First manage user input.
-    for (var key in this.server.userInputsByUID)
-      this.serverProcessUserInputFor(key, elapsed);
+    for (var username in this.server.userInputsByUID)
+      this.serverProcessUserInputFor(username, elapsed);
 
     this.world.update(elapsed);
   },
   serverProcessUserInputFor: function (username, elapsed) {
     var userInput = this.server.userInputsByUID[username];
-
     
     // It's possible the player has left.
     if (this.world.getChildren().get(username))
     {
       console.log('trying input for ', username);
       console.log(userInput)
-      this.userInputProcessor.update(userInput, elapsed, username);
+      this.userInputProcessor.update(userInput.input, elapsed, username);
     }
 
     delete this.server.userInputsByUID[username];
