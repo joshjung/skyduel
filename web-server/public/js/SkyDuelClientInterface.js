@@ -14,6 +14,7 @@ var SkyDuelClientGameInterface = function() {
   this.game                   = GameControllerFactory.newInstanceOf('0');
   this.serverInterface        = new SkyDuelServerInterface(this);
 
+  this.showing = false;
   this.errorText = undefined;
 };
 
@@ -24,6 +25,9 @@ SkyDuelClientGameInterface.prototype = {
   setUID: function (value) {
     this.uid = value;
     this.game.setUsername(value);
+  },
+  isShowing: function () {
+    return this.showing;
   },
   /*===========================*\
    * Methods
@@ -52,6 +56,7 @@ SkyDuelClientGameInterface.prototype = {
     return this.userInputReceiver.getUserInput();
   },
   setState: function (value) {
+    this.showing = true;
     this.game.setState(value);
   },
   simulateUpdate: function (userInput, elapsed) {

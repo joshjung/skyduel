@@ -28,10 +28,11 @@ var rjSkyduel = React.createClass({
     );
   },
   updateBackground: function () {
-    var w = window.client.world;
+    var w = window.client.game.world;
 
     if (w && w.width && !window.client.backgroundBitmapData)
     {
+      console.log('RENDERING background');
       var bgs = window.client.backgroundBitmapData = this.phaser.add.bitmapData(w.width, w.height);
       window.client.backgroundSprite = this.phaser.add.sprite(0,0,bgs);
       var ground = this.phaser.make.sprite(0, 0, 'ground');
@@ -47,9 +48,6 @@ var rjSkyduel = React.createClass({
 
       window.client.gBackground.add(window.client.backgroundSprite);
     }
-  },
-  updateWorld: function () {
-    window.client.world.updatePhaser(this.phaser);
   },
   updateText: function () {
     if (window.client.player)
@@ -83,11 +81,10 @@ var rjSkyduel = React.createClass({
     window.client.setPhaser(this.phaser);
   },
   phaser_updateHandler: function (e) {
-    if (window.client.started)
+    if (window.client.isShowing())
     {
       this.updateText();
       this.updateBackground();
-      this.updateWorld();
     }
   }
 });

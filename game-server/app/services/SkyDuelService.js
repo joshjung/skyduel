@@ -59,6 +59,7 @@ var SkyDuelService = JClass.extend({
   },
   __reset: function () {
     this.game.reset();
+    this.game.start();
     clearInterval(this.interval);
   },
   /**
@@ -112,7 +113,10 @@ var SkyDuelService = JClass.extend({
     console.log('SESSION CONNECTED:',session.uid);
 
     if (!this.interval)
+    {
+      this.__reset();
       this.__start();
+    }
 
     this.game.addSession(session);
   }

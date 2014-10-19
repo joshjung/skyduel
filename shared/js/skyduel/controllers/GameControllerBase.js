@@ -4,6 +4,7 @@
 var JClass = require('jclass'),
   World = require('../objects/World'),
   Player = require('../objects/Player'),
+  Bird = require('../objects/Bird'),
   UA = require('../../input/SkyDuelUserActions'),
   HashArray = require('../../lib/HashArray'),
   Util = require('../Util.js'),
@@ -129,9 +130,6 @@ var GameControllerBase = module.exports = JClass.extend({
     if (!this.isServer())
       throw Error('GameControllerBase::addSession should only be called on the server.');
 
-    if (this.getPlayers().length == 0)
-      this.reset();
-
     console.log('Adding player with id ' + this.server.lastPlayerId + ' and username ' + session.uid);
 
     var player = new Player(this.world, 'player' + ( this.server.lastPlayerId++), session.uid);
@@ -147,13 +145,12 @@ var GameControllerBase = module.exports = JClass.extend({
       throw Error('addUserInputForSession(): no player matched session username', username);
   },
   start: function () {
-    this.newGame();
-  },
-  newGame: function () {
-    this.generateWorld();
+    console.log('GameControllerBase::start(): starting game');
     this.reset();
+    this.generateWorld();
   },
   reset: function () {
+    console.log('GameControllerBase::reset(): resetting');
     if (this.deadReckoner)
       this.deadReckoner.reset();
 
@@ -210,7 +207,9 @@ var GameControllerBase = module.exports = JClass.extend({
       this.socket_updateServerResponseHandler.bind(this, key));
   },
   generateWorld: function() {
-    this.game.world.setState({
+    console.log('GENERATING WORLD');
+
+    this.world.setState({
       width: 800,
       height: 600,
       tileWidth: 50,
