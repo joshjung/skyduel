@@ -86,7 +86,7 @@ var Player = GameObject.extend({
    * Methods
   \*=========================*/
   init: function(parent, id, uid) {
-    console.log('Initing player', this.uid);
+    console.log('Initing player, uid: ', uid);
 
     this._super(parent, id || this.getId());
 

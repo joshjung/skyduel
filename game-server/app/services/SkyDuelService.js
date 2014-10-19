@@ -32,8 +32,7 @@ var SkyDuelService = JClass.extend({
     this.clientUpdateTimer = 0;
 
     this.id = 'sid:' + Math.round(Math.random() * 100).toString(16) + ':' + process.pid;
-
-    setInterval(this.__frameHandler.bind(this), 1000 / FPS);
+    this.interval = undefined;
   },
   /*============================*\
    * Properties
@@ -49,10 +48,19 @@ var SkyDuelService = JClass.extend({
 
     if (channel)
       channel.pushMessage('serverState', this.game.getState());
+    else
+      console.log('WARNING: attempted to push to channel but does not exist', this.rid)
   },
   /*============================*\
    * Events
   \*============================*/
+  __start: function () {
+    this.interval = setInterval(this.__frameHandler.bind(this), 1000 / FPS);
+  },
+  __reset: function () {
+    this.game.reset();
+    clearInterval(this.interval);
+  },
   /**
    * Called once per frame, defined by the FPS property above.
    */
@@ -69,8 +77,11 @@ var SkyDuelService = JClass.extend({
 
     this.game.serverUpdate(this.elapsed);
 
-    if ((this.clientUpdateTimer += this.elapsed) > (1000.0 / CLIENT_UPDATE_FPS))
+    this.clientUpdateTimer += this.elapsed;
+
+    if (this.clientUpdateTimer > CLIENT_UPDATE_FPS / 1000.0)
     {
+      console.log('updating client');
       this.__sendState();
       this.clientUpdateTimer = 0;
     }
@@ -86,8 +97,12 @@ var SkyDuelService = JClass.extend({
    * the game by a connection issue.
    */
   session_disconnectedHandler: function (uid) {
+    console.log('SESSION DISCONNECTED:',uid);
     this.world.players.removeByKey(uid);
     this.world.getChildren().get(uid).destroy();
+
+    if (this.world.getChildren().getAsArray('players').length == 0)
+      this.__reset();
   },
   /**
    * Called by the skyduelHandler whenever a new user connects.
@@ -95,6 +110,11 @@ var SkyDuelService = JClass.extend({
   session_connectedHandler: function(session, rid) {
     this.startSession = this.startSession || session;
     this.rid = rid;
+    console.log('SESSION CONNECTED:',session.uid);
+
+    if (!this.interval)
+      this.__start();
+
     this.game.addSession(session);
   }
 });

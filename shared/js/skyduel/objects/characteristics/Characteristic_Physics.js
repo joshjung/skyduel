@@ -37,8 +37,7 @@ var Characteristic_Physics = CharacteristicBase.extend({
 
     if (isNaN(res.x))
     {
-      console.log(target);
-      console.log(res);
+      console.log(target.type);
       console.log(elapsed);
       throw Error(res);
     }

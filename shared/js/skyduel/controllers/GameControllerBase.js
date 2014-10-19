@@ -112,16 +112,16 @@ var GameControllerBase = module.exports = JClass.extend({
   isServer: function () {
     return typeof window === 'undefined';
   },
-  addSession: function () {
+  addSession: function (session) {
     if (!this.isServer())
       throw Error('GameControllerBase::addSession should only be called on the server.');
 
     if (this.getPlayers().length == 0)
       this.reset();
 
-    console.log('Adding player with id', this.server.lastPlayerId);
+    console.log('Adding player with id ' + this.server.lastPlayerId + ' and uid ' + session.uid);
 
-    var player = new Player(this.world, 'player' + ( this.lastPlayerId++), this.username);
+    var player = new Player(this.world, 'player' + ( this.lastPlayerId++), session.uid);
     player.color = this.getAvailablePlayerColor(this.username);
     player.messaging = this.messaging;
     this.world.players.add(player);
@@ -171,10 +171,7 @@ var GameControllerBase = module.exports = JClass.extend({
   serverUpdate: function(elapsed) {
     // First manage user input.
     for (var key in this.server.userInputsByUID)
-    {
       this.serverProcessUserInputFor(key, elapsed);
-      
-    }
 
     this.world.update(elapsed);
   },
@@ -189,7 +186,7 @@ var GameControllerBase = module.exports = JClass.extend({
 
     delete this.server.userInputsByUID[key];
   },
-  //DeadReckoner Interface
+  // DeadReckoner Interface
   updateServer: function (userInputState) {
     var key = (Math.random() * 9999999).toString(16);
 

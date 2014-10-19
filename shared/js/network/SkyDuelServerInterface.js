@@ -19,28 +19,10 @@ var SkyDuelServerInterface = function(client) {
 \*===================================================*/
 SkyDuelServerInterface.prototype = {
   setServerState: function (value) {
-    if (!this.deadReckoning.lastServerState)
-    {
-      console.log('SkyDuelServerInterface(): set world state', state.world);
-
-      this.world.setState(state.world);
-
-      this.player = this.world.getChildren().get(this.uid);
-
-      if (!this.player)
-      {
-        console.log (state);
-        console.log('Player could not be found in incoming state!', this.uid);
-      }
-
-      this.deadReckoning.newServerState = state;
-
-      this.deadReckoning.play();
-    }
+    if (!this.deadReckoning.started)
+      this.deadReckoning.start(value);
     else
-    {
       this.deadReckoning.setServerState(value);
-    }
   },
   getDeadReckoningInterface: function () {
     var game = this.client.game;
@@ -59,8 +41,6 @@ SkyDuelServerInterface.prototype = {
   start: function (rid) {
     this.rid = rid;
 
-    var self = this;
-
     console.log('SkyDuelServerInterface::start()')
 
     this.deadReckoning.start();
@@ -77,6 +57,7 @@ SkyDuelServerInterface.prototype = {
    * Events
   \*===========================*/
   sampleLatencyCompletedHandler: function () {
+    console.log('Latency sampling complete:', this.deadReckoning.latencySampler.getLatency())
     this.startServerConnection();
   },
   serverConnection_startedHandler: function (data) {

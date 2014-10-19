@@ -106,7 +106,7 @@ var rjLogin = React.createClass({
     this.ignoreDisconnect= false;
 
     if (data.code === 500) {
-      this.showError(LOGIN_ERROR + ':' + data.reason);
+      this.showError('Error logging in:' + data.reason);
       return;
     }
 
