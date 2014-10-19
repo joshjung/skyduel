@@ -111,7 +111,7 @@ var GameControllerBase = module.exports = JClass.extend({
     var player = username ? this.world.getChildren().get(username) : this.player;
 
     player.bank = player.accelerater = 0;
-    player.trigger = actions.has(UA.TRIGGER.id);
+    player.triggerDown = actions.has(UA.TRIGGER.id);
 
     if (actions.has(UA.BANK_LEFT.id))
       player.bank = -player.GLOBALS.BANK_RATE;
@@ -123,7 +123,7 @@ var GameControllerBase = module.exports = JClass.extend({
       player.accelerater = player.GLOBALS.ACCELERATION_RATE;
 
     if (actions.has(UA.DECELERATE.id))
-      player.accelerater = player.GLOBALS.DECELERATION_RATE;
+      player.accelerater = -player.GLOBALS.DECELERATION_RATE;
   },
   isServer: function () {
     return typeof window === 'undefined';
@@ -144,7 +144,7 @@ var GameControllerBase = module.exports = JClass.extend({
     if (this.world.getChildren().has(username))
       this.server.userInputsByUID[username] = input;
     else
-      throw Error('addUserInputForSession(): no player matched session username', username);
+      console.log('WARNING: addUserInputForSession(): no player matched session username', username);
   },
   start: function () {
     console.log('GameControllerBase::start(): starting game');
@@ -193,8 +193,6 @@ var GameControllerBase = module.exports = JClass.extend({
     // It's possible the player has left.
     if (this.world.getChildren().get(username))
     {
-      console.log('trying input for ', username);
-      console.log(userInput)
       this.userInputProcessor.update(userInput.input, elapsed, username);
     }
 

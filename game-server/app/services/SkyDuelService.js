@@ -98,10 +98,10 @@ var SkyDuelService = JClass.extend({
    */
   session_disconnectedHandler: function (uid) {
     console.log('SESSION DISCONNECTED:',uid);
-    this.world.players.removeByKey(uid);
-    this.world.getChildren().get(uid).destroy();
+    this.game.world.players.removeByKey(uid);
+    this.game.world.getChildren().get(uid).destroy();
 
-    if (this.world.getChildren().getAsArray('players').length == 0)
+    if (this.game.world.getChildren().getAsArray('player').length == 0)
       this.__reset();
   },
   /**
