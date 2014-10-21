@@ -22,7 +22,8 @@ var Player = GameObject.extend({
         colorHex: this.getColorHex(),
         kills: this.kills,
         health: this.health,
-        deaths: this.deaths
+        deaths: this.deaths,
+        latency: this.latency
       };
   },
   getState: function() {

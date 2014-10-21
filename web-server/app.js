@@ -1,9 +1,10 @@
-var express = require('express');
-var app = express.createServer();
+var express = require('express'),
+  app = express();
 
 app.configure(function(){
   app.use(express.methodOverride());
-  app.use(express.bodyParser());
+  app.use(express.json());
+  app.use(express.urlencoded());
   app.use(app.router);
   app.set('view engine', 'jade');
   app.set('views', __dirname + '/public');
@@ -23,6 +24,6 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-console.log("SkyDual server has started.\nPlease make sure your hosts file has been properly edited according to the Readme.md and then log on http://local.skyduel.com:3001/index.html");
+console.log("SkyDual server has started.\nPlease make sure your hosts file has been properly edited according to the Readme.md.\nLog on http://local.skyduel.com:3001/index.html");
 
 app.listen(3001);

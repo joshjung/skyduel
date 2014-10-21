@@ -43,6 +43,7 @@ var PlanePart = GameObject.extend({
    * Methods
   \*=========================*/
   init: function (parent, id, x, y, angle, velocity, index) {
+    console.log('plane part', id)
     this._super(parent, id || this.getId());
 
     this.GLOBALS = {
@@ -95,6 +96,7 @@ var PlanePart = GameObject.extend({
       this.destroy();
   },
   buildSprite: function (phaser) {
+    console.log('plane part sprite');
     this.sprite = phaser.add.planePart(this.x, this.y, this.index);
   },
   destroy: function () {

@@ -35,6 +35,12 @@ var World = GameObject.extend({
       children: this.getChildrenState()
     };
   },
+  getPlayers: function () {
+    return this.getChildren().getAsArray('player');
+  },
+  getPlayerByUsername: function (username) {
+    return this.getChildren().get(username);
+  },
   /*=========================*\
    * Methods
   \*=========================*/

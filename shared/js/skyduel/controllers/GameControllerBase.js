@@ -141,6 +141,10 @@ var GameControllerBase = module.exports = JClass.extend({
     this.world.getChildren().add(player);
   },
   addUserInputForSession: function (username, input) {
+    var player = this.world.getPlayerByUsername(username);
+
+    player.latency = input.latency;
+    
     if (this.world.getChildren().has(username))
       this.server.userInputsByUID[username] = input;
     else
@@ -198,7 +202,6 @@ var GameControllerBase = module.exports = JClass.extend({
 
     delete this.server.userInputsByUID[username];
   },
-  
   generateWorld: function() {
     console.log('GENERATING WORLD');
 
