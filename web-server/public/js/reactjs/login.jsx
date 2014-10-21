@@ -106,7 +106,7 @@ var rjLogin = React.createClass({
     this.ignoreDisconnect= false;
 
     if (data.code === 500) {
-      this.showError(LOGIN_ERROR + ':' + data.reason);
+      this.showError('Error logging in:' + data.reason);
       return;
     }
 
@@ -121,7 +121,7 @@ var rjLogin = React.createClass({
   },
   connector_enterResponseHandler: function (data) {
     if (data.error) {
-      this.showError('A player already exists with that name! Choose a different one.');
+      this.showError(data.error);
       $(this.refs.loginUser.getDOMNode()).val(mockUserNames[Math.floor(Math.random() * mockUserNames.length)]);
       return;
     }
@@ -129,8 +129,8 @@ var rjLogin = React.createClass({
     $(this.refs.login.getDOMNode()).hide();
 
     this.props.main.showGame();
-    
-    window.client.start(rid);
+
+    window.client.enterGame(rid);
   },
   pomelo_disconnectHandler: function (reason) {
     if (this.ignoreDisconnect)

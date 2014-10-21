@@ -1,9 +1,9 @@
-var GameObject = require('../GameObject'),
+var GameObject = require('./GameObject'),
   Bird = require('./Bird'),
   Smoke = require('./Smoke'),
   Player = require('./Player'),
   PlanePart = require('./PlanePart'),
-  HashArray = require('../lib/HashArray');
+  HashArray = require('../../lib/HashArray');
 
 /*===================================================*\
  * Bird()
@@ -35,13 +35,19 @@ var World = GameObject.extend({
       children: this.getChildrenState()
     };
   },
+  getPlayers: function () {
+    return this.getChildren().getAsArray('player');
+  },
+  getPlayerByUsername: function (username) {
+    return this.getChildren().get(username);
+  },
   /*=========================*\
    * Methods
   \*=========================*/
   init: function () {
     console.log('World init!');
     this.type = 'world';
-    this.players = new HashArray(['_id', 'uid', 'type']);
+    this.players = new HashArray(['_id', 'username', 'type']);
     this._super(null, 'root');
   },
   update: function (elapsed) {
@@ -51,7 +57,7 @@ var World = GameObject.extend({
     this._super(elapsed);
   },
   buildChildrenObject: function () {
-    this.setChildren(new HashArray(['_id', 'uid', 'type']));
+    this.setChildren(new HashArray(['_id', 'username', 'type']));
   },
   newChildFromState: function (childState) {
     var child;
@@ -65,7 +71,7 @@ var World = GameObject.extend({
         child = this.players.get(childState.id);
       else
       {
-        child = new Player(this, childState.id);
+        child = new Player(this, childState.id, childState.username);
         this.players.add(child);
       }
     }

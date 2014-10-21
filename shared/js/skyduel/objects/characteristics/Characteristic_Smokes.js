@@ -1,5 +1,5 @@
 var CharacteristicBase = require('./CharacteristicBase'),
-  Smoke = require('../gameObjects/Smoke');
+  Smoke = require('../Smoke');
 
 /*===================================================*\
  * Characteristic_Smokes()

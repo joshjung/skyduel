@@ -1,5 +1,5 @@
 var CharacteristicBase = require('./CharacteristicBase'),
-  PlanePart = require('../gameObjects/PlanePart');
+  PlanePart = require('../PlanePart');
 
 /*===================================================*\
  * Characteristic_Explodes()

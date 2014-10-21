@@ -3,7 +3,7 @@
 \*===================================================*/
 var CharacteristicManager = require('./characteristics/CharacteristicManager'),
   JClass = require('jclass'),
-  HashArray = require('./lib/HashArray');
+  HashArray = require('../../lib/HashArray');
 
 /*===================================================*\
  * GameObject()

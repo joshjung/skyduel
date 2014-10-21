@@ -28,10 +28,11 @@ var rjSkyduel = React.createClass({
     );
   },
   updateBackground: function () {
-    var w = window.client.world;
+    var w = window.client.game.world;
 
     if (w && w.width && !window.client.backgroundBitmapData)
     {
+      console.log('RENDERING background');
       var bgs = window.client.backgroundBitmapData = this.phaser.add.bitmapData(w.width, w.height);
       window.client.backgroundSprite = this.phaser.add.sprite(0,0,bgs);
       var ground = this.phaser.make.sprite(0, 0, 'ground');
@@ -48,13 +49,10 @@ var rjSkyduel = React.createClass({
       window.client.gBackground.add(window.client.backgroundSprite);
     }
   },
-  updateWorld: function () {
-    window.client.world.updatePhaser(this.phaser);
-  },
   updateText: function () {
-    if (window.client.player)
+    if (window.client.game.player)
     {
-      window.client.txtLatency.text = 'Latency: ' + Math.round(window.client.latencyAnalyzer.latencySample);
+      window.client.txtLatency.text = 'Latency: ' + Math.round(window.client.serverInterface.deadReckoning.latencySampler.getLatency());
     }
   },
   /*=============================*\
@@ -78,17 +76,17 @@ var rjSkyduel = React.createClass({
     var style1 =  { font: "22px Arial", fill: "#111111", align: "center" };
     var style2 =  { font: "12px Arial", fill: "#111111", align: "right" };
     
-    window.client.txtLatency = this.phaser.add.text(5, 580, 'Latency: -1', style2);
+    window.client.txtLatency = this.phaser.add.text(5, 580, 'Latency: N/A', style2);
 
-    window.client.phaser = this.phaser;
-    window.client.startKeyboard();
+    window.client.setPhaser(this.phaser);
   },
   phaser_updateHandler: function (e) {
-    if (window.client.started)
+    if (window.client.isShowing())
     {
       this.updateText();
       this.updateBackground();
-      this.updateWorld();
+      if (window.client.game.world)
+        window.client.game.world.updatePhaser(this.phaser);
     }
   }
 });

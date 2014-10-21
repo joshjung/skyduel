@@ -19,7 +19,7 @@ var rjPlayers = React.createClass({
             <div style={phst}>{Math.round(player.health)}%</div>
           </div>) : (<span>DEAD </span>);
       return (<div style={st} className="player">
-        <span className="player-name">{isYou}{player.username}</span>
+        <span className="player-name">{isYou}{player.username}({Math.round(player.latency)})</span>
         
         <span className="player-score">{stat}{player.kills} : {player.deaths}</span>
         </div>);
@@ -27,6 +27,7 @@ var rjPlayers = React.createClass({
     return (<div id="players">{playerList}</div>);
   },
   update: function () {
-    this.setState({players: window.client.playerMetaData});
+    if (window.client && window.client.game)
+      this.setState({players: window.client.game.playerMetaData});
   }
 });

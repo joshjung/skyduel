@@ -1,4 +1,4 @@
-var GameObject = require('../GameObject');
+var GameObject = require('./GameObject');
 
 /*===================================================*\
  * Bullet()
@@ -49,9 +49,9 @@ var Bullet = GameObject.extend({
 
     this.type = 'bullet';
 
-    this.charManager.add(new (require('../characteristics/Characteristic_Collides'))({callback: this.collideHandler.bind(this)}));
-    this.charManager.add(new (require('../characteristics/Characteristic_Physics'))(this.GLOBALS));
-    this.charManager.add(new (require('../characteristics/Characteristic_DestroyOffScreen'))(this.world));
+    this.charManager.add(new (require('./characteristics/Characteristic_Collides'))({callback: this.collideHandler.bind(this)}));
+    this.charManager.add(new (require('./characteristics/Characteristic_Physics'))(this.GLOBALS));
+    this.charManager.add(new (require('./characteristics/Characteristic_DestroyOffScreen'))(this.world));
   },
   update: function (elapsed) {
     this.charManager.applyAll(elapsed);

@@ -1,5 +1,5 @@
 var CharacteristicBase = require('./CharacteristicBase'),
-  Bullet = require('../gameObjects/Bullet');
+  Bullet = require('../Bullet');
 
 /*===================================================*\
  * Characteristic_ShootsBullets()

@@ -3,9 +3,8 @@
 \*===================================================*/
 var SkyduelRemote = function(app) {
   this.app = app;
-  this.server = require('../../../main/SkyDuelServer');
   this.channelService = app.get('channelService');
-  this.server = app.get('skyduelServer');
+  this.service = app.get('skyduelService');
 };
 
 /*===================================================*\
@@ -49,7 +48,7 @@ SkyduelRemote.prototype = {
 
     channel.pushMessage(param);
 
-    this.server.kickByUid(uid);
+    this.service.session_disconnectedHandler(uid);
 
     callback();
   }
