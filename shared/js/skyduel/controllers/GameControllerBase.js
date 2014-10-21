@@ -7,7 +7,7 @@ var JClass = require('jclass'),
   Bird = require('../objects/Bird'),
   UA = require('../../input/SkyDuelUserActions'),
   HashArray = require('../../lib/HashArray'),
-  Util = require('../Util.js'),
+  Util = require('../util.js'),
   UserInputProcessor = require('../../input/SkyDuelUserInputProcessor');
 
 /*===================================================*\
@@ -144,7 +144,7 @@ var GameControllerBase = module.exports = JClass.extend({
     var player = this.world.getPlayerByUsername(username);
 
     player.latency = input.latency;
-    
+
     if (this.world.getChildren().has(username))
       this.server.userInputsByUID[username] = input;
     else
