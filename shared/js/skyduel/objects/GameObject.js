@@ -133,7 +133,10 @@ var GameObject = module.exports = JClass.extend({
 
     this.inited= true;
   },
-  update: function (elapsed) {
+  update: function (elapsed, tracker) {
+    if (tracker)
+      tracker.add(this);
+
     var self = this;
     // Wipe out any destroyed children.
     this.getChildren().all.concat().forEach(function (child) {
@@ -142,7 +145,7 @@ var GameObject = module.exports = JClass.extend({
     });
 
     this.getChildren().all.forEach(function (child) {
-      child.update(elapsed);
+      child.update(elapsed, tracker);
     });
 
     this.charManager.applyAll(elapsed);

@@ -142,8 +142,8 @@ var Player = GameObject.extend({
     this.charManager.add(new (require('./characteristics/Characteristic_Explodes'))(this.GLOBALS));
     this.charManager.add(new (require('./characteristics/Characteristic_Respawns'))(this.GLOBALS));
   },
-  update: function (elapsed) {
-    this._super(elapsed);
+  update: function (elapsed, tracker) {
+    this._super(elapsed, tracker);
 
     this.bulletProps.fireVelocity = 500.0 + this.velocity;
   },

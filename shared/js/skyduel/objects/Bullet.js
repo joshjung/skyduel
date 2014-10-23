@@ -53,7 +53,9 @@ var Bullet = GameObject.extend({
     this.charManager.add(new (require('./characteristics/Characteristic_Physics'))(this.GLOBALS));
     this.charManager.add(new (require('./characteristics/Characteristic_DestroyOffScreen'))(this.world));
   },
-  update: function (elapsed) {
+  update: function (elapsed, tracker) {
+    this._super(elapsed, tracker);
+    
     this.charManager.applyAll(elapsed);
   },
   buildSprite: function (phaser) {

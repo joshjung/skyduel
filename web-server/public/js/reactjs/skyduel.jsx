@@ -7,6 +7,8 @@ var rjSkyduel = React.createClass({
    * Methods
   \*=============================*/
   componentDidMount: function () {
+    this.cameraSet = false;
+
     this.phaser = new Phaser.Game(800,600,Phaser.AUTO, 'dPhaserOutput', {
       preload: this.phaser_preloadHandler,
       create: this.phaser_createHandler,
@@ -69,6 +71,8 @@ var rjSkyduel = React.createClass({
     this.phaser.load.image('bullet', 'images/bullet.png', 2, 2);
   },
   phaser_createHandler: function (e) {
+    this.phaser.world.setBounds(-500, -500, 3000, 3000);
+
     window.client.gBackground = this.phaser.add.group();
     window.client.gGameObjects = this.phaser.add.group();
     window.client.gText = this.phaser.add.group();
@@ -77,14 +81,24 @@ var rjSkyduel = React.createClass({
     var style2 =  { font: "12px Arial", fill: "#111111", align: "right" };
     
     window.client.txtLatency = this.phaser.add.text(5, 580, 'Latency: N/A', style2);
-
     window.client.setPhaser(this.phaser);
   },
   phaser_updateHandler: function (e) {
     if (window.client.isShowing())
     {
+      var sprite = window.client.game.player.sprite;
+
+      if (window.client.game.player && sprite)
+      {
+        this.phaser.camera.follow(sprite);
+        this.phaser.camera.deadzone = new Phaser.Rectangle(200, 200, 600, 400);
+      }
+
       this.updateText();
       this.updateBackground();
+
+      this.phaser.debug.cameraInfo(this.phaser.camera, 32, 32);
+      
       if (window.client.game.world)
         window.client.game.world.updatePhaser(this.phaser);
     }

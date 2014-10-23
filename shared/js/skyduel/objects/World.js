@@ -48,13 +48,18 @@ var World = GameObject.extend({
     console.log('World init!');
     this.type = 'world';
     this.players = new HashArray(['_id', 'username', 'type']);
+    
+    this.debug = false;
+
     this._super(null, 'root');
   },
   update: function (elapsed) {
     if (!elapsed)
       return;
        
-    this._super(elapsed);
+    this.debugTracker = this.debug ? new HashArray(['id', 'type']) : undefined;
+
+    this._super(elapsed, this.debugTracker);
   },
   buildChildrenObject: function () {
     this.setChildren(new HashArray(['_id', 'username', 'type']));
