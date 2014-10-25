@@ -1,7 +1,8 @@
 /*===================================================*\
  * Requires
 \*===================================================*/
-var CharacteristicManager = require('./characteristics/CharacteristicManager'),
+var merge = require('merge'),
+	CharacteristicManager = require('./characteristics/CharacteristicManager'),
   JClass = require('jclass'),
   HashArray = require('../../lib/HashArray');
 
@@ -41,17 +42,17 @@ var GameObject = module.exports = JClass.extend({
   setState: function(value) {
     this._state = value;
   },
-  getState: function() {
+  getState: function(mergeWith) {
     if (!this.inited)
       return {};
 
-    return {
-      id: this.getId(),
-      type: this.type,
-      children: this.getChildren().all.map(function (child) {
-        return child.state;
-      })
-    };
+    return this.merge.recursive(true, {
+	      id: this.getId(),
+	      type: this.type,
+	      children: this.getChildren().all.map(function (child) {
+	        return child.getState();
+	      })
+			}, mergeWith);
   },
   getChildrenIds: function() {
     if (!this.inited)
@@ -121,6 +122,7 @@ var GameObject = module.exports = JClass.extend({
       GameObject.prototype.world = GameObject.prototype.root = this;
     }
 
+		this.merge = merge;
     this.setId(id);
     this.type = 'GameObject';
     this.buildChildrenObject();
@@ -199,11 +201,14 @@ var GameObject = module.exports = JClass.extend({
   destroy: function () {
     this.destroyed = true;
   },
-  forEach: function (callback) {
-    this.getChildren().all.concat().forEach(function (child) {
-      child.forEach(callback);
+  forEach: function (callback, types) {
+		var children = types ? this.getChildren().getAll(types) : this.getChildren().all.concat();
+
+    children.forEach(function (child) {
+      child.forEach(callback, types);
     });
 
-    callback.apply(this);
+		if (!types || types.indexOf(this.type))
+    	callback.apply(this);
   }
 });

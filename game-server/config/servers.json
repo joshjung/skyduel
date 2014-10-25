@@ -19,6 +19,26 @@
             "port": 5080
         }]
     },
+    "staging": {
+        "gate": [{
+            "id": "gate-server-1",
+            "host": "stage.skyduel.com",
+            "clientPort": 3081,
+            "frontend": true
+        }],
+        "connector": [{
+            "id": "connector-server-1",
+            "host": "stage.skyduel.com",
+            "port": 4081,
+            "clientPort": 4089,
+            "frontend": true
+        }],
+        "skyduel": [{
+            "id": "skyduel-server-1",
+            "host": "stage.skyduel.com",
+            "port": 5081
+        }]
+    },
     "production": {
         "gate": [{
             "id": "gate-server-1",

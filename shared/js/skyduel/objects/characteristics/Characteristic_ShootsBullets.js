@@ -21,6 +21,7 @@ var Characteristic_ShootsBullets = CharacteristicBase.extend({
   init: function(options) {
     this._super(options);
 
+		this.options = options || {};
     this.options.fireRate = options.fireRate || 50.0;
     this.options.fireVelocity = options.fireVelocity || 700.0;
     // Bullets need to start 'ahead' of teh object firing them a little.

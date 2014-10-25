@@ -1,7 +1,7 @@
 /*===================================================*\
  * Requirements
 \*===================================================*/
-var GameObject = require('./GameObject'),
+var PhysicsObject = require('./PhysicsObject'),
   Bullet = require('./Bullet'),
   Smoke = require('./Smoke'),
   playerCount = 0;
@@ -9,13 +9,12 @@ var GameObject = require('./GameObject'),
 /*===================================================*\
  * Player()
 \*===================================================*/
-var Player = GameObject.extend({
+var Player = PhysicsObject.extend({
   /*=========================*\
    * Properties
   \*=========================*/
   getMetaData: function () {
     return {
-        username: this.username,
         username: this.username.split('*')[0],
         id: this._id,
         color: this.color,
@@ -30,31 +29,25 @@ var Player = GameObject.extend({
     if (!this.inited)
       return {};
 
-    return {
+		var state = this._super({
       username: this.username,
-      id: this._id,
-      x: this.x,
-      y: this.y,
-      bank: this.bank,
-      accelerater: this.accelerater,
-      turn: this.turn,
-      accel: this.accel,
-      angle: this.angle,
       health: this.health,
-      velocity: this.velocity,
       ammo: this.ammo,
-      type: this.type,
-      radius: this.radius,
       smokes: this.smokes,
       destroyed: this.destroyed,
-      children: this.getChildrenState(),
       kills: this.kills,
       deaths: this.deaths,
       color: this.color
-    };
+    });
+		
+		console.log('state: ', state);
+		
+    return state;
   },
   setState: function(value) {
     var self = this;
+		
+		this._super(value);
 
     if (value.id != this.getId())
     {
@@ -62,15 +55,8 @@ var Player = GameObject.extend({
     }
 
     this.username = value.username;
-    this.x = value.x;
-    this.y = value.y;
-    this.angle = value.angle;
-    this.velocity = value.velocity;
-    this.bank = value.bank;
     this.health = value.health;
-    this.accelerater = value.accelerater;
     this.ammo = value.ammo;
-    this.radius = value.radius;
     this.smokes = value.smokes;
     if (value.destroyed && !this.destroyed)
       this.destroy();
@@ -89,58 +75,42 @@ var Player = GameObject.extend({
   init: function(parent, id, username) {
     if (!username)
       throw Error('Username is not provided to new player!', this);
-    
-    console.log('Initing player, username: ', username);
 
-    this._super(parent, id || this.getId());
+    this.physicsProps = {
+      VELOCITY_MAX: 200,
+      VELOCITY_MIN: 70,
+      BANK_RATE: Math.PI / 2,
+      ACCELERATION_RATE: 250,
+      DECELERATION_RATE: 70,
+    };
+			
+    this._super(parent, (id || this.getId()), 400, 400, Math.random() * Math.PI * 2, 0, 15);
 
     this.username = username;
 
     this.type = 'player';
-
-    this.GLOBALS = {
-      VELOCITY_MAX: 300,
-      VELOCITY_MIN: 80,
-      BANK_RATE: Math.PI / 2,
-      ACCELERATION_RATE: 250,
-      DECELERATION_RATE: 70,
-      SMOKE_MAX: 20,
-      SMOKE_START_HEALTH: 60,
-      SMOKE_THRESHOLD: 5
-    };
-
+		
     this.bulletProps = {
       fireRate: 100,
       fireVelocity: 500
     };
 
     this.color = 0xFFFFFF;
-    this.x = 400;
-    this.y = 400;
-    this.bank = 0;
-    this.kills = 0;
-    this.deaths = 0;
-    this.accelerater = 0;
+    this.bank = this.kills = this.deaths = this.accelerater = this.smokes = 0;
     this.health = 100;
     this.ammo = 1000;
-    this.velocity = this.GLOBALS.VELOCITY_MIN;
-    this.angle = Math.random() * Math.PI * 2;
-    this.radius = 15;
 
-    this.smokes = 0;
+    this.markedForDestroy = this.triggerDown = this.destroyed = false;
 
-    this.markedForDestroy = false;
-
-    this.triggerDown = false;
-
-    this.destroyed = false;
-
-    this.charManager.add(new (require('./characteristics/Characteristic_Smokes'))(this.GLOBALS));
-    this.charManager.add(new (require('./characteristics/Characteristic_Physics'))(this.GLOBALS));
+    this.charManager.add(new (require('./characteristics/Characteristic_Smokes'))({
+				SMOKE_MAX: 20,
+	      SMOKE_START_HEALTH: 60,
+	      SMOKE_THRESHOLD: 5
+			}));
     this.charManager.add(new (require('./characteristics/Characteristic_ScreenWrapping'))(this.world));
     this.charManager.add(new (require('./characteristics/Characteristic_ShootsBullets'))(this.bulletProps));
-    this.charManager.add(new (require('./characteristics/Characteristic_Explodes'))(this.GLOBALS));
-    this.charManager.add(new (require('./characteristics/Characteristic_Respawns'))(this.GLOBALS));
+    this.charManager.add(new (require('./characteristics/Characteristic_Explodes'))());
+    this.charManager.add(new (require('./characteristics/Characteristic_Respawns'))());
   },
   update: function (elapsed, tracker) {
     this._super(elapsed, tracker);
@@ -148,23 +118,15 @@ var Player = GameObject.extend({
     this.bulletProps.fireVelocity = 500.0 + this.velocity;
   },
   respawn: function () {
-    console.log('Respawning player', this.username);
-
-    this.x = 400;
-    this.y = 400;
-    this.bank = 0;
-    this.accelerater = 0;
+    this.x = this.y = 400;
+    this.bank = this.accelerater = this.smokes = 0;
     this.health = 100;
     this.ammo = 1000;
     this.velocity = this.GLOBALS.VELOCITY_MIN;
     this.angle = Math.random() * Math.PI * 2;
     this.radius = 15;
 
-    this.smokes = 0;
-    this.markedForDestroy = false;
-
-    this.exploded = false;
-    this.destroyed = false;
+    this.markedForDestroy = this.exploded = this.destroyed = false;
 
     this.world.getChildren().add(this);
   },

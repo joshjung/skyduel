@@ -10,6 +10,7 @@ var Characteristic_Respawns = CharacteristicBase.extend({
   init: function(options) {
     this._super(options);
 
+		this.options = options || {};
     // Default 5.0 second respawn if none provided
     this.options.RESPAWN_TIME = this.options.RESPAWN_TIME || 5000;
     // Default 5.0 second respawn if none provided

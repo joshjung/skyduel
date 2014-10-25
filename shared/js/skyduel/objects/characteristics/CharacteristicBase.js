@@ -18,7 +18,25 @@ var CharacteristicBase = JClass.extend({
   },
   /*=======================*\
    * Methods
-  \*=========================*/
+  \*=======================*/
+	verifyHas: function (target, props) {
+		for (var key in props)
+		{
+			var prop = props[key];
+
+			if (!target.hasOwnProperty(prop))
+				throw Error('Target ' + target.type + ' does not have \'' + prop +'\'');
+		}
+	},
+	verifyNotNaN: function (target, props) {
+		for (var key in props)
+		{
+			var prop = props[key];
+
+			if (isNaN(target[prop]))
+				throw Error('Target ' + target.type + ' has NaN prop \'' + prop +'\'');
+		}
+	},
   applyTo: function () {
     if (this.applyToServerOnly && this.isServer)
     {

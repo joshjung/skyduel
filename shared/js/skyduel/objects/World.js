@@ -44,8 +44,8 @@ var World = GameObject.extend({
   /*=========================*\
    * Methods
   \*=========================*/
-  init: function () {
-    console.log('World init!');
+  init: function (game) {
+		this.game = game;
     this.type = 'world';
     this.players = new HashArray(['_id', 'username', 'type']);
     
