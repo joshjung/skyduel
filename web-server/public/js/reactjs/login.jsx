@@ -1,6 +1,5 @@
 /** @jsx React.DOM */
-var GATE_PORT = 3080,
-  GATE_HOST = window.location.hostname,
+var GATE_HOST = window.location.hostname,
   USERNAME_REGEX = /^[a-zA-Z0-9_\u4e00-\u9fa5]+$/,
   mockUserNames = ['balloon_buster', 'bam', 'bird', 'black_swallow', 'blackie','buck',
   'cowboy', 'demon_of_rabaul', 'drunken_duncan', 'flying_knight', 'hawkeye', 'little_dragon', 'moose', 'mad_major',
