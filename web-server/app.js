@@ -49,5 +49,6 @@ console.log("SkyDual server has started.\nIf you are running on the local networ
 // Write file telling client which gate port to connect to
 var gameServer = JSON.parse(fs.readFileSync('../game-server/config/servers.json').toString());
 fs.writeFileSync('./public/gate.js', 'var GATE_PORT=' + gameServer[env]['gate'][0]['clientPort'] + ';');
-  
+
+fs.appendFileSync('../pid', process.pid.toString() + '\n');
 app.listen(server.port);
