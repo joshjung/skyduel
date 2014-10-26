@@ -1,5 +1,7 @@
 var GameObject = require('./GameObject'),
   Bird = require('./Bird'),
+  Wind = require('./Wind'),
+  Cloud = require('./Cloud'),
   Smoke = require('./Smoke'),
   Player = require('./Player'),
   PlanePart = require('./PlanePart'),
@@ -84,6 +86,10 @@ var World = GameObject.extend({
       child = new Smoke(this, childState.id);
     else if (childState.type == 'planepart')
       child = new PlanePart(this, childState.id);
+    else if (childState.type == 'wind')
+      child = new Wind(this, childState.id);
+    else if (childState.type == 'cloud')
+      child = new Cloud(this, childState.id);
     else
     {
       console.log(childState);

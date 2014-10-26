@@ -64,6 +64,8 @@ var rjSkyduel = React.createClass({
     this.phaser.load.spritesheet('planeparts', 'images/planeparts.png', 15, 15, 5);
     this.phaser.load.spritesheet('ground', 'images/ground.png', 50, 50, 4);
     this.phaser.load.spritesheet('smoke', 'images/smoke.png', 12, 10, 4);
+    
+    this.phaser.load.image('cloud', 'images/cloud.png');
 
     this.phaser.load.image('bird', 'images/bird.png', 14, 9);
     this.phaser.load.image('bullet', 'images/bullet.png', 2, 2);

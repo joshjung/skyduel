@@ -4,6 +4,7 @@ var isClient = true;
 require("./game-server/node_modules/jclass/lib/jclass.min.js");
 
 // Sprites
+require("./shared/js/sprites/CloudSprite");
 require("./shared/js/sprites/BirdSprite");
 require("./shared/js/sprites/BulletSprite");
 require("./shared/js/sprites/PlanePartSprite");
