@@ -40,8 +40,6 @@ var Player = PhysicsObject.extend({
       color: this.color
     });
 		
-		console.log('state: ', state);
-		
     return state;
   },
   setState: function(value) {

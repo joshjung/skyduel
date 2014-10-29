@@ -48,12 +48,13 @@ var World = GameObject.extend({
   \*=========================*/
   init: function (game) {
 		this.game = game;
-    this.type = 'world';
     this.players = new HashArray(['_id', 'username', 'type']);
     
     this.debug = false;
 
     this._super(null, 'root');
+
+    this.type = 'world';
   },
   update: function (elapsed) {
     if (!elapsed)

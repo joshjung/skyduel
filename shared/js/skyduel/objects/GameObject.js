@@ -146,6 +146,7 @@ var GameObject = module.exports = JClass.extend({
         self.getChildren().remove(child);
     });
 
+    console.log(this.type + ':', this.getChildren().all.map(function (item) {return item._id;}))
     this.getChildren().all.forEach(function (child) {
       child.update(elapsed, tracker);
     });

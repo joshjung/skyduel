@@ -1,4 +1,5 @@
-var GameObject = require('./GameObject');
+var GameObject = require('./GameObject'),
+$Math = require('../math/math.js');
 
 /*===================================================*\
  * Wind()
@@ -31,36 +32,39 @@ var Wind = GameObject.extend({
     this.angle = value.angle;
     this.velocity = value.velocity;
     this.radius = value.radius;
-    this.type = value.type;
   },
   /*=========================*\
    * Methods
   \*=========================*/
-  init: function (parent, id, x, y, angle, velocity, radius) {
+  init: function (parent, id, x, y, angle, velocity, radius, targetTypes) {
     this._super(parent, id || this.getId());
 
     this.type = 'wind';
 
+    this.targetTypes = targetTypes || ['player'];
     this.x = x;
     this.y = y;
     this.angle = angle;
     this.velocity = velocity;
     this.radius = 3;
   },
-  apply: function (target, elapsed) {
-    var dx = target.x - this.x;
-    var dy = target.y - this.y;
-    var dis = Math.sqrt(dx * dx + dy * dy);
-    var strength = Math.min(0, radius - dis);
+  update: function (elapsed, tracker) {
+    console.log('wind!')
+    var targets = this.getParent().getChildren().getAll(this.targetTypes),
+    self = this;
 
-    var velX = this.velocity * Math.cos(this.angle);
-    var velY = this.velocity * Math.sin(this.angle);
+    targets.forEach(function (target) {
+      var windToTarget = new $Math.Point(target.x - this.x, target.y - this.y),
+        strength = Math.min(0, radius - windToTarget.length()),
+        vel = new $Math.Point(1.0, 0.0).transform(this.angle, this.velocity),
+        tVel = new $Math.Point(1.0, 0.0).transform(target.angle, target.velocity);
 
-    var tVelX = target.velocity * Math.cos(this.angle);
-    var tVelY = target.velocity * Math.sin(this.angle);
-
-    var dot = velX * tVelX + velY * tVelY;
-
+        var strength = $Math.dot(vel, tVel, true);
+        console.log(strength);
+    });
+  },
+  destroy: function (){
+    console.log('wind is being destroyed');
   }
 });
 
