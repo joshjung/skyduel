@@ -1,4 +1,4 @@
-var HashArray = require('../../lib/HashArray');
+var HashArray = require('hasharray');
 
 var GAME_TYPES = new HashArray(['type', 'label', 'description', 'id']);
 

@@ -2,7 +2,7 @@
  * Globals
 \*===================================================*/
 var UA = require('./SkyDuelUserActions'),
-  HashArray = require('../lib/HashArray');
+  HashArray = require('hasharray');
 
 /*===================================================*\
  * SkyDuelUserInputProcessor()

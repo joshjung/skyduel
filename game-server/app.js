@@ -3,7 +3,8 @@ var fs = require('fs'),
   routeUtil = require('./app/util/routeUtil'),
   SkyDuelService = require('./app/services/SkyDuelService'),
   MessagingService = require('./app/services/MessagingService'),
-  GitService = require('./GitService');
+  GitService = require('./GitService'),
+	HashArray = require('hasharray');
 
 var app = pomelo.createApp(),
   gitService = new GitService();

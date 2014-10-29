@@ -6,7 +6,7 @@ var JClass = require('jclass'),
   Player = require('../objects/Player'),
   Bird = require('../objects/Bird'),
   UA = require('../../input/SkyDuelUserActions'),
-  HashArray = require('../../lib/HashArray'),
+  HashArray = require('hasharray'),
   Util = require('../util.js'),
   UserInputProcessor = require('../../input/SkyDuelUserInputProcessor');
 

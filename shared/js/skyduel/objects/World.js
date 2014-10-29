@@ -5,7 +5,7 @@ var GameObject = require('./GameObject'),
   Smoke = require('./Smoke'),
   Player = require('./Player'),
   PlanePart = require('./PlanePart'),
-  HashArray = require('../../lib/HashArray');
+  HashArray = require('hasharray');
 
 /*===================================================*\
  * Bird()
@@ -93,7 +93,6 @@ var World = GameObject.extend({
       child = new Cloud(this, childState.id);
     else
     {
-      console.log(childState);
       throw Error('Cannot figure out what the hell a \'' + childState.type + '\' is.');
     }
 
