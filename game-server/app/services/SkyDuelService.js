@@ -2,7 +2,7 @@
  * Requires
 \*===================================================*/
 var Util = require('../../../shared/js/skyduel/util'),
-  HashArray = require('../../../shared/js/lib/HashArray'),
+  HashArray = require('hasharray'),
   JClass = require('jclass'),
   GameControllerFactory = require('../../../shared/js/skyduel/controllers/GameControllerFactory');
 

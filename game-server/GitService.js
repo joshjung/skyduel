@@ -6,7 +6,6 @@ var GitService = function () {
 
 GitService.prototype = {
   log: function (count, callback) {
-    console.log('Starting GitService log')
     this.open(path.resolve(__dirname, '../.git'), function(error, repo) {
       if (error) throw error;
 

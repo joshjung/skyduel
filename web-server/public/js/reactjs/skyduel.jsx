@@ -7,6 +7,8 @@ var rjSkyduel = React.createClass({
    * Methods
   \*=============================*/
   componentDidMount: function () {
+    this.cameraSet = false;
+
     this.phaser = new Phaser.Game(800,600,Phaser.AUTO, 'dPhaserOutput', {
       preload: this.phaser_preloadHandler,
       create: this.phaser_createHandler,
@@ -46,14 +48,12 @@ var rjSkyduel = React.createClass({
         }
       }
 
-      window.client.gBackground.add(window.client.backgroundSprite);
+      this.phaser.world.groundGroup.add(window.client.backgroundSprite);
     }
   },
   updateText: function () {
     if (window.client.game.player)
-    {
       window.client.txtLatency.text = 'Latency: ' + Math.round(window.client.serverInterface.deadReckoning.latencySampler.getLatency());
-    }
   },
   /*=============================*\
    * Event
@@ -64,20 +64,27 @@ var rjSkyduel = React.createClass({
     this.phaser.load.spritesheet('planeparts', 'images/planeparts.png', 15, 15, 5);
     this.phaser.load.spritesheet('ground', 'images/ground.png', 50, 50, 4);
     this.phaser.load.spritesheet('smoke', 'images/smoke.png', 12, 10, 4);
+    
+    this.phaser.load.image('cloud', 'images/cloud.png');
 
     this.phaser.load.image('bird', 'images/bird.png', 14, 9);
     this.phaser.load.image('bullet', 'images/bullet.png', 2, 2);
   },
   phaser_createHandler: function (e) {
-    window.client.gBackground = this.phaser.add.group();
-    window.client.gGameObjects = this.phaser.add.group();
+    this.phaser.world.setBounds(-500, -500, 3000, 3000);
+		
+		this.phaser.world.groundGroup = this.phaser.add.group();
+		this.phaser.world.airGroup = this.phaser.add.group();
+		this.phaser.world.cloudGroup = this.phaser.add.group();
+		
     window.client.gText = this.phaser.add.group();
 
     var style1 =  { font: "22px Arial", fill: "#111111", align: "center" };
     var style2 =  { font: "12px Arial", fill: "#111111", align: "right" };
     
     window.client.txtLatency = this.phaser.add.text(5, 580, 'Latency: N/A', style2);
-
+		window.client.txtLatency.fixedToCamera = true;
+		
     window.client.setPhaser(this.phaser);
   },
   phaser_updateHandler: function (e) {
@@ -85,8 +92,8 @@ var rjSkyduel = React.createClass({
     {
       this.updateText();
       this.updateBackground();
-      if (window.client.game.world)
-        window.client.game.world.updatePhaser(this.phaser);
+
+      window.client.game.updatePhaser(this.phaser);
     }
   }
 });

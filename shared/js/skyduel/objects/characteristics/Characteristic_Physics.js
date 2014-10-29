@@ -8,6 +8,9 @@ var Characteristic_Physics = CharacteristicBase.extend({
    * Methods
   \*=========================*/
   applyTo: function (target, elapsed, cache) {
+		this.verifyHas(target, ['x', 'y', 'velocity', 'angle']);
+		this.verifyNotNaN(target, ['x', 'y', 'velocity', 'angle']);
+		
     var res = this.applyTemp(target, elapsed);
     target.x = res.x;
     target.y = res.y;
@@ -35,6 +38,12 @@ var Characteristic_Physics = CharacteristicBase.extend({
     res.x = target.x + Math.cos(res.angle) * res.velocity * elapsed;
     res.y = target.y + Math.sin(res.angle) * res.velocity * elapsed;
 
+		if (target._force)
+		{
+			res.x += target._force.x * elapsed;
+			res.y += target._force.y * elapsed;
+		}
+		
     if (isNaN(res.x))
     {
       console.log(target.type);

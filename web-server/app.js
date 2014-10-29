@@ -1,6 +1,26 @@
 var express = require('express'),
+	fs = require('fs'),
   app = express();
 
+var env = undefined;
+
+for (var key in process.argv)
+{
+	var param = process.argv[key];
+	
+	if (/env=[a-z]+/gi.test(param))
+		env = param.split('=')[1];
+}
+
+if (!env)
+	throw Error('You must provide an environment (env=<environment>) from the command line!');
+
+var servers = JSON.parse(fs.readFileSync('./config/servers.json').toString()),
+	server = servers[env];
+
+	if (!server)
+	throw Error('Env \'' + env + '\' is invalid.');
+	
 app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.json());
@@ -24,6 +44,11 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-console.log("SkyDual server has started.\nPlease make sure your hosts file has been properly edited according to the Readme.md.\nLog on http://local.skyduel.com:3001/index.html");
+console.log("SkyDual server has started.\nIf you are running on the local network, please make sure your hosts file has been properly edited according to the Readme.md.\nLog on http://local.skyduel.com:" + server.port + "/index.html");
 
-app.listen(3001);
+// Write file telling client which gate port to connect to
+var gameServer = JSON.parse(fs.readFileSync('../game-server/config/servers.json').toString());
+fs.writeFileSync('./public/gate.js', 'var GATE_PORT=' + gameServer[env]['gate'][0]['clientPort'] + ';');
+
+fs.appendFileSync('../pid', process.pid.toString() + '\n');
+app.listen(server.port);

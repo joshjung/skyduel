@@ -58,13 +58,13 @@ var rjMessenger = React.createClass({
   iChat_keyPressHandler: function(e) {
     this.lastInputTime = (new Date()).getTime();
 
-    window.client.stopKeyboard();
+    window.client.userInputReceiver.stopKeyboard();
 
     if (this.relinquishKeyboardTimeout)
       clearTimeout(this.relinquishKeyboardTimeout)
 
     this.relinquishKeyboardTimeout = setTimeout(function () {
-      window.client.startKeyboard();
+      window.client.userInputReceiver.startKeyboard();
     }, 1000);
 
     if (e.keyCode != 13)

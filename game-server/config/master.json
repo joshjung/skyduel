@@ -2,6 +2,9 @@
   "development": {
     "id": "master-server-1", "host": "local.skyduel.com", "port": 2080
   },
+  "staging": {
+    "id": "master-server-1", "host": "stage.skyduel.com", "port": 2081
+  },
   "production": {
     "id": "master-server-1", "host": "www.skyduel.com", "port": 2080
   }

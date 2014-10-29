@@ -1,9 +1,11 @@
 var GameObject = require('./GameObject'),
   Bird = require('./Bird'),
+  Wind = require('./Wind'),
+  Cloud = require('./Cloud'),
   Smoke = require('./Smoke'),
   Player = require('./Player'),
   PlanePart = require('./PlanePart'),
-  HashArray = require('../../lib/HashArray');
+  HashArray = require('hasharray');
 
 /*===================================================*\
  * Bird()
@@ -44,17 +46,23 @@ var World = GameObject.extend({
   /*=========================*\
    * Methods
   \*=========================*/
-  init: function () {
-    console.log('World init!');
-    this.type = 'world';
+  init: function (game) {
+		this.game = game;
     this.players = new HashArray(['_id', 'username', 'type']);
+    
+    this.debug = false;
+
     this._super(null, 'root');
+
+    this.type = 'world';
   },
   update: function (elapsed) {
     if (!elapsed)
       return;
        
-    this._super(elapsed);
+    this.debugTracker = this.debug ? new HashArray(['id', 'type']) : undefined;
+
+    this._super(elapsed, this.debugTracker);
   },
   buildChildrenObject: function () {
     this.setChildren(new HashArray(['_id', 'username', 'type']));
@@ -79,9 +87,12 @@ var World = GameObject.extend({
       child = new Smoke(this, childState.id);
     else if (childState.type == 'planepart')
       child = new PlanePart(this, childState.id);
+    else if (childState.type == 'wind')
+      child = new Wind(this, childState.id);
+    else if (childState.type == 'cloud')
+      child = new Cloud(this, childState.id);
     else
     {
-      console.log(childState);
       throw Error('Cannot figure out what the hell a \'' + childState.type + '\' is.');
     }
 

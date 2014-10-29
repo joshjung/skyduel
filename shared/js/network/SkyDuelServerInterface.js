@@ -1,7 +1,7 @@
 /*===================================================*\
  * Requires
 \*===================================================*/
-var HashArray = require('../../../shared/js/lib/HashArray'),
+var HashArray = require('hasharray'),
   DeadReckoning = require('dead-reckoning');
 
 /*===================================================*\

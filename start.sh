@@ -1,8 +1,6 @@
 #!/bin/bash
-echo '--------------------Git Pulling--------------------'
-git pull
-echo '-------------------Pomelo Killing------------------'
-pomelo kill --force
+echo '--------------Killing processes in pid-------------'
+./kill.sh
 echo '--------------Javascript Browserifying-------------'
 browserify -d browserify.me.js > web-server/public/js/browserify.bundle.js
 echo '-------------------Server NoHupping-----------------'

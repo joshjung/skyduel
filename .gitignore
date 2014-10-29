@@ -32,3 +32,5 @@ psds
 
 *browserify.bundle.js
 *gitEntries.json
+*.DS_STORE
+*pid

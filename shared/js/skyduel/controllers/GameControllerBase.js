@@ -6,8 +6,8 @@ var JClass = require('jclass'),
   Player = require('../objects/Player'),
   Bird = require('../objects/Bird'),
   UA = require('../../input/SkyDuelUserActions'),
-  HashArray = require('../../lib/HashArray'),
-  Util = require('../Util.js'),
+  HashArray = require('hasharray'),
+  Util = require('../util.js'),
   UserInputProcessor = require('../../input/SkyDuelUserInputProcessor');
 
 /*===================================================*\
@@ -114,16 +114,16 @@ var GameControllerBase = module.exports = JClass.extend({
     player.triggerDown = actions.has(UA.TRIGGER.id);
 
     if (actions.has(UA.BANK_LEFT.id))
-      player.bank = -player.GLOBALS.BANK_RATE;
+      player.bank = -player.physicsProps.BANK_RATE;
 
     if (actions.has(UA.BANK_RIGHT.id))
-      player.bank = player.GLOBALS.BANK_RATE;
+      player.bank = player.physicsProps.BANK_RATE;
 
     if (actions.has(UA.ACCELERATE.id))
-      player.accelerater = player.GLOBALS.ACCELERATION_RATE;
+      player.accelerater = player.physicsProps.ACCELERATION_RATE;
 
     if (actions.has(UA.DECELERATE.id))
-      player.accelerater = -player.GLOBALS.DECELERATION_RATE;
+      player.accelerater = -player.physicsProps.DECELERATION_RATE;
   },
   isServer: function () {
     return typeof window === 'undefined';
@@ -143,12 +143,15 @@ var GameControllerBase = module.exports = JClass.extend({
   addUserInputForSession: function (username, input) {
     var player = this.world.getPlayerByUsername(username);
 
-    player.latency = input.latency;
-    
-    if (this.world.getChildren().has(username))
-      this.server.userInputsByUID[username] = input;
-    else
-      console.log('WARNING: addUserInputForSession(): no player matched session username', username);
+		if (player)
+		{
+	    player.latency = input.latency;
+
+	    if (this.world.getChildren().has(username))
+	      this.server.userInputsByUID[username] = input;
+	    else
+	      console.log('WARNING: addUserInputForSession(): no player matched session username', username);
+		}
   },
   start: function () {
     console.log('GameControllerBase::start(): starting game');
@@ -184,6 +187,10 @@ var GameControllerBase = module.exports = JClass.extend({
 
     this.world.update(elapsed);
   },
+  updatePhaser: function (phaser) {
+	  if (this.world)
+	  	this.world.updatePhaser(phaser);
+  },
   serverUpdate: function(elapsed) {
     // First manage user input.
     for (var username in this.server.userInputsByUID)
@@ -203,30 +210,6 @@ var GameControllerBase = module.exports = JClass.extend({
     delete this.server.userInputsByUID[username];
   },
   generateWorld: function() {
-    console.log('GENERATING WORLD');
-
-    this.world.setState({
-      width: 800,
-      height: 600,
-      tileWidth: 50,
-      tileHeight: 50,
-      tiles: []
-    });
-
-    // build the world tiles
-    for (var x = 0; x < this.world.width; x+= this.world.tileWidth)
-    {
-      this.world.tiles[x / this.world.tileWidth] = [];
-
-      for (var y = 0; y < this.world.height; y += this.world.tileHeight)
-      {
-        this.world.tiles[x / this.world.tileWidth][y / this.world.tileHeight] = Math.floor(Math.random() * 3.9999);
-      }
-    }
-    
-    // insert fixed entities
-    for(var i=0 ; i < 10 ; i++)
-      this.world.getChildren().add(new Bird(this.world, 'bird' + i));
   },
   getAvailablePlayerColor: function (username) {
     var ret = false,self= this;
