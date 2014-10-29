@@ -30,7 +30,7 @@ BulletSprite.prototype.updateWithModel = function(model) {
 
 Phaser.GameObjectFactory.prototype.bullet = function(x, y, group) {
   if(typeof group === 'undefined')
-    group = this.world;
+    group = this.world.airGroup;
   
   return group.add(new BulletSprite(this.game, x, y));
 };

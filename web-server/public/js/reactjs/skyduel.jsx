@@ -48,7 +48,7 @@ var rjSkyduel = React.createClass({
         }
       }
 
-      window.client.gBackground.add(window.client.backgroundSprite);
+      this.phaser.world.groundGroup.add(window.client.backgroundSprite);
     }
   },
   updateText: function () {
@@ -72,16 +72,19 @@ var rjSkyduel = React.createClass({
   },
   phaser_createHandler: function (e) {
     this.phaser.world.setBounds(-500, -500, 3000, 3000);
-
-    window.client.gBackground = this.phaser.add.group();
-    window.client.gGameObjects = this.phaser.add.group();
+		
+		this.phaser.world.groundGroup = this.phaser.add.group();
+		this.phaser.world.airGroup = this.phaser.add.group();
+		this.phaser.world.cloudGroup = this.phaser.add.group();
+		
     window.client.gText = this.phaser.add.group();
 
     var style1 =  { font: "22px Arial", fill: "#111111", align: "center" };
     var style2 =  { font: "12px Arial", fill: "#111111", align: "right" };
     
     window.client.txtLatency = this.phaser.add.text(5, 580, 'Latency: N/A', style2);
-	window.client.txtLatency.fixedToCamera = true;
+		window.client.txtLatency.fixedToCamera = true;
+		
     window.client.setPhaser(this.phaser);
   },
   phaser_updateHandler: function (e) {

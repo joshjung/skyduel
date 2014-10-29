@@ -38,6 +38,12 @@ var Characteristic_Physics = CharacteristicBase.extend({
     res.x = target.x + Math.cos(res.angle) * res.velocity * elapsed;
     res.y = target.y + Math.sin(res.angle) * res.velocity * elapsed;
 
+		if (target._force)
+		{
+			res.x += target._force.x * elapsed;
+			res.y += target._force.y * elapsed;
+		}
+		
     if (isNaN(res.x))
     {
       console.log(target.type);

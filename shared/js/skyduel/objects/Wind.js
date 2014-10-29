@@ -41,26 +41,26 @@ var Wind = GameObject.extend({
 
     this.type = 'wind';
 
-    this.targetTypes = targetTypes || ['player'];
+    this.targetTypes = targetTypes || ['player', 'cloud'];
     this.x = x;
     this.y = y;
     this.angle = angle;
     this.velocity = velocity;
-    this.radius = 3;
+    this.radius = radius;
   },
   update: function (elapsed, tracker) {
-    console.log('wind!')
     var targets = this.getParent().getChildren().getAll(this.targetTypes),
     self = this;
 
     targets.forEach(function (target) {
-      var windToTarget = new $Math.Point(target.x - this.x, target.y - this.y),
-        strength = Math.min(0, radius - windToTarget.length()),
-        vel = new $Math.Point(1.0, 0.0).transform(this.angle, this.velocity),
-        tVel = new $Math.Point(1.0, 0.0).transform(target.angle, target.velocity);
+      var windToTarget = new $Math.Point(target.x - self.x, target.y - self.y),
+        strength = 1.0 - (windToTarget.length() / self.radius),
+        vel = (new $Math.Point(self.angle)).multiply(self.velocity);
+				
+				if (strength < 0)
+					return;
 
-        var strength = $Math.dot(vel, tVel, true);
-        console.log(strength);
+				target.force(vel.multiply(strength));
     });
   },
   destroy: function (){

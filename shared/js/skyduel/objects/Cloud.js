@@ -35,7 +35,7 @@ var Cloud = PhysicsObject.extend({
 		
     this.windId = windId;
 
-    this._super(parent, (id || this.getId()), x, 0, 0, 0);
+    this._super(parent, (id || this.getId()), x, y, 0, 0);
 
     this.scale = 0.5 + (Math.random() * 1.0);
 

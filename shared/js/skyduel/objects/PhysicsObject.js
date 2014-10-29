@@ -58,8 +58,16 @@ var PhysicsObject = GameObject.extend({
 
 		this.charManager.add(new (require('./characteristics/Characteristic_Physics'))(this.physicsProps));
   },
+	/**
+	 * Force is a single frame value. For example, wind.
+	 */
+	force: function (vector) {
+		this._force = this._force ? this._force.add(vector) : vector;
+	},
   update: function (elapsed, tracker) {
     this._super(elapsed, tracker);
+		
+		this._force = undefined;
   }
 });
 

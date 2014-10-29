@@ -39,7 +39,7 @@ var GameControllerArcade = module.exports = GameControllerBase.extend({
       Math.random() * this.world.width, 
       Math.random() * this.world.height, 
       Math.random() * Math.PI * 2, 
-      Math.random() * 50 + 10, 
+      Math.random() * 30 + 25, 
       4000));
 
     for(var i=0; i < 20; i++)

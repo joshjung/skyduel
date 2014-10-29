@@ -65,6 +65,6 @@ Plane.prototype.updateWithModel = function(model) {
 
 Phaser.GameObjectFactory.prototype.plane = function(x, y, group) {
   if(typeof group === 'undefined')
-    group = this.world;
+    group = this.world.airGroup;
   return group.add(new Plane(this.game, x, y));
 };

@@ -37,7 +37,7 @@ BirdSprite.prototype.updateWithModel = function(model) {
 
 Phaser.GameObjectFactory.prototype.bird = function(x, y, group) {
   if(typeof group === 'undefined')
-    group = this.world;
+    group = this.world.airGroup;
   
   return group.add(new BirdSprite(this.game, x, y));
 };

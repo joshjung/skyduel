@@ -34,5 +34,5 @@ CloudSprite.prototype.updateWithModel = function(model) {
  * Factory 
 \*======================================================*/
 Phaser.GameObjectFactory.prototype.cloud = function(x, y) {
-  return this.world.add(new CloudSprite(this.game, x, y));
+  return this.world.cloudGroup.add(new CloudSprite(this.game, x, y));
 };
