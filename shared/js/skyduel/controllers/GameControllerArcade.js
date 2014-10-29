@@ -14,8 +14,8 @@ var GameControllerArcade = module.exports = GameControllerBase.extend({
     var self = this;
 
     this.world.setState({
-      width: 2000,
-      height: 2000,
+      width: 1400,
+      height: 1400,
       tileWidth: 50,
       tileHeight: 50,
       tiles: []
@@ -35,18 +35,27 @@ var GameControllerArcade = module.exports = GameControllerBase.extend({
     // insert fixed entities
     console.log('adding wind')
     this.world.getChildren().add(new Wind(
-      this.world, 'wind0', 
-      Math.random() * this.world.width, 
-      Math.random() * this.world.height, 
+      this.world, 'wind-1', 
+      ranX(), 
+      ranY(), 
       Math.random() * Math.PI * 2, 
-      Math.random() * 30 + 25, 
-      4000));
+      Math.random() * 60 + 15, 
+			3000));
+			
+		for (var i = 0; i < 5; i++)
+	    this.world.getChildren().add(new Wind(
+	      this.world, 'wind' + i, 
+	      ranX(), 
+	      ranY(), 
+	      Math.random() * Math.PI * 2, 
+	      Math.random() * 20 + 15, 
+	      Math.random() * 500 + 500));
 
     for(var i=0; i < 20; i++)
       this.world.getChildren().add(new Bird(this.world, 'bird' + i));
 
     for(var i=0; i < 10; i++)
-      this.world.getChildren().add(new Cloud(this.world, 'cloud' + i, ranX(), ranY(), 'wind'));
+      this.world.getChildren().add(new Cloud(this.world, 'cloud' + i, ranX(), ranY()));
 
     function ranX() {
       return self.world.width * Math.random();

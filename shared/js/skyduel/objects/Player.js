@@ -120,7 +120,7 @@ var Player = PhysicsObject.extend({
     this.bank = this.accelerater = this.smokes = 0;
     this.health = 100;
     this.ammo = 1000;
-    this.velocity = this.GLOBALS.VELOCITY_MIN;
+    this.velocity = this.physicsProps.VELOCITY_MIN;
     this.angle = Math.random() * Math.PI * 2;
     this.radius = 15;
 

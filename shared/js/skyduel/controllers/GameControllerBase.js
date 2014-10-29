@@ -143,12 +143,15 @@ var GameControllerBase = module.exports = JClass.extend({
   addUserInputForSession: function (username, input) {
     var player = this.world.getPlayerByUsername(username);
 
-    player.latency = input.latency;
+		if (player)
+		{
+	    player.latency = input.latency;
 
-    if (this.world.getChildren().has(username))
-      this.server.userInputsByUID[username] = input;
-    else
-      console.log('WARNING: addUserInputForSession(): no player matched session username', username);
+	    if (this.world.getChildren().has(username))
+	      this.server.userInputsByUID[username] = input;
+	    else
+	      console.log('WARNING: addUserInputForSession(): no player matched session username', username);
+		}
   },
   start: function () {
     console.log('GameControllerBase::start(): starting game');

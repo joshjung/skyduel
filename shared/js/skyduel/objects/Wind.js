@@ -60,6 +60,7 @@ var Wind = GameObject.extend({
 				if (strength < 0)
 					return;
 
+					console.log(strength);
 				target.force(vel.multiply(strength));
     });
   },

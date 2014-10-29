@@ -13,7 +13,6 @@ var Cloud = PhysicsObject.extend({
   getState: function (mergeWith) {
     var s = this._super(mergeWith);
     s = this.merge.recursive(true, {
-      windId: this.windId,
       rotation: this.rotation
     }, s);
     return s;
@@ -21,23 +20,20 @@ var Cloud = PhysicsObject.extend({
   setState: function (value) {
     this._super(value);
 
-    this.windId = value.windId;
     this.rotation = value.rotation;
   },
   /*=========================*\ 
    * Methods
   \*=========================*/
-  init: function(parent, id, x, y, windId) {
+  init: function(parent, id, x, y) {
     this.physicsProps = {
       VELOCITY_MAX: 200,
       VELOCITY_MIN: 0
     };
 		
-    this.windId = windId;
-
     this._super(parent, (id || this.getId()), x, y, 0, 0);
 
-    this.scale = 0.5 + (Math.random() * 1.0);
+    this.scale = 0.6 + (Math.random() * 0.5);
 
     this.rotation = Math.random() * Math.PI * 2;
 
