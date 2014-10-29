@@ -39,17 +39,17 @@ var GameControllerArcade = module.exports = GameControllerBase.extend({
       ranX(), 
       ranY(), 
       Math.random() * Math.PI * 2, 
-      Math.random() * 30 + 30, 
+      Math.random() * 30 + 50, 
 			2100));
 			
 		for (var i = 0; i < 5; i++)
 	    this.world.getChildren().add(new Wind(
 	      this.world, 'wind' + i, 
-	      ranX(), 
-	      ranY(), 
+	      (ranX() + 300) * 0.7, 
+	      (ranY() + 300) * 0.7, 
 	      Math.random() * Math.PI * 2, 
-	      Math.random() * 10 + 5, 
-	      Math.random() * 500 + 500));
+	      Math.random() * 30 + 5, 
+	      Math.random() * 300 + 600));
 
     for(var i=0; i < 20; i++)
       this.world.getChildren().add(new Bird(this.world, 'bird' + i));
