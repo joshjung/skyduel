@@ -4,6 +4,7 @@
   "private": false,
   "dependencies": {
     "dead-reckoning": "*",
+    "hasharray": "^0.1.5",
     "jclass": "^0.2.5",
     "merge": "^1.2.0"
   }
