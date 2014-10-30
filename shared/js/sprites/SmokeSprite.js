@@ -45,7 +45,7 @@ SmokeSprite.prototype.setLife = function (life) {
 \*======================================================*/
 Phaser.GameObjectFactory.prototype.smoke = function(x, y, group) {
   if(typeof group === 'undefined')
-    group = this.world;
+    group = this.world.airGroup;
   
   return group.add(new SmokeSprite(this.game, x, y));
 };

@@ -105,16 +105,33 @@ var Player = PhysicsObject.extend({
 	      SMOKE_START_HEALTH: 60,
 	      SMOKE_THRESHOLD: 5
 			}));
+			
     this.charManager.add(new (require('./characteristics/Characteristic_ScreenWrapping'))(this.world));
     this.charManager.add(new (require('./characteristics/Characteristic_ShootsBullets'))(this.bulletProps));
     this.charManager.add(new (require('./characteristics/Characteristic_Explodes'))());
     this.charManager.add(new (require('./characteristics/Characteristic_Respawns'))());
   },
   update: function (elapsed, tracker) {
+		this.damageUpdate(elapsed);
+		
     this._super(elapsed, tracker);
 
     this.bulletProps.fireVelocity = 500.0 + this.velocity;
   },
+	damageUpdate: function (elapsed) {
+		this.physicsProps.VELOCITY_MAX = 100 + this.health;
+		
+		// We randomly shake the plane if we are the server if the player is damaged.
+		if (this.isServer() && this.health < 100)
+		{
+			var shake = Math.random() * (100 - this.health);
+			if (shake < 1.0)
+			{
+				var bank = -0.5 + Math.random();
+				this.bank += bank;
+			}
+		}
+	},
   respawn: function () {
     this.x = this.y = 400;
     this.bank = this.accelerater = this.smokes = 0;
@@ -168,27 +185,18 @@ var Player = PhysicsObject.extend({
     return '<span style=\'color:#' + this.getColorHex() + '\'>' + this.getUsername() + '</span>';
   },
   hit: function (projectile, distance) {
-    if (projectile.getParent() == this)
-      return;
+    if (projectile.getParent() == this) return;
     
-    this.health -= 1 * (projectile.velocity / 1000.0) * Math.max(15 - distance, 1);
-    this.health = this.health < 0 ? 0 : this.health;
+    this.health -= Math.min(1 * (projectile.velocity / 1000.0) * Math.max(15 - distance, 1), this.health);
 
-    if (projectile.getParent().type == 'player' && this.health <= 0 && !this.destroyed && !this.markedForDestroy)
-    {
-      projectile.getParent().kills++;
-      this.deaths++;
+    if (projectile.getParent().type == 'player' && !this.health && !this.destroyed && !this.markedForDestroy)
+			this.emit('death', this, projectile.getParent());
+  },
+	explode: function () {
+    this.deaths++;
 
-      this.markedForDestroy = true;
-
-      if (this.messaging)
-      {
-        var insults = ['humiliated', 'embarrassed', 'mortified', 'humbled', 'shamed', 'disgraced', 'chastened', 'deflated', 'squashed', 'abased', 'demeaned', 'degraded', 'demoted', 'belittled'];
-        var ranInsult = insults[Math.floor(Math.random() * insults.length)];
-        this.messaging.send('SKYDUEL', projectile.getParent().getUsernameHTML() + ' ' + ranInsult + ' ' + this.getUsernameHTML() + '!');
-      }
-    }
-  }
+    this.markedForDestroy = true;
+	}
 });
 
 /*===================================================*\

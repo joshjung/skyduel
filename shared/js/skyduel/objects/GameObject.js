@@ -4,15 +4,19 @@
 var merge = require('merge'),
 	CharacteristicManager = require('./characteristics/CharacteristicManager'),
   JClass = require('jclass'),
-  HashArray = require('hasharray');
+  HashArray = require('hasharray'),
+	EventDispatcher = require('./EventDispatcher');
 
 /*===================================================*\
  * GameObject()
 \*===================================================*/
-var GameObject = module.exports = JClass.extend({
+var GameObject = module.exports = EventDispatcher.extend({
   /*======================*\
    * Properties
   \*======================*/
+  isServer: function () {
+    return typeof window === 'undefined';
+  },
   stateSetProps: function() {
     return [];
   },
@@ -110,6 +114,18 @@ var GameObject = module.exports = JClass.extend({
     // Serialize from server
     return this._dirty;
   },
+  /*======================*\
+   * Overridden Methods
+  \*======================*/
+	emit: function () {
+		this._super.apply(this, arguments);
+		
+		// Bubbling
+		var p = this.getParent();
+		
+		if (p)
+			p.emit.apply(p, arguments);
+	},
   /*======================*\
    * Methods
   \*======================*/

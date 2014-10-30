@@ -43,7 +43,6 @@ var PlanePart = GameObject.extend({
    * Methods
   \*=========================*/
   init: function (parent, id, x, y, angle, velocity, index) {
-    console.log('plane part', id)
     this._super(parent, id || this.getId());
 
     this.GLOBALS = {

@@ -169,6 +169,7 @@ var GameControllerBase = module.exports = JClass.extend({
       });
     
     this.world = new World();
+		this.world.on('death', this.world_deathHandler.bind(this));
   },
   stop: function () {
 
@@ -224,5 +225,17 @@ var GameControllerBase = module.exports = JClass.extend({
       }
     }
     return ret;
-  }
+  },
+	world_deathHandler: function(deadPlayer, alivePlayer) {
+    alivePlayer.kills++;
+		
+    deadPlayer.explode();
+
+    if (this.messaging)
+    {
+      var insults = ['humiliated', 'embarrassed', 'mortified', 'humbled', 'shamed', 'disgraced', 'chastened', 'deflated', 'squashed', 'abased', 'demeaned', 'degraded', 'demoted', 'belittled'];
+      var ranInsult = insults[Math.floor(Math.random() * insults.length)];
+      this.messaging.send('SKYDUEL', alivePlayer.getUsernameHTML() + ' ' + ranInsult + ' ' + deadPlayer.getUsernameHTML() + '!');
+    }
+	}
 });

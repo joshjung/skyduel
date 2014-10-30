@@ -26,6 +26,7 @@ var SkyDuelService = JClass.extend({
     this.messaging = app.get('messagingService');
     this.git = app.get('gitService');
     this.game = GameControllerFactory.newInstanceOf(0);
+		this.game.messaging = this.messaging;
 
     this.lastTime = undefined;
     this.elapsed = undefined;
